@@ -5,7 +5,7 @@ import com.global.shop.model.User;
 import java.util.List;
 
 /**
- * @author Tim Hlovatskyi
+ * @author Aleksandr Sulyma
  * @version 1.0
  */
 public interface UserService {

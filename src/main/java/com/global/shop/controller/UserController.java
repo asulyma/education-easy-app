@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 /**
- * @author T3
+ * @author Aleksandr Sulyma
  * @version 1.0
  */
 @Controller

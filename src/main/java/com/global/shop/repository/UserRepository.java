@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * @author Tim Hlovatskyi
+ * @author Aleksandr Sulyma
  * @version 1.0
  */
 @Repository

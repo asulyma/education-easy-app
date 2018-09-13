@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @author Tim Hlovatskyi
+ * @author Aleksandr Sulyma
  * @version 1.0
  */
 @Service
