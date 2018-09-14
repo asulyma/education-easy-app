@@ -30,23 +30,17 @@ public class UserController {
         return "external";
     }
 
-
-
     @GetMapping(path = "/moderator")
     @Secured({"ROLE_moderator"})
     public String index2(Principal principal) {
         return "moderator";
     }
 
-
-
     @GetMapping(path = "/admin")
     @Secured({"ROLE_admin"})
     public String index3(Principal principal) {
         return "admin";
     }
-
-
 
     @GetMapping(path = "/customers")
     @Secured({"ROLE_user"})
@@ -55,7 +49,6 @@ public class UserController {
         model.addAttribute("username", principal.getName());
         return "customers";
     }
-
 
     @GetMapping(path = "/logout")
     public String logout(HttpServletRequest request) throws ServletException {
