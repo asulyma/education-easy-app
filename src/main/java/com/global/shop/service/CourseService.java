@@ -1,6 +1,7 @@
 package com.global.shop.service;
 
 import com.global.shop.model.learning.Course;
+import com.global.shop.model.wrapper.NotificationWrapper;
 
 import java.util.List;
 
@@ -10,5 +11,7 @@ import java.util.List;
 public interface CourseService {
 
     List<Course> findAll();
+
+    void allowCourseForUser(NotificationWrapper notificationWrapper);
 
 }
