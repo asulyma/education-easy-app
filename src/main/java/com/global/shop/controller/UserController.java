@@ -1,15 +1,20 @@
 package com.global.shop.controller;
 
+import com.global.shop.model.Notification;
+import com.global.shop.model.wrapper.NotificationWrapper;
+import com.global.shop.service.CourseService;
+import com.global.shop.service.NotificationService;
 import com.global.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
+import java.util.List;
 
 /**
  * @author Aleksandr Sulyma
@@ -18,11 +23,13 @@ import java.security.Principal;
 @Controller
 public class UserController {
 
-    private final UserService userService;
+    private final NotificationService notificationService;
+    private final CourseService courseService;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(NotificationService notificationService, CourseService courseService) {
+        this.notificationService = notificationService;
+        this.courseService = courseService;
     }
 
     @GetMapping(path = "/")
@@ -30,30 +37,19 @@ public class UserController {
         return "external";
     }
 
-    @GetMapping(path = "/moderator")
-    @Secured({"ROLE_moderator"})
-    public String index2(Principal principal) {
-        return "moderator";
-    }
 
-    @GetMapping(path = "/admin")
+    @GetMapping(path = "/getNotifications")
     @Secured({"ROLE_admin"})
-    public String index3(Principal principal) {
-        return "admin";
+    public List<Notification> getAllNotifications() {
+        return notificationService.getAllNotifications();
     }
 
-    @GetMapping(path = "/customers")
-    @Secured({"ROLE_user"})
-    public String customers(Principal principal, Model model) {
-        model.addAttribute("users", userService.findAll());
-        model.addAttribute("username", principal.getName());
-        return "customers";
-    }
+    @PostMapping(path = "/allowNotification")
+    @Secured({"ROLE_admin"})
+    public ResponseEntity allowNotification(@RequestBody NotificationWrapper notificationWrapper) {
 
-    @GetMapping(path = "/logout")
-    public String logout(HttpServletRequest request) throws ServletException {
-        request.logout();
-        return "/";
-    }
+        courseService.allowCourseForUser(notificationWrapper);
 
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }

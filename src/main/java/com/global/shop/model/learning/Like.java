@@ -23,7 +23,8 @@ public class Like {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(mappedBy = "lessonLike")
+    @OneToOne()
+    @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
     @ManyToMany(mappedBy = "likes")
@@ -31,5 +32,5 @@ public class Like {
 
     private Long valueLike;
 
-    private Long dislike;
+    private Long valueDislike;
 }

@@ -49,8 +49,7 @@ public class Lesson {
     @Column(name = "already_done")
     private List<User> alreadyDone;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "like_id")
+    @OneToOne(mappedBy = "lesson", cascade = CascadeType.ALL)
     private Like lessonLike;
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)

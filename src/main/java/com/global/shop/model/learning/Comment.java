@@ -32,6 +32,7 @@ public class Comment {
 
     private String content;
 
-    private LocalDate date;
+    @Column(name = "update_date")
+    private LocalDate updateDate;
 
 }
