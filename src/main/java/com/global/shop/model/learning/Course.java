@@ -1,5 +1,7 @@
 package com.global.shop.model.learning;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.global.shop.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +30,9 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Size(max = 32)
+    private String name;
+
     @Size(max = 256)
     private String title;
 
@@ -42,13 +47,10 @@ public class Course {
     private BigDecimal cost;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Section> sections;
 
     @ManyToMany(mappedBy = "allowedCourses")
     @Column(name = "allowed_users")
     private List<User> allowedUsers;
-
-    @Min(value = 0)
-    @Max(value = 1000)
-    private Long progress;
 }

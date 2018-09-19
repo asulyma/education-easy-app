@@ -1,5 +1,7 @@
 package com.global.shop.model.learning;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.global.shop.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,11 +34,13 @@ public class Section {
     @Size(max = 1024)
     private String description;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "course_id")
+    @JsonIgnore
     private Course course;
 
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Lesson> lessons;
 
     @ManyToMany(mappedBy = "allowedSections")

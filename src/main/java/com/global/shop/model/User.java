@@ -94,4 +94,8 @@ public class User {
 
     @OneToOne(mappedBy = "author")
     private Comment comment;
+
+    @Min(value = 0)
+    @Max(value = 1000)
+    private Long progress;
 }
