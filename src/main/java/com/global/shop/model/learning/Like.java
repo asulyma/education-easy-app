@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Like {
+class Like {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,8 +27,10 @@ public class Like {
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
-    @ManyToMany(mappedBy = "likes")
-    private List<User> users;
+    @ElementCollection
+    @CollectionTable(name = "user_likes_mapping", joinColumns = @JoinColumn(name = "like_id"))
+    @Column(name = "user_id")
+    private List<Long> users;
 
     private Long valueLike;
 

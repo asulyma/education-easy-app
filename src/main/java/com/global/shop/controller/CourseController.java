@@ -33,7 +33,7 @@ public class CourseController {
     @GetMapping(path = "/getCourses")
     @Secured("ROLE_user")
     public List<Course> getListOfCourses() {
-        return courseService.findAll();
+        return courseService.getListOfCourse();
     }
 
     @GetMapping(path = "{id}/getSections")

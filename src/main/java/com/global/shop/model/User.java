@@ -92,13 +92,6 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "lesson_id")})
     private List<Lesson> alreadyDoneLesson;
 
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_likes",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "like_id")})
-    private List<Like> likes;
-
     @OneToOne(mappedBy = "author")
     private Comment comment;
 }

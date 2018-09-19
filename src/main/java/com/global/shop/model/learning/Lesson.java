@@ -31,8 +31,6 @@ public class Lesson {
     @Size(max = 2048)
     private String description;
 
-    private Long authorId;
-
     @Version
     @Column(name = "update_date")
     private Timestamp updateDate;
