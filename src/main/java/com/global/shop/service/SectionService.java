@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface SectionService {
 
-    List<Section> findAllByCourseId(Long id);
+    List<Section> getSectionsByCourseName(String name);
+
+    Section getSectionByNameAndId(String name, Long id);
 
 }

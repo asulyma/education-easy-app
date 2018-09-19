@@ -12,6 +12,8 @@ public interface CourseService {
 
     List<Course> getListOfCourse();
 
+    Course getCourseById(Long id);
+
     void allowCourseForUser(NotificationWrapper notificationWrapper);
 
 }

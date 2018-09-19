@@ -37,6 +37,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Course getCourseById(Long id) {
+        Optional<Course> optionalCourse = courseRepository.findById(id);
+        return optionalCourse.orElse(null);
+    }
+
+    @Override
     public void allowCourseForUser(NotificationWrapper notificationWrapper) {
 
         //If admin did not allow

@@ -24,7 +24,12 @@ public class SectionServiceImpl implements SectionService {
 
 
     @Override
-    public List<Section> findAllByCourseId(Long id) {
-        return sectionRepository.findAllByCourseId(id);
+    public List<Section> getSectionsByCourseName(String name) {
+        return sectionRepository.findAllByCourseName(name);
+    }
+
+    @Override
+    public Section getSectionByNameAndId(String name, Long id) {
+        return sectionRepository.findByCourseNameAndId(name, id);
     }
 }

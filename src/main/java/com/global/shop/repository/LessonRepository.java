@@ -1,6 +1,6 @@
 package com.global.shop.repository;
 
-import com.global.shop.model.learning.Section;
+import com.global.shop.model.learning.Lesson;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,10 +11,8 @@ import java.util.List;
  * @version 1.0
  */
 @Repository
-public interface SectionRepository extends JpaRepository<Section, Long> {
+public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
-    List<Section> findAllByCourseName(String name);
-
-    Section findByCourseNameAndId(String name, Long id);
+    List<Lesson> findAllBySectionId(Long sectionId);
 
 }
