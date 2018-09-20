@@ -1,4 +1,4 @@
-package com.global.shop.model;
+package com.global.shop.model.user;
 
 /**
  * @author Aleksandr Sulyma

@@ -1,6 +1,5 @@
 package com.global.shop.model.learning;
 
-import com.global.shop.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

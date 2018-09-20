@@ -1,12 +1,13 @@
 package com.global.shop.service.impl;
 
-import com.global.shop.model.User;
+import com.global.shop.model.user.User;
 import com.global.shop.repository.UserRepository;
 import com.global.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Aleksandr Sulyma
@@ -23,7 +24,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> getListOfUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
+
+    @Override
+    public User createUser(User user) {
+        return userRepository.saveAndFlush(user);
     }
 }

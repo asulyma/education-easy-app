@@ -1,7 +1,7 @@
 package com.global.shop.service.impl;
 
 import com.global.shop.model.Notification;
-import com.global.shop.model.User;
+import com.global.shop.model.user.User;
 import com.global.shop.model.learning.Course;
 import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.repository.CourseRepository;

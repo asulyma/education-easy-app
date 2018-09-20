@@ -1,4 +1,4 @@
-package com.global.shop.model;
+package com.global.shop.model.user;
 
 import com.global.shop.model.learning.*;
 import lombok.Getter;
@@ -27,13 +27,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Size(min = 2, max = 32)
-    @NotNull(message = "Enter your name!")
-    private String name;
+    private String login;
 
     @Size(min = 2, max = 32)
-    @NotNull(message = "Enter your surname!")
-    private String surname;
+    private String givenName;
+
+    @Size(min = 2, max = 32)
+    private String familyName;
 
     @Min(value = 12)
     @Max(value = 80)
@@ -52,9 +52,10 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Rank rank;
 
-    @Column(name = "about_me", columnDefinition = "text")
-    @Size(max = 1024)
-    private String aboutMe;
+    private LocalDate birthDate;
+
+    @Size(max = 6)
+    private String gender;
 
     @NotNull
     @Column(name = "registration_date")

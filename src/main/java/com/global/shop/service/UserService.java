@@ -1,6 +1,6 @@
 package com.global.shop.service;
 
-import com.global.shop.model.User;
+import com.global.shop.model.user.User;
 
 import java.util.List;
 
@@ -10,6 +10,10 @@ import java.util.List;
  */
 public interface UserService {
 
-    List<User> findAll();
+    List<User> getListOfUsers();
+
+    User getUserByLogin(String login);
+
+    User createUser(User user);
 
 }
