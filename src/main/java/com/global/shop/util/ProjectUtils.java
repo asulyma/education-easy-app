@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
+import java.time.LocalDate;
 
 /**
  * @author Aleksandr Sulyma
@@ -28,19 +29,26 @@ public class ProjectUtils {
     }
 
 
-    public User getUser(Principal principal){
+    public User getUser(Principal principal) {
 
         OidcKeycloakAccount account = ((KeycloakAuthenticationToken) principal).getAccount();
         AccessToken token = account.getKeycloakSecurityContext().getToken();
 
         User loginUser = userService.getUserByLogin(principal.getName());
-        if(loginUser != null){
+        if (loginUser != null) {
             return loginUser;
         }
 
         User newUser = new User();
 
-        //TODO build new user by token
+        newUser.setLogin(principal.getName());
+        newUser.setEmail(token.getEmail());
+        newUser.setGivenName(token.getGivenName());
+        newUser.setGender(token.getGender());
+        newUser.setFamilyName(token.getFamilyName());
+        newUser.setRegistrationDate(LocalDate.now());
+        newUser.setActive(true);
+        newUser.setLocked(false);
 
         return userService.createUser(newUser);
     }

@@ -32,6 +32,7 @@ public class CourseController {
         return courseService.getListOfCourse();
     }
 
+
     @GetMapping("/{id}")
     @Secured("ROLE_user")
     public Course getCourseById(@PathVariable(name = "id") Long id) {

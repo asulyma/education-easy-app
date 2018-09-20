@@ -37,7 +37,7 @@ public class User {
 
     @Min(value = 12)
     @Max(value = 80)
-    private int age;
+    private Integer age;
 
     @Email
     @Column(unique = true)
