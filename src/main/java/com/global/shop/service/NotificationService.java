@@ -1,6 +1,6 @@
 package com.global.shop.service;
 
-import com.global.shop.model.Notification;
+import com.global.shop.model.notification.Notification;
 import com.global.shop.model.wrapper.NotificationWrapper;
 
 import java.util.List;
@@ -13,8 +13,6 @@ public interface NotificationService {
 
     List<Notification> getAllNotifications();
 
-    void createNotification(Notification notification);
-
-    Notification buildNotification(NotificationWrapper notificationWrapper);
+    void createUserPermissionNotification(NotificationWrapper wrapper);
 
 }

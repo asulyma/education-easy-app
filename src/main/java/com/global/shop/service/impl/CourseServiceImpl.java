@@ -1,6 +1,6 @@
 package com.global.shop.service.impl;
 
-import com.global.shop.model.Notification;
+import com.global.shop.model.notification.Notification;
 import com.global.shop.model.user.User;
 import com.global.shop.model.learning.Course;
 import com.global.shop.model.wrapper.CourseWrapper;
@@ -51,23 +51,23 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void allowCourseForUser(NotificationWrapper notificationWrapper) {
 
-        //If admin did not allow
-        if (!notificationWrapper.getDecision()) {
-            return;
-        }
-
-        Notification notification = notificationRepository.findByIssuer(notificationWrapper.getIssuer());
-        User user = userRepository.findByEmail(notificationWrapper.getIssuer());
-        Optional<Course> optionalCourse = courseRepository.findById(notificationWrapper.getOtherId());
-
-        //TODO change new
-        Course course = optionalCourse.orElseGet(Course::new);
-
-        List<Course> allowedCourses = user.getAllowedCourses();
-        allowedCourses.add(course);
-
-        userRepository.saveAndFlush(user);
-        notificationRepository.delete(notification);
+//        //If admin did not allow
+//        if (!notificationWrapper.getDecision()) {
+//            return;
+//        }
+//
+//        Notification notification = notificationRepository.findByIssuer(notificationWrapper.getPublisher());
+//        User user = userRepository.findByEmail(notificationWrapper.getPublisher());
+//        Optional<Course> optionalCourse = courseRepository.findById(notificationWrapper.getIdOfEntity());
+//
+//        //TODO change new
+//        Course course = optionalCourse.orElseGet(Course::new);
+//
+//        List<Course> allowedCourses = user.getAllowedCourses();
+//        allowedCourses.add(course);
+//
+//        userRepository.saveAndFlush(user);
+//        notificationRepository.delete(notification);
 
     }
 

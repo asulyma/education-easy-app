@@ -1,12 +1,14 @@
 package com.global.shop.service.impl;
 
-import com.global.shop.model.Notification;
+import com.global.shop.model.notification.Notification;
+import com.global.shop.model.notification.NotificationType;
 import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.repository.NotificationRepository;
 import com.global.shop.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -29,18 +31,25 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void createNotification(Notification notification){
-        notificationRepository.saveAndFlush(notification);
+    public void createUserPermissionNotification(NotificationWrapper wrapper) {
+
+        wrapper.setNotificationType(NotificationType.PERMISSION_ADMIN);
+        Notification notificationToAdmin = buildNotification(wrapper);
+
+        //TODO notification for user (and push to DB template)
+        //Notification notificationToUser = notificationRepository.
+        //notificationRepository.saveAndFlush(notificationToAdmin);
     }
 
-    @Override
-    public Notification buildNotification(NotificationWrapper wrapper){
+    private Notification buildNotification(NotificationWrapper wrapper) {
 
         Notification notification = new Notification();
-        notification.setIssuer(wrapper.getIssuer());
-        notification.setOtherId(wrapper.getOtherId());
+        notification.setIdOfEntity(wrapper.getIdOfEntity());
         notification.setNotificationType(wrapper.getNotificationType());
-        notification.setDecision(wrapper.getDecision());
+        notification.setNotificationEntityType(wrapper.getNotificationEntityType());
+        notification.setPublisherId(wrapper.getPublisherId());
+        notification.setRecipientId(wrapper.getRecipientId());
+        notification.setUpdateDate(LocalDate.now());
         return notification;
     }
 }

@@ -1,6 +1,5 @@
 package com.global.shop.controller;
 
-import com.global.shop.model.Notification;
 import com.global.shop.model.learning.Course;
 import com.global.shop.model.wrapper.CourseWrapper;
 import com.global.shop.model.wrapper.NotificationWrapper;
@@ -41,12 +40,12 @@ public class CourseController {
     }
 
 
-    @PostMapping(path = "/allowCourseRequest")
+    @PostMapping(path = "/allowCourse")
     @Secured("ROLE_user")
-    public ResponseEntity requestToAllowCourse(@RequestBody NotificationWrapper notificationWrapper) {
+    public ResponseEntity sendPermissionRequestOnCourse(@RequestBody NotificationWrapper notificationWrapper) {
 
-        Notification newNotification = notificationService.buildNotification(notificationWrapper);
-        notificationService.createNotification(newNotification);
+        //TODO
+        notificationService.createUserPermissionNotification(notificationWrapper);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

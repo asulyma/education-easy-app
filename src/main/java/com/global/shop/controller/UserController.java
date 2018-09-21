@@ -1,6 +1,6 @@
 package com.global.shop.controller;
 
-import com.global.shop.model.Notification;
+import com.global.shop.model.notification.Notification;
 import com.global.shop.model.user.User;
 import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.service.CourseService;

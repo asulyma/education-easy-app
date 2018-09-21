@@ -1,6 +1,6 @@
 package com.global.shop.repository;
 
-import com.global.shop.model.Notification;
+import com.global.shop.model.notification.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +15,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     List<Notification> findAll();
 
-    Notification findByIssuer(String issuer);
+    //Notification findByIssuer(String issuer);
 
 }

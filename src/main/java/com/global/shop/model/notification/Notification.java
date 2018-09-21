@@ -1,14 +1,14 @@
-package com.global.shop.model;
+package com.global.shop.model.notification;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.util.List;
+import java.time.LocalDate;
 
 /**
  * Pojo class.
@@ -30,19 +30,18 @@ public class Notification {
     @Size(max = 128)
     private String tittle;
 
-    @Size(max = 1024)
-    private String description;
-
     @Column(name = "update_date")
-    private Timestamp updateDate;
+    private LocalDate updateDate;
 
-    @Email
-    private String issuer;
+    private Long publisherId;
+
+    private Long recipientId;
 
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
-    private Long otherId;
+    @Enumerated(EnumType.STRING)
+    private NotificationEntityType notificationEntityType;
 
-    private boolean decision;
+    private Long idOfEntity;
 }
