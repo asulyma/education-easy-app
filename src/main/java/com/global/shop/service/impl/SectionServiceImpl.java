@@ -29,7 +29,7 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public Section getSectionByNameAndId(String name, Long id) {
+    public Section getSectionByCourseAndId(String name, Long id) {
         return sectionRepository.findByCourseNameAndId(name, id);
     }
 }

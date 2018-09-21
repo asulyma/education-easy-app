@@ -1,6 +1,6 @@
 package com.global.shop.controller;
 
-import com.global.shop.model.learning.Lesson;
+import com.global.shop.model.wrapper.LessonWrapper;
 import com.global.shop.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -16,7 +16,7 @@ import java.util.List;
  * @version 1.0
  */
 @RestController
-@RequestMapping(value = "/lessons")
+@RequestMapping(value = "/{course}/{sectionId}/lessons")
 public class LessonController {
 
     private final LessonService lessonService;
@@ -27,9 +27,11 @@ public class LessonController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping
     @Secured("ROLE_user")
-    public List<Lesson> getLessonsBySectionId(@PathVariable("id") Long id) {
-        return lessonService.getLessonsBySectionId(id);
+    public List<LessonWrapper> getLessonsBySectionId(@PathVariable(name = "course") String nameOfCourse,
+                                                     @PathVariable(name = "sectionId") Long id) {
+
+        return lessonService.getLessonsByCourseAndId(nameOfCourse, id);
     }
 }

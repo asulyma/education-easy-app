@@ -12,6 +12,6 @@ public interface SectionService {
 
     List<Section> getSectionsByCourseName(String name);
 
-    Section getSectionByNameAndId(String name, Long id);
+    Section getSectionByCourseAndId(String name, Long id);
 
 }

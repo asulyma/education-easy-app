@@ -1,6 +1,6 @@
 package com.global.shop.service;
 
-import com.global.shop.model.learning.Lesson;
+import com.global.shop.model.wrapper.LessonWrapper;
 
 import java.util.List;
 
@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface LessonService {
 
-    List<Lesson> getLessonsBySectionId(Long sectionId);
+    List<LessonWrapper> getLessonsByCourseAndId(String nameOfCourse, Long sectionId);
 
 }
