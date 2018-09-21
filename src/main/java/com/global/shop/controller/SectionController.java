@@ -1,6 +1,7 @@
 package com.global.shop.controller;
 
 import com.global.shop.model.learning.Section;
+import com.global.shop.model.wrapper.SectionWrapper;
 import com.global.shop.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -29,7 +30,7 @@ public class SectionController {
 
     @GetMapping
     @Secured("ROLE_user")
-    public List<Section> getListOfSectionsByCourseName(@PathVariable(name = "course") String name) {
+    public List<SectionWrapper> getListOfSectionsByCourseName(@PathVariable(name = "course") String name) {
         return sectionService.getSectionsByCourseName(name);
     }
 

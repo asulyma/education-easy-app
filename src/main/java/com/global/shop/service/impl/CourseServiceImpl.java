@@ -3,6 +3,7 @@ package com.global.shop.service.impl;
 import com.global.shop.model.Notification;
 import com.global.shop.model.user.User;
 import com.global.shop.model.learning.Course;
+import com.global.shop.model.wrapper.CourseWrapper;
 import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.repository.CourseRepository;
 import com.global.shop.repository.NotificationRepository;
@@ -11,10 +12,13 @@ import com.global.shop.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
+ * @author Aleksandr Sulyma
  * @version 1.0
  */
 @Service
@@ -32,8 +36,10 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> getListOfCourse() {
-        return courseRepository.findAll();
+    public List<CourseWrapper> getListOfCourse() {
+
+        List<Course> courses = courseRepository.findAll();
+        return buildCourseWrappers(courses);
     }
 
     @Override
@@ -62,6 +68,23 @@ public class CourseServiceImpl implements CourseService {
 
         userRepository.saveAndFlush(user);
         notificationRepository.delete(notification);
+
+    }
+
+
+    private List<CourseWrapper> buildCourseWrappers(List<Course> courses) {
+
+        List<CourseWrapper> wrappers = new ArrayList<>();
+        courses.forEach(course -> {
+            CourseWrapper wrapper = new CourseWrapper();
+            wrapper.setId(course.getId());
+            wrapper.setName(course.getName());
+            wrapper.setTitle(course.getTitle());
+            wrapper.setCost(course.getCost());
+            wrapper.setAllowedUsers(course.getAllowedUsers().stream().map(User::getId).collect(Collectors.toList()));
+            wrappers.add(wrapper);
+        });
+        return wrappers;
 
     }
 }

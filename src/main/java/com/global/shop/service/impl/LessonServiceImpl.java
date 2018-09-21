@@ -33,6 +33,11 @@ public class LessonServiceImpl implements LessonService {
         return buildLessonWrappers(lessons);
     }
 
+    @Override
+    public Lesson getLessonById(String nameOfCourse, Long sectionId, Long lessonId) {
+        return lessonRepository.findBySectionCourseNameAndSectionIdAndId(nameOfCourse, sectionId, lessonId);
+    }
+
     private List<LessonWrapper> buildLessonWrappers(List<Lesson> lessons) {
 
         List<LessonWrapper> wrappers = new ArrayList<>();

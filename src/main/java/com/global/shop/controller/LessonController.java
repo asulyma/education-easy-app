@@ -1,5 +1,6 @@
 package com.global.shop.controller;
 
+import com.global.shop.model.learning.Lesson;
 import com.global.shop.model.wrapper.LessonWrapper;
 import com.global.shop.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,19 @@ public class LessonController {
 
     @GetMapping
     @Secured("ROLE_user")
-    public List<LessonWrapper> getLessonsBySectionId(@PathVariable(name = "course") String nameOfCourse,
-                                                     @PathVariable(name = "sectionId") Long id) {
+    public List<LessonWrapper> getLessonsByCourseNameAndId(@PathVariable(name = "course") String nameOfCourse,
+                                                           @PathVariable(name = "sectionId") Long sectionId) {
 
-        return lessonService.getLessonsByCourseAndId(nameOfCourse, id);
+        return lessonService.getLessonsByCourseAndId(nameOfCourse, sectionId);
+    }
+
+
+    @GetMapping("/{id}")
+    @Secured("ROLE_user")
+    public Lesson getLessonById(@PathVariable(name = "course") String nameOfCourse,
+                                @PathVariable(name = "sectionId") Long sectionId,
+                                @PathVariable(name = "id") Long id) {
+
+        return lessonService.getLessonById(nameOfCourse, sectionId, id);
     }
 }

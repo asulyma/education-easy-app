@@ -2,6 +2,7 @@ package com.global.shop.controller;
 
 import com.global.shop.model.Notification;
 import com.global.shop.model.learning.Course;
+import com.global.shop.model.wrapper.CourseWrapper;
 import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.service.CourseService;
 import com.global.shop.service.NotificationService;
@@ -28,7 +29,7 @@ public class CourseController {
 
     @GetMapping
     @Secured("ROLE_user")
-    public List<Course> getListOfCourses() {
+    public List<CourseWrapper> getListOfCourses() {
         return courseService.getListOfCourse();
     }
 
