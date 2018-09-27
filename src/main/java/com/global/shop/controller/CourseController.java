@@ -39,14 +39,11 @@ public class CourseController {
         return courseService.getCourseById(id);
     }
 
-
     @PostMapping(path = "/allowCourse")
     @Secured("ROLE_user")
     public ResponseEntity sendPermissionRequestOnCourse(@RequestBody NotificationWrapper notificationWrapper) {
 
-        //TODO
-        notificationService.createUserPermissionNotification(notificationWrapper);
-
+        notificationService.createUserRequestNotification(notificationWrapper);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

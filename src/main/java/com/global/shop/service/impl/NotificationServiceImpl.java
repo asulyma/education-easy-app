@@ -38,7 +38,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void createUserPermissionNotification(NotificationWrapper wrapper) {
+    public void createUserRequestNotification(NotificationWrapper wrapper) {
 
         wrapper.setNotificationType(NotificationType.PERMISSION_TO_ADMIN);
         Notification notificationToAdmin = buildNotification(wrapper);
@@ -47,6 +47,31 @@ public class NotificationServiceImpl implements NotificationService {
         notificationRepository.save(notificationToAdmin);
         notificationRepository.save(notificationToUser);
         notificationRepository.flush();
+    }
+
+    @Override
+    public void createUserResponseNotification(NotificationWrapper wrapper) {
+
+        NotificationType type = wrapper.getNotificationType();
+        NotificationEntityType entityType = wrapper.getNotificationEntityType();
+
+        if (type.equals(NotificationType.APPROVE_PERMISSION)
+                && entityType.equals(NotificationEntityType.COURSE)) {
+
+            NotificationTranslation translation = translationRepository
+                    .findByNotificationEntityTypeAndNotificationType(entityType, type);
+
+            Notification toUser = buildNotification(wrapper);
+
+
+        } else if(type.equals(NotificationType.DECLINE_PERMISSION)
+                && entityType.equals(NotificationEntityType.COURSE)){
+
+            NotificationTranslation translation = translationRepository
+                    .findByNotificationEntityTypeAndNotificationType(entityType, type);
+
+        }
+
     }
 
     private Notification buildNotification(NotificationWrapper wrapper) {

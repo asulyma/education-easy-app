@@ -14,6 +14,8 @@ public interface NotificationService {
 
     List<Notification> getAllNotifications(User user);
 
-    void createUserPermissionNotification(NotificationWrapper wrapper);
+    void createUserRequestNotification(NotificationWrapper wrapper);
+
+    void createUserResponseNotification(NotificationWrapper wrapper);
 
 }
