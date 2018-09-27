@@ -6,9 +6,9 @@ package com.global.shop.model.notification;
  */
 public enum NotificationType {
 
-    PERMISSION_USER,
-    PERMISSION_ADMIN,
-    PERMISSION_MODERATOR,
+    PERMISSION_TO_USER,
+    PERMISSION_TO_ADMIN,
+    PERMISSION_TO_MODERATOR,
     APPROVE_PERMISSION,
     DECLINE_PERMISSION
 

@@ -6,20 +6,17 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 /**
- * Pojo class.
- *
  * @author Aleksandr Sulyma
  * @version 1.0
  */
 @Entity
-@Table(name = "notification")
+@Table(name = "notification_translation")
 @NoArgsConstructor
 @Getter
 @Setter
-public class Notification {
+public class NotificationTranslation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,20 +25,10 @@ public class Notification {
     @Size(max = 256)
     private String title;
 
-    @Column(name = "update_date")
-    private LocalDate updateDate;
-
-    private Long publisherId;
-
-    private Long recipientId;
-
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
     @Enumerated(EnumType.STRING)
     private NotificationEntityType notificationEntityType;
 
-    private Long idOfEntity;
-
-    private Boolean isRead;
 }

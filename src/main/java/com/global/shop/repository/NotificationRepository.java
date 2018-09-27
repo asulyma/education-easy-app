@@ -13,8 +13,6 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    List<Notification> findAll();
-
-    //Notification findByIssuer(String issuer);
+    List<Notification> findAllByRecipientId(Long recipientId);
 
 }

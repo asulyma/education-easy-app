@@ -1,6 +1,7 @@
 package com.global.shop.service;
 
 import com.global.shop.model.user.User;
+import com.global.shop.model.wrapper.UserWrapper;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    List<User> getListOfUsers();
+    List<UserWrapper> getListOfUsers();
 
     User getUserByLogin(String login);
 
