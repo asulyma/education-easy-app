@@ -1,7 +1,6 @@
 package com.global.shop.service.impl;
 
 import com.global.shop.model.notification.Notification;
-import com.global.shop.model.notification.NotificationEntityType;
 import com.global.shop.model.notification.NotificationTranslation;
 import com.global.shop.model.notification.NotificationType;
 import com.global.shop.model.user.User;
@@ -9,6 +8,8 @@ import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.repository.NotificationRepository;
 import com.global.shop.repository.NotificationTranslationRepository;
 import com.global.shop.service.NotificationService;
+import com.global.shop.util.ProjectUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +21,20 @@ import java.util.List;
  * @version 1.0
  */
 @Service
+@Slf4j
 public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final NotificationTranslationRepository translationRepository;
 
+    private final ProjectUtils projectUtils;
+
     @Autowired
     public NotificationServiceImpl(NotificationRepository notificationRepository,
-                                   NotificationTranslationRepository translationRepository) {
+                                   NotificationTranslationRepository translationRepository, ProjectUtils projectUtils) {
         this.notificationRepository = notificationRepository;
         this.translationRepository = translationRepository;
+        this.projectUtils = projectUtils;
     }
 
     @Override
@@ -40,38 +45,46 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void createUserRequestNotification(NotificationWrapper wrapper) {
 
-        wrapper.setNotificationType(NotificationType.PERMISSION_TO_ADMIN);
-        Notification notificationToAdmin = buildNotification(wrapper);
-        Notification notificationToUser = buildNotificationPermissionToUser(wrapper);
+        NotificationTranslation translation;
+        Long adminId = projectUtils.getUserAdminId();
 
+        //to admin
+        translation = translationRepository.findByNotificationEntityTypeAndNotificationType(
+                wrapper.getNotificationEntityType(), wrapper.getNotificationType());
+        wrapper.setTitle(translation.getTitle());
+        wrapper.setNotificationType(NotificationType.PERMISSION_TO_ADMIN);
+        wrapper.setRecipientId(adminId);
+        Notification notificationToAdmin = buildNotification(wrapper);
+
+        //to user
+        translation = translationRepository.findByNotificationEntityTypeAndNotificationType(
+                wrapper.getNotificationEntityType(), wrapper.getNotificationType());
+        wrapper.setTitle(translation.getTitle());
+        wrapper.setNotificationType(NotificationType.PERMISSION_TO_USER);
+        wrapper.setRecipientId(wrapper.getPublisherId());  //creator - is receiver
+        wrapper.setPublisherId(adminId);
+        Notification notificationToUser = buildNotification(wrapper);
+
+        //persist
         notificationRepository.save(notificationToAdmin);
         notificationRepository.save(notificationToUser);
         notificationRepository.flush();
+        log.info("Notification for admin: " + notificationToAdmin.getRecipientId() + " and for user: "
+                + notificationToUser.getRecipientId() + " was created.");
     }
 
     @Override
     public void createUserResponseNotification(NotificationWrapper wrapper) {
 
-        NotificationType type = wrapper.getNotificationType();
-        NotificationEntityType entityType = wrapper.getNotificationEntityType();
+        //to User
+        NotificationTranslation translation = translationRepository
+                .findByNotificationEntityTypeAndNotificationType(wrapper.getNotificationEntityType(), wrapper.getNotificationType());
+        wrapper.setTitle(translation.getTitle());
+        Notification notificationToUser = buildNotification(wrapper);
 
-        if (type.equals(NotificationType.APPROVE_PERMISSION)
-                && entityType.equals(NotificationEntityType.COURSE)) {
-
-            NotificationTranslation translation = translationRepository
-                    .findByNotificationEntityTypeAndNotificationType(entityType, type);
-
-            Notification toUser = buildNotification(wrapper);
-
-
-        } else if(type.equals(NotificationType.DECLINE_PERMISSION)
-                && entityType.equals(NotificationEntityType.COURSE)){
-
-            NotificationTranslation translation = translationRepository
-                    .findByNotificationEntityTypeAndNotificationType(entityType, type);
-
-        }
-
+        //persist
+        notificationRepository.saveAndFlush(notificationToUser);
+        log.info("Notification for user: " + wrapper.getRecipientId() + " was created.");
     }
 
     private Notification buildNotification(NotificationWrapper wrapper) {
@@ -82,22 +95,8 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setNotificationEntityType(wrapper.getNotificationEntityType());
         notification.setPublisherId(wrapper.getPublisherId());
         notification.setRecipientId(wrapper.getRecipientId());
+        notification.setTitle(wrapper.getTitle());
         notification.setUpdateDate(LocalDate.now());
-        notification.setIsRead(Boolean.FALSE);
-        return notification;
-    }
-
-    private Notification buildNotificationPermissionToUser(NotificationWrapper wrapper) {
-
-        NotificationTranslation translation = translationRepository
-                .findByNotificationEntityTypeAndNotificationType(NotificationEntityType.COURSE, NotificationType.PERMISSION_TO_USER);
-
-        Notification notification = new Notification();
-        notification.setRecipientId(wrapper.getPublisherId());  //creator - is receiver
-        notification.setUpdateDate(LocalDate.now());
-        notification.setTitle(translation.getTitle());
-        notification.setNotificationType(translation.getNotificationType());
-        notification.setNotificationEntityType(translation.getNotificationEntityType());
         notification.setIsRead(Boolean.FALSE);
         return notification;
     }

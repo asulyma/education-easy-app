@@ -16,6 +16,7 @@ public class NotificationWrapper {
     private Long idOfEntity;
     private Long publisherId;
     private Long recipientId;
+    private String title;
     private NotificationType notificationType;
     private NotificationEntityType notificationEntityType;
 
