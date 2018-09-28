@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Aleksandr Sulyma
@@ -41,6 +40,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.saveAndFlush(user);
     }
 
+    @Override
+    public User getUserByRole(String role) {
+        return userRepository.findByRolesContaining(role);
+    }
 
     private List<UserWrapper> buildUserWrappers(List<User> users) {
 
@@ -55,6 +58,7 @@ public class UserServiceImpl implements UserService {
             wrapper.setRegistrationDate(user.getRegistrationDate());
             wrapper.setActive(user.isActive());
             wrapper.setLocked(user.isLocked());
+            wrapper.setRoles(user.getRoles());
             wrappers.add(wrapper);
         });
         return wrappers;

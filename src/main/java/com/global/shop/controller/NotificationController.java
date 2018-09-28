@@ -39,7 +39,7 @@ public class NotificationController {
     @GetMapping(path = "/")
     @Secured({"ROLE_user"})
     public List<Notification> getNotifications(Principal principal) {
-        User user = projectUtils.getUser(principal);
+        User user = projectUtils.getUserInfo(principal);
         return notificationService.getAllNotifications(user);
     }
 

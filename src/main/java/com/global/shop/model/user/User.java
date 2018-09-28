@@ -52,6 +52,8 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Rank rank;
 
+    private String roles;
+
     private LocalDate birthDate;
 
     @Size(max = 6)

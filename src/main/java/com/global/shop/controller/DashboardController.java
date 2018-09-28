@@ -25,7 +25,7 @@ public class DashboardController {
     @GetMapping
     public String index(Principal principal) {
 
-        User user = projectUtils.getUser(principal);
+        User user = projectUtils.getUserInfo(principal);
 
         return "external";
     }

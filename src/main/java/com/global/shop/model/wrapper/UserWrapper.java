@@ -23,4 +23,5 @@ public class UserWrapper {
     private boolean isLocked;
     private Rank rank;
     private LocalDate registrationDate;
+    private String roles;
 }
