@@ -1,5 +1,7 @@
 package com.global.shop.controller;
 
+import com.global.shop.controller.response.BaseController;
+import com.global.shop.controller.response.BaseResponse;
 import com.global.shop.model.notification.Notification;
 import com.global.shop.model.user.User;
 import com.global.shop.model.wrapper.NotificationWrapper;
@@ -21,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/notifications")
-public class NotificationController {
+public class NotificationController extends BaseController {
 
     private final NotificationService notificationService;
     private final CourseService courseService;
@@ -36,20 +38,18 @@ public class NotificationController {
         this.projectUtils = projectUtils;
     }
 
-    @GetMapping(path = "/")
+    @GetMapping
     @Secured({"ROLE_user"})
-    public List<Notification> getNotifications(Principal principal) {
+    public BaseResponse<List<Notification>> getNotifications(Principal principal) {
         User user = projectUtils.getUserInfo(principal);
-        return notificationService.getAllNotifications(user);
+        return new BaseResponse<>(notificationService.getAllNotifications(user));
     }
 
     @PostMapping(path = "/decision")
     @Secured({"ROLE_admin"})
-    public ResponseEntity decisionOfNotification(@RequestBody NotificationWrapper notificationWrapper) {
-
+    public BaseResponse decisionOfNotification(@RequestBody NotificationWrapper notificationWrapper) {
         courseService.decisionOfNotification(notificationWrapper);
-
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new BaseResponse<>();
     }
 
 }

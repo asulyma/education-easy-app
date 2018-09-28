@@ -1,5 +1,7 @@
 package com.global.shop.controller;
 
+import com.global.shop.controller.response.BaseController;
+import com.global.shop.controller.response.BaseResponse;
 import com.global.shop.model.user.User;
 import com.global.shop.model.wrapper.UserWrapper;
 import com.global.shop.service.UserService;
@@ -15,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController extends BaseController {
 
     private final UserService userService;
 
@@ -27,15 +29,15 @@ public class UserController {
 
     @GetMapping
     @Secured({"ROLE_admin"})
-    public List<UserWrapper> getAllUsers() {
-        return userService.getListOfUsers();
+    public BaseResponse<List<UserWrapper>> getAllUsers() {
+        return new BaseResponse<>(userService.getListOfUsers());
     }
 
 
     @GetMapping(path = "/{login}")
     @Secured({"ROLE_admin"})
-    public User getUserByLogin(@PathVariable(name = "login") String login) {
-        return userService.getUserByLogin(login);
+    public BaseResponse<User> getUserByLogin(@PathVariable(name = "login") String login) {
+        return new BaseResponse<>(userService.getUserByLogin(login));
     }
 
 

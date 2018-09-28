@@ -1,5 +1,7 @@
 package com.global.shop.controller;
 
+import com.global.shop.controller.response.BaseController;
+import com.global.shop.controller.response.BaseResponse;
 import com.global.shop.model.learning.Section;
 import com.global.shop.model.wrapper.SectionWrapper;
 import com.global.shop.service.SectionService;
@@ -18,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/{course}/sections")
-public class SectionController {
+public class SectionController extends BaseController {
 
     private final SectionService sectionService;
 
@@ -30,15 +32,15 @@ public class SectionController {
 
     @GetMapping
     @Secured("ROLE_user")
-    public List<SectionWrapper> getListOfSectionsByCourseName(@PathVariable(name = "course") String name) {
-        return sectionService.getSectionsByCourseName(name);
+    public BaseResponse<List<SectionWrapper>> getListOfSectionsByCourseName(@PathVariable(name = "course") String name) {
+        return new BaseResponse<>(sectionService.getSectionsByCourseName(name));
     }
 
     @GetMapping(path = "/{sectionId}")
     @Secured("ROLE_user")
-    public Section getSectionByCourseAndId(@PathVariable(name = "course") String nameOfCourse,
-                                  @PathVariable(name = "sectionId") Long id) {
+    public BaseResponse<Section> getSectionByCourseAndId(@PathVariable(name = "course") String nameOfCourse,
+                                                         @PathVariable(name = "sectionId") Long id) {
 
-        return sectionService.getSectionByCourseAndId(nameOfCourse, id);
+        return new BaseResponse<>(sectionService.getSectionByCourseAndId(nameOfCourse, id));
     }
 }

@@ -1,5 +1,7 @@
 package com.global.shop.controller;
 
+import com.global.shop.controller.response.BaseController;
+import com.global.shop.controller.response.BaseResponse;
 import com.global.shop.model.learning.Lesson;
 import com.global.shop.model.wrapper.LessonWrapper;
 import com.global.shop.service.LessonService;
@@ -18,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/{course}/{sectionId}/lessons")
-public class LessonController {
+public class LessonController extends BaseController {
 
     private final LessonService lessonService;
 
@@ -30,19 +32,19 @@ public class LessonController {
 
     @GetMapping
     @Secured("ROLE_user")
-    public List<LessonWrapper> getLessonsByCourseNameAndId(@PathVariable(name = "course") String nameOfCourse,
-                                                           @PathVariable(name = "sectionId") Long sectionId) {
+    public BaseResponse<List<LessonWrapper>> getLessonsByCourseNameAndId(@PathVariable(name = "course") String nameOfCourse,
+                                                                         @PathVariable(name = "sectionId") Long sectionId) {
 
-        return lessonService.getLessonsByCourseAndId(nameOfCourse, sectionId);
+        return new BaseResponse<>(lessonService.getLessonsByCourseAndId(nameOfCourse, sectionId));
     }
 
 
     @GetMapping("/{id}")
     @Secured("ROLE_user")
-    public Lesson getLessonById(@PathVariable(name = "course") String nameOfCourse,
-                                @PathVariable(name = "sectionId") Long sectionId,
-                                @PathVariable(name = "id") Long id) {
+    public BaseResponse<Lesson> getLessonById(@PathVariable(name = "course") String nameOfCourse,
+                                              @PathVariable(name = "sectionId") Long sectionId,
+                                              @PathVariable(name = "id") Long id) {
 
-        return lessonService.getLessonById(nameOfCourse, sectionId, id);
+        return new BaseResponse<>(lessonService.getLessonById(nameOfCourse, sectionId, id));
     }
 }
