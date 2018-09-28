@@ -1,6 +1,7 @@
 package com.global.shop.util;
 
 
+import com.global.shop.exception.NotFoundRuntimeException;
 import com.global.shop.model.user.Role;
 import com.global.shop.model.user.User;
 import com.global.shop.service.UserService;
@@ -70,10 +71,9 @@ public class ProjectUtils {
         return userService.createUser(newUser);
     }
 
-    //TODO refactoring
     public Long getUserAdminId() {
         User admin = Optional.ofNullable(userService.getUserByRole(Role.ADMIN.getDescription()))
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new NotFoundRuntimeException("No available user with role:" + Role.ADMIN.getDescription()));
         return admin.getId();
     }
 

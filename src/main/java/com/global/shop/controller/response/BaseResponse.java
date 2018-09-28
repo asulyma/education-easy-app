@@ -30,6 +30,7 @@ public class BaseResponse<T> {
 
         BaseResponse response = new BaseResponse();
         response.setResponseCode(responseCode);
+        response.setErrorMessage(e.getMessage());
 
         return response;
     }

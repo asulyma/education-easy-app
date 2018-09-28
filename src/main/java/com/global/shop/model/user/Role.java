@@ -10,7 +10,7 @@ public enum Role {
     MODERATOR("moderator"),
     USER("user");
 
-    public final String description;
+    private final String description;
 
     Role(String description) {
         this.description = description;

@@ -1,13 +1,12 @@
 package com.global.shop.service.impl;
 
-import com.global.shop.model.notification.Notification;
+import com.global.shop.exception.NotFoundRuntimeException;
 import com.global.shop.model.notification.NotificationType;
 import com.global.shop.model.user.User;
 import com.global.shop.model.learning.Course;
 import com.global.shop.model.wrapper.CourseWrapper;
 import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.repository.CourseRepository;
-import com.global.shop.repository.NotificationRepository;
 import com.global.shop.repository.UserRepository;
 import com.global.shop.service.CourseService;
 import com.global.shop.service.NotificationService;
@@ -51,7 +50,8 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course getCourseById(Long id) {
         Optional<Course> optionalCourse = courseRepository.findById(id);
-        return optionalCourse.orElse(null);
+        //TODO filter by allowCourses
+        return optionalCourse.orElseThrow(() -> new NotFoundRuntimeException("Course with id: " + id + " does not exist!"));
     }
 
     @Override
@@ -66,14 +66,9 @@ public class CourseServiceImpl implements CourseService {
             Optional<Course> optionalCourse = courseRepository.findById(wrapper.getIdOfEntity());
             Optional<User> optionalUser = userRepository.findById(wrapper.getRecipientId());
 
-            Course course = optionalCourse.orElse(null);
-            User user = optionalUser.orElse(null);
+            Course course = optionalCourse.orElseThrow(() -> new NotFoundRuntimeException("No available course: " + wrapper.getIdOfEntity()));
+            User user = optionalUser.orElseThrow(() -> new NotFoundRuntimeException("No available user:" + wrapper.getRecipientId()));
 
-            if (course == null || user == null) {
-                log.info("Course with id: " + wrapper.getIdOfEntity() + " and user with id: "
-                        + wrapper.getRecipientId() + " does not exists.");
-                return;
-            }
             user.getAllowedCourses().add(course);
             userRepository.saveAndFlush(user);
         }

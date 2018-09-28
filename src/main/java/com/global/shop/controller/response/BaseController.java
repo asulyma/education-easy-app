@@ -1,5 +1,6 @@
 package com.global.shop.controller.response;
 
+import com.global.shop.exception.NotFoundRuntimeException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,9 +17,8 @@ public class BaseController {
         return BaseResponse.buildErrorResponse(404, e);
     }
 
-    //TODO refactoring
-    @ExceptionHandler(RuntimeException.class)
-    public BaseResponse handleRuntimeException(RuntimeException e){
+    @ExceptionHandler(NotFoundRuntimeException.class)
+    public BaseResponse handleRuntimeException(NotFoundRuntimeException e){
         return BaseResponse.buildErrorResponse(500, e);
     }
 }
