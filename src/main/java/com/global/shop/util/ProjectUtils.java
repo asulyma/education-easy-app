@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 /**
  * The class for the use of frequent logic, which will work in several classes.
@@ -71,12 +72,8 @@ public class ProjectUtils {
 
     //TODO refactoring
     public Long getUserAdminId() {
-        User admin = userService.getUserByRole(Role.ADMIN.getDescription());
-        if (admin == null) {
-            log.info("User with role: " + Role.ADMIN.getDescription() + " does not exist.");
-            return null;
-        }
-
+        User admin = Optional.ofNullable(userService.getUserByRole(Role.ADMIN.getDescription()))
+                .orElseThrow(RuntimeException::new);
         return admin.getId();
     }
 

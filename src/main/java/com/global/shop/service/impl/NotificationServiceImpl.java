@@ -49,27 +49,27 @@ public class NotificationServiceImpl implements NotificationService {
         Long adminId = projectUtils.getUserAdminId();
 
         //to admin
+        wrapper.setNotificationType(NotificationType.PERMISSION_TO_ADMIN);
+        wrapper.setRecipientId(adminId);
         translation = translationRepository.findByNotificationEntityTypeAndNotificationType(
                 wrapper.getNotificationEntityType(), wrapper.getNotificationType());
         wrapper.setTitle(translation.getTitle());
-        wrapper.setNotificationType(NotificationType.PERMISSION_TO_ADMIN);
-        wrapper.setRecipientId(adminId);
         Notification notificationToAdmin = buildNotification(wrapper);
 
         //to user
-        translation = translationRepository.findByNotificationEntityTypeAndNotificationType(
-                wrapper.getNotificationEntityType(), wrapper.getNotificationType());
-        wrapper.setTitle(translation.getTitle());
         wrapper.setNotificationType(NotificationType.PERMISSION_TO_USER);
         wrapper.setRecipientId(wrapper.getPublisherId());  //creator - is receiver
         wrapper.setPublisherId(adminId);
+        translation = translationRepository.findByNotificationEntityTypeAndNotificationType(
+                wrapper.getNotificationEntityType(), wrapper.getNotificationType());
+        wrapper.setTitle(translation.getTitle());
         Notification notificationToUser = buildNotification(wrapper);
 
         //persist
         notificationRepository.save(notificationToAdmin);
         notificationRepository.save(notificationToUser);
         notificationRepository.flush();
-        log.info("Notification for admin: " + notificationToAdmin.getRecipientId() + " and for user: "
+        log.info("Notification for adminId: " + notificationToAdmin.getRecipientId() + " and for userId: "
                 + notificationToUser.getRecipientId() + " was created.");
     }
 
