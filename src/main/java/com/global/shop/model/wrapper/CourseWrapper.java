@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 public class CourseWrapper {
 
-    private long id;
+    private Long id;
     private String name;
     private String title;
     private BigDecimal cost;

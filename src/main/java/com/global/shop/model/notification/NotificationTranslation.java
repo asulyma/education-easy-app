@@ -20,7 +20,7 @@ public class NotificationTranslation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Size(max = 256)
     private String title;

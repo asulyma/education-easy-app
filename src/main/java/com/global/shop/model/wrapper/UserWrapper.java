@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Setter
 public class UserWrapper {
 
-    private long id;
+    private Long id;
     private String login;
     private String givenName;
     private String familyName;

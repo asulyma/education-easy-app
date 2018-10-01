@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class SectionWrapper {
 
-    private long id;
+    private Long id;
     private String title;
     private List<Long> allowedUsers;
 }

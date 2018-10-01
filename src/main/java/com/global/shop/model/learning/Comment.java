@@ -10,6 +10,8 @@ import java.time.LocalDate;
 
 /**
  * @version 1.0
+ *
+ * @author Aleksandr Sulyma
  */
 @Entity
 @Table(name = "comment")
