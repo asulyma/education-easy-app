@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,56 +39,71 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> getAllNotifications(User user) {
-        return notificationRepository.findAllByRecipientId(user.getId());
+    public List<NotificationWrapper> getAllNotifications(User user) {
+        List<Notification> notifications = notificationRepository.findAllByRecipientId(user.getId());
+        return buildNotificationWrapper(notifications);
+    }
+
+    @Override
+    public Notification getNotificationById(User user, Long id) {
+        Notification notification = notificationRepository.findByRecipientIdAndId(user.getId(), id);
+        notification.setIsRead(Boolean.TRUE);
+        notificationRepository.saveAndFlush(notification);
+        return notification;
     }
 
     @Override
     public void createUserRequestNotification(NotificationWrapper wrapper) {
 
-        NotificationTranslation translation;
         Long adminId = projectUtils.getUserAdminId();
 
-        //to admin
-        wrapper.setNotificationType(NotificationType.PERMISSION_TO_ADMIN);
-        wrapper.setRecipientId(adminId);
-        translation = translationRepository.findByNotificationEntityTypeAndNotificationType(
-                wrapper.getNotificationEntityType(), wrapper.getNotificationType());
-        wrapper.setTitle(translation.getTitle());
-        Notification notificationToAdmin = buildNotification(wrapper);
-
-        //to user
-        wrapper.setNotificationType(NotificationType.PERMISSION_TO_USER);
-        wrapper.setRecipientId(wrapper.getPublisherId());  //creator - is receiver
-        wrapper.setPublisherId(adminId);
-        translation = translationRepository.findByNotificationEntityTypeAndNotificationType(
-                wrapper.getNotificationEntityType(), wrapper.getNotificationType());
-        wrapper.setTitle(translation.getTitle());
-        Notification notificationToUser = buildNotification(wrapper);
+        Notification toAdmin = createInfoNotificationToAdmin(wrapper, adminId);
+        Notification toUser = createInfoNotificationToUser(wrapper, adminId);
 
         //persist
-        notificationRepository.save(notificationToAdmin);
-        notificationRepository.save(notificationToUser);
+        notificationRepository.save(toAdmin);
+        notificationRepository.save(toUser);
         notificationRepository.flush();
-        log.info("Notification for adminId: " + notificationToAdmin.getRecipientId() + " and for userId: "
-                + notificationToUser.getRecipientId() + " was created.");
+        log.info("Notification for adminId: " + toAdmin.getRecipientId() + " and for userId: "
+                + toUser.getRecipientId() + " was created.");
     }
 
     @Override
-    public void createUserResponseNotification(NotificationWrapper wrapper) {
+    public void createInfoUserNotification(NotificationWrapper wrapper) {
 
-        //to User
-        NotificationTranslation translation = translationRepository
-                .findByNotificationEntityTypeAndNotificationType(wrapper.getNotificationEntityType(), wrapper.getNotificationType());
-        wrapper.setTitle(translation.getTitle());
-        Notification notificationToUser = buildNotification(wrapper);
+        Long adminId = projectUtils.getUserAdminId();
 
-        //persist
-        notificationRepository.saveAndFlush(notificationToUser);
+        Notification toAdmin = createInfoNotificationToAdmin(wrapper, adminId);
+        notificationRepository.saveAndFlush(toAdmin);
+        log.info("Notification for adminId: " + toAdmin.getRecipientId() + " was created.");
+    }
+
+    @Override
+    public void createResponseNotificationToUser(NotificationWrapper wrapper) {
+
+        Notification toUser = buildNotification(wrapper);
+        notificationRepository.saveAndFlush(toUser);
         log.info("Notification for user: " + wrapper.getRecipientId() + " was created.");
     }
 
+    private Notification createInfoNotificationToAdmin(NotificationWrapper wrapper, Long adminId) {
+
+        wrapper.setRecipientId(adminId);
+        return buildNotification(wrapper);
+    }
+
+    private Notification createInfoNotificationToUser(NotificationWrapper wrapper, Long adminId) {
+
+        wrapper.setNotificationType(NotificationType.INFO_TO_USER);
+        wrapper.setRecipientId(wrapper.getPublisherId());  //creator - is receiver
+        wrapper.setPublisherId(adminId);
+        return buildNotification(wrapper);
+    }
+
     private Notification buildNotification(NotificationWrapper wrapper) {
+
+        NotificationTranslation translation = translationRepository.findByNotificationEntityTypeAndNotificationType(
+                wrapper.getNotificationEntityType(), wrapper.getNotificationType());
 
         Notification notification = new Notification();
         notification.setIdOfEntity(wrapper.getIdOfEntity());
@@ -95,9 +111,27 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setNotificationEntityType(wrapper.getNotificationEntityType());
         notification.setPublisherId(wrapper.getPublisherId());
         notification.setRecipientId(wrapper.getRecipientId());
-        notification.setTitle(wrapper.getTitle());
+        notification.setTitle(translation.getTitle());
         notification.setUpdateDate(LocalDate.now());
         notification.setIsRead(Boolean.FALSE);
         return notification;
+    }
+
+    private List<NotificationWrapper> buildNotificationWrapper(List<Notification> notifications) {
+
+        List<NotificationWrapper> wrappers = new ArrayList<>();
+        notifications.forEach(notification -> {
+            NotificationWrapper wrapper = new NotificationWrapper();
+            wrapper.setId(notification.getId());
+            wrapper.setPublisherId(notification.getPublisherId());
+            wrapper.setRecipientId(notification.getRecipientId());
+            wrapper.setNotificationType(notification.getNotificationType());
+            wrapper.setNotificationEntityType(notification.getNotificationEntityType());
+            wrapper.setIdOfEntity(notification.getIdOfEntity());
+            wrapper.setIsRead(notification.getIsRead());
+            wrappers.add(wrapper);
+        });
+        return wrappers;
+
     }
 }

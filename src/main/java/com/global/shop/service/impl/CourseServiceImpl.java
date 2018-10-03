@@ -1,5 +1,6 @@
 package com.global.shop.service.impl;
 
+import com.global.shop.exception.NotAllowedRuntimeException;
 import com.global.shop.exception.NotFoundRuntimeException;
 import com.global.shop.model.notification.NotificationType;
 import com.global.shop.model.user.User;
@@ -48,17 +49,22 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course getCourseById(Long id) {
+    public Course getCourseById(Long id, User user) {
         Optional<Course> optionalCourse = courseRepository.findById(id);
-        //TODO filter by allowCourses
-        return optionalCourse.orElseThrow(() -> new NotFoundRuntimeException("Course with id: " + id + " does not exist!"));
+        Course course = optionalCourse.orElseThrow(() -> new NotFoundRuntimeException("Course with id: " + id + " does not exist!"));
+
+        if (course.getAllowedUsers().contains(user)) {
+            return course;
+        } else {
+            throw new NotAllowedRuntimeException("Course: " + course.getName() + " are not allowed for user: " + user.getLogin());
+        }
     }
 
     @Override
     public void decisionOfNotification(NotificationWrapper wrapper) {
 
         //send notification (approve or decline)
-        notificationService.createUserResponseNotification(wrapper);
+        notificationService.createResponseNotificationToUser(wrapper);
 
         //change Java logic
         if (wrapper.getNotificationType().equals(NotificationType.APPROVE_PERMISSION)) {
@@ -71,6 +77,7 @@ public class CourseServiceImpl implements CourseService {
 
             user.getAllowedCourses().add(course);
             userRepository.saveAndFlush(user);
+            log.info("Given access for user: " + user.getLogin() + " to course with id: " + course.getId());
         }
     }
 

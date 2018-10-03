@@ -1,6 +1,7 @@
 package com.global.shop.service;
 
 import com.global.shop.model.learning.Section;
+import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.model.wrapper.SectionWrapper;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface SectionService {
 
     Section getSectionByCourseAndId(String name, Long id);
 
+    void startSection(NotificationWrapper wrapper);
 }

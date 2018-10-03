@@ -12,10 +12,14 @@ import java.util.List;
  */
 public interface NotificationService {
 
-    List<Notification> getAllNotifications(User user);
+    List<NotificationWrapper> getAllNotifications(User user);
+
+    Notification getNotificationById(User user, Long id);
 
     void createUserRequestNotification(NotificationWrapper wrapper);
 
-    void createUserResponseNotification(NotificationWrapper wrapper);
+    void createResponseNotificationToUser(NotificationWrapper wrapper);
+
+    void createInfoUserNotification(NotificationWrapper wrapper);
 
 }
