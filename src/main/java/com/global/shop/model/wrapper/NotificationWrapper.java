@@ -13,11 +13,12 @@ import lombok.Setter;
 @Setter
 public class NotificationWrapper {
 
+    private Long id;
     private Long idOfEntity;
     private Long publisherId;
     private Long recipientId;
-    private String title;
     private NotificationType notificationType;
     private NotificationEntityType notificationEntityType;
+    private Boolean isRead;
 
 }
