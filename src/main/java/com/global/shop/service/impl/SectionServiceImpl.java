@@ -2,6 +2,7 @@ package com.global.shop.service.impl;
 
 import com.global.shop.exception.NotFoundRuntimeException;
 import com.global.shop.model.learning.Section;
+import com.global.shop.model.notification.Notification;
 import com.global.shop.model.user.User;
 import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.model.wrapper.SectionWrapper;
@@ -41,13 +42,13 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public void startSection(NotificationWrapper wrapper) {
+    public void startSection(Notification notification) {
 
-        Optional<Section> optionalSection = sectionRepository.findById(wrapper.getIdOfEntity());
-        Optional<User> optionalUser = userRepository.findById(wrapper.getRecipientId());
+        Optional<Section> optionalSection = sectionRepository.findById(notification.getIdOfEntity());
+        Optional<User> optionalUser = userRepository.findById(notification.getRecipientId());
 
-        Section section = optionalSection.orElseThrow(() -> new NotFoundRuntimeException("No available section: " + wrapper.getIdOfEntity()));
-        User user = optionalUser.orElseThrow(() -> new NotFoundRuntimeException("No available user: " + wrapper.getRecipientId()));
+        Section section = optionalSection.orElseThrow(() -> new NotFoundRuntimeException("No available section: " + notification.getIdOfEntity()));
+        User user = optionalUser.orElseThrow(() -> new NotFoundRuntimeException("No available user: " + notification.getRecipientId()));
 
         user.getAllowedSections().add(section);
         userRepository.saveAndFlush(user);

@@ -2,6 +2,7 @@ package com.global.shop.controller;
 
 import com.global.shop.controller.response.BaseController;
 import com.global.shop.controller.response.BaseResponse;
+import com.global.shop.mapper.NotificationMapper;
 import com.global.shop.model.learning.Section;
 import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.model.wrapper.SectionWrapper;
@@ -24,10 +25,13 @@ public class SectionController extends BaseController {
     private final SectionService sectionService;
     private final NotificationService notificationService;
 
+    private final NotificationMapper mapper;
+
     @Autowired
-    public SectionController(SectionService sectionService, NotificationService notificationService) {
+    public SectionController(SectionService sectionService, NotificationService notificationService, NotificationMapper mapper) {
         this.sectionService = sectionService;
         this.notificationService = notificationService;
+        this.mapper = mapper;
     }
 
 
@@ -48,8 +52,8 @@ public class SectionController extends BaseController {
     @PostMapping("/startSection")
     @Secured("ROLE_user")
     public BaseResponse startSection(@RequestBody NotificationWrapper wrapper) {
-        notificationService.createInfoUserNotification(wrapper);
-        sectionService.startSection(wrapper);
+        notificationService.createNotificationToAdmin(mapper.wrapperToNotification(wrapper));
+        sectionService.startSection(mapper.wrapperToNotification(wrapper));
         return new BaseResponse();
     }
 }

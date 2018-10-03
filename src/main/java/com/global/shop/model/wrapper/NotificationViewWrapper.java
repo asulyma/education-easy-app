@@ -5,26 +5,19 @@ import com.global.shop.model.notification.NotificationType;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 /**
- *
- * DTO for communicating between front-end and back-end.
- * Front send it to back for creating notification.
+ * DTO for displaying single notification.
  *
  * @author Aleksandr Sulyma
  * @version 1.0
  */
 @Getter
 @Setter
-public class NotificationWrapper {
+public class NotificationViewWrapper {
 
+    private Long id;
     private Long idOfEntity;
-    private Long publisherId;
-    private Long recipientId;
     private NotificationType notificationType;
     private NotificationEntityType notificationEntityType;
     private Boolean isRead;
-    private LocalDate updateDate;
-
 }

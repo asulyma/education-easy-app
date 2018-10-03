@@ -1,6 +1,7 @@
 package com.global.shop.service;
 
 import com.global.shop.model.learning.Section;
+import com.global.shop.model.notification.Notification;
 import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.model.wrapper.SectionWrapper;
 
@@ -16,5 +17,5 @@ public interface SectionService {
 
     Section getSectionByCourseAndId(String name, Long id);
 
-    void startSection(NotificationWrapper wrapper);
+    void startSection(Notification wrapper);
 }

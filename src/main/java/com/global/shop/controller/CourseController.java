@@ -2,6 +2,7 @@ package com.global.shop.controller;
 
 import com.global.shop.controller.response.BaseController;
 import com.global.shop.controller.response.BaseResponse;
+import com.global.shop.mapper.NotificationMapper;
 import com.global.shop.model.learning.Course;
 import com.global.shop.model.user.User;
 import com.global.shop.model.wrapper.CourseWrapper;
@@ -26,14 +27,17 @@ public class CourseController extends BaseController {
 
     private final CourseService courseService;
     private final NotificationService notificationService;
+
     private final ProjectUtils projectUtils;
+    private final NotificationMapper mapper;
 
     @Autowired
     public CourseController(CourseService courseService, NotificationService notificationService,
-                            ProjectUtils projectUtils) {
+                            ProjectUtils projectUtils, NotificationMapper mapper) {
         this.courseService = courseService;
         this.notificationService = notificationService;
         this.projectUtils = projectUtils;
+        this.mapper = mapper;
     }
 
     @GetMapping
@@ -54,7 +58,7 @@ public class CourseController extends BaseController {
     @PostMapping(path = "/allowCourse")
     @Secured("ROLE_user")
     public BaseResponse sendPermissionRequestOnCourse(@RequestBody NotificationWrapper wrapper) {
-        notificationService.createUserRequestNotification(wrapper);
+        notificationService.requestToAllowCourse(wrapper);
         return new BaseResponse();
     }
 

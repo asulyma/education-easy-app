@@ -2,11 +2,11 @@ package com.global.shop.service.impl;
 
 import com.global.shop.exception.NotAllowedRuntimeException;
 import com.global.shop.exception.NotFoundRuntimeException;
+import com.global.shop.model.notification.Notification;
 import com.global.shop.model.notification.NotificationType;
 import com.global.shop.model.user.User;
 import com.global.shop.model.learning.Course;
 import com.global.shop.model.wrapper.CourseWrapper;
-import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.repository.CourseRepository;
 import com.global.shop.repository.UserRepository;
 import com.global.shop.service.CourseService;
@@ -61,19 +61,19 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void decisionOfNotification(NotificationWrapper wrapper) {
+    public void decisionOfNotification(Notification notification) {
 
         //send notification (approve or decline)
-        notificationService.createResponseNotificationToUser(wrapper);
+        notificationService.createNotificationToUser(notification);
 
         //change Java logic
-        if (wrapper.getNotificationType().equals(NotificationType.APPROVE_PERMISSION)) {
+        if (notification.getNotificationType().equals(NotificationType.APPROVE_PERMISSION)) {
 
-            Optional<Course> optionalCourse = courseRepository.findById(wrapper.getIdOfEntity());
-            Optional<User> optionalUser = userRepository.findById(wrapper.getRecipientId());
+            Optional<Course> optionalCourse = courseRepository.findById(notification.getIdOfEntity());
+            Optional<User> optionalUser = userRepository.findById(notification.getRecipientId());
 
-            Course course = optionalCourse.orElseThrow(() -> new NotFoundRuntimeException("No available course: " + wrapper.getIdOfEntity()));
-            User user = optionalUser.orElseThrow(() -> new NotFoundRuntimeException("No available user:" + wrapper.getRecipientId()));
+            Course course = optionalCourse.orElseThrow(() -> new NotFoundRuntimeException("No available course: " + notification.getIdOfEntity()));
+            User user = optionalUser.orElseThrow(() -> new NotFoundRuntimeException("No available user:" + notification.getRecipientId()));
 
             user.getAllowedCourses().add(course);
             userRepository.saveAndFlush(user);
