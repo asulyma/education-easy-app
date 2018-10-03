@@ -40,9 +40,17 @@ public class NotificationController extends BaseController {
 
     @GetMapping
     @Secured({"ROLE_user"})
-    public BaseResponse<List<Notification>> getNotifications(Principal principal) {
+    public BaseResponse<List<NotificationWrapper>> getNotifications(Principal principal) {
         User user = projectUtils.getUserInfo(principal);
         return new BaseResponse<>(notificationService.getAllNotifications(user));
+    }
+
+    @GetMapping("/{id}")
+    @Secured({"ROLE_user"})
+    public BaseResponse<Notification> getNotificationById(Principal principal,
+                                                          @PathVariable("id") Long id) {
+        User user = projectUtils.getUserInfo(principal);
+        return new BaseResponse<>(notificationService.getNotificationById(user, id));
     }
 
     @PostMapping(path = "/decision")
