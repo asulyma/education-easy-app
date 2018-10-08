@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author Aleksandr Sulyma
@@ -11,10 +13,15 @@ import java.math.BigDecimal;
  */
 @Getter
 @Setter
-public class CourseWrapper {
+public class CourseViewWrapper {
 
     private Long id;
     private String name;
     private String title;
+    private String description;
+    private LocalDate beginDate;
+    private LocalDate endDate;
     private BigDecimal cost;
+    private List<Long> allowedUsers;
+
 }
