@@ -1,6 +1,5 @@
 package com.global.shop.model.learning;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.global.shop.model.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,7 +44,6 @@ public class Course {
     private BigDecimal cost;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Section> sections;
 
     @ManyToMany(mappedBy = "allowedCourses")

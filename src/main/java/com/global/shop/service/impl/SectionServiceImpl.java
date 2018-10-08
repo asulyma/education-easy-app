@@ -35,10 +35,8 @@ public class SectionServiceImpl implements SectionService {
 
 
     @Override
-    public List<SectionWrapper> getSectionsByCourseName(String name) {
-        List<Section> sections = sectionRepository.findAllByCourseName(name);
-
-        return buildSectionWrappers(sections);
+    public List<Section> getSectionsByCourseName(String name) {
+        return sectionRepository.findAllByCourseName(name);
     }
 
     @Override
@@ -61,16 +59,4 @@ public class SectionServiceImpl implements SectionService {
         return sectionRepository.findByCourseNameAndId(name, id);
     }
 
-    private List<SectionWrapper> buildSectionWrappers(List<Section> sections) {
-
-        List<SectionWrapper> wrappers = new ArrayList<>();
-        sections.forEach(section -> {
-            SectionWrapper wrapper = new SectionWrapper();
-            wrapper.setId(section.getId());
-            wrapper.setTitle(section.getTitle());
-            wrapper.setAllowedUsers(section.getAllowedUsers().stream().map(User::getId).collect(Collectors.toList()));
-            wrappers.add(wrapper);
-        });
-        return wrappers;
-    }
 }

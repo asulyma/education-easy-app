@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface SectionService {
 
-    List<SectionWrapper> getSectionsByCourseName(String name);
+    List<Section> getSectionsByCourseName(String name);
 
     Section getSectionByCourseAndId(String name, Long id);
 

@@ -3,8 +3,10 @@ package com.global.shop.controller;
 import com.global.shop.controller.response.BaseController;
 import com.global.shop.controller.response.BaseResponse;
 import com.global.shop.mapper.NotificationMapper;
+import com.global.shop.mapper.SectionMapper;
 import com.global.shop.model.learning.Section;
 import com.global.shop.model.wrapper.NotificationWrapper;
+import com.global.shop.model.wrapper.SectionViewWrapper;
 import com.global.shop.model.wrapper.SectionWrapper;
 import com.global.shop.service.NotificationService;
 import com.global.shop.service.SectionService;
@@ -25,35 +27,41 @@ public class SectionController extends BaseController {
     private final SectionService sectionService;
     private final NotificationService notificationService;
 
-    private final NotificationMapper mapper;
+    private final NotificationMapper notificationMapper;
+    private final SectionMapper sectionMapper;
 
     @Autowired
-    public SectionController(SectionService sectionService, NotificationService notificationService, NotificationMapper mapper) {
+    public SectionController(SectionService sectionService,
+                             NotificationService notificationService,
+                             NotificationMapper notificationMapper,
+                             SectionMapper sectionMapper) {
         this.sectionService = sectionService;
         this.notificationService = notificationService;
-        this.mapper = mapper;
+        this.notificationMapper = notificationMapper;
+        this.sectionMapper = sectionMapper;
     }
 
 
     @GetMapping
     @Secured("ROLE_user")
     public BaseResponse<List<SectionWrapper>> getListOfSectionsByCourseName(@PathVariable(name = "course") String name) {
-        return new BaseResponse<>(sectionService.getSectionsByCourseName(name));
+        return new BaseResponse<>(sectionMapper.sectionsToListOfWrapper(sectionService.getSectionsByCourseName(name)));
     }
 
     @GetMapping(path = "/{sectionId}")
     @Secured("ROLE_user")
-    public BaseResponse<Section> getSectionByCourseAndId(@PathVariable(name = "course") String nameOfCourse,
-                                                         @PathVariable(name = "sectionId") Long id) {
+    public BaseResponse<SectionViewWrapper> getSectionByCourseAndId(@PathVariable(name = "course") String nameOfCourse,
+                                                                    @PathVariable(name = "sectionId") Long id) {
 
-        return new BaseResponse<>(sectionService.getSectionByCourseAndId(nameOfCourse, id));
+        return new BaseResponse<>(sectionMapper.sectionToViewWrapper(sectionService.getSectionByCourseAndId(nameOfCourse, id)));
     }
 
     @PostMapping("/startSection")
     @Secured("ROLE_user")
     public BaseResponse startSection(@RequestBody NotificationWrapper wrapper) {
-        notificationService.createNotification(mapper.wrapperToNotification(wrapper));
-        sectionService.startSection(mapper.wrapperToNotification(wrapper));
+        //TODO
+        notificationService.createNotification(notificationMapper.wrapperToNotification(wrapper));
+        sectionService.startSection(notificationMapper.wrapperToNotification(wrapper));
         return new BaseResponse();
     }
 }
