@@ -19,6 +19,7 @@ import java.time.LocalDate;
 @Setter
 public class NotificationWrapper {
 
+    private Long id;
     private Long idOfEntity;
     private Long publisherId;
     private Long recipientId;

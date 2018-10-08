@@ -18,8 +18,6 @@ public interface NotificationService {
 
     void requestToAllowCourse(NotificationWrapper wrapper);
 
-    void createNotificationToUser(Notification notification);
-
-    void createNotificationToAdmin(Notification notification);
+    void createNotification(Notification notification);
 
 }

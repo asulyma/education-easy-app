@@ -3,7 +3,6 @@ package com.global.shop.controller;
 import com.global.shop.controller.response.BaseController;
 import com.global.shop.controller.response.BaseResponse;
 import com.global.shop.mapper.NotificationMapper;
-import com.global.shop.model.notification.Notification;
 import com.global.shop.model.user.User;
 import com.global.shop.model.wrapper.NotificationViewWrapper;
 import com.global.shop.model.wrapper.NotificationWrapper;
@@ -44,17 +43,17 @@ public class NotificationController extends BaseController {
 
     @GetMapping
     @Secured({"ROLE_user"})
-    public BaseResponse<List<NotificationViewWrapper>> getNotifications(Principal principal) {
+    public BaseResponse<List<NotificationWrapper>> getNotifications(Principal principal) {
         User user = projectUtils.getUserInfo(principal);
         return new BaseResponse<>(mapper.notificationsToListOfWrappers(notificationService.getAllNotifications(user)));
     }
 
     @GetMapping("/{id}")
     @Secured({"ROLE_user"})
-    public BaseResponse<Notification> getNotificationById(Principal principal,
-                                                          @PathVariable("id") Long id) {
+    public BaseResponse<NotificationViewWrapper> getNotificationById(Principal principal,
+                                                                     @PathVariable("id") Long id) {
         User user = projectUtils.getUserInfo(principal);
-        return new BaseResponse<>(notificationService.getNotificationById(user, id));
+        return new BaseResponse<>(mapper.notificationToViewWrapper(notificationService.getNotificationById(user, id)));
     }
 
     @PostMapping(path = "/decision")

@@ -6,7 +6,6 @@ import com.global.shop.model.notification.Notification;
 import com.global.shop.model.notification.NotificationType;
 import com.global.shop.model.user.User;
 import com.global.shop.model.learning.Course;
-import com.global.shop.model.wrapper.CourseWrapper;
 import com.global.shop.repository.CourseRepository;
 import com.global.shop.repository.UserRepository;
 import com.global.shop.service.CourseService;
@@ -15,10 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author Aleksandr Sulyma
@@ -61,9 +58,6 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void decisionOfNotification(Notification notification) {
 
-        //send notification (approve or decline)
-        notificationService.createNotificationToUser(notification);
-
         //change Java logic
         if (notification.getNotificationType().equals(NotificationType.APPROVE_PERMISSION)) {
 
@@ -77,5 +71,8 @@ public class CourseServiceImpl implements CourseService {
             userRepository.saveAndFlush(user);
             log.info("Given access for user: " + user.getLogin() + " to course with id: " + course.getId());
         }
+
+        //send notification (approve or decline)
+        notificationService.createNotification(notification);
     }
 }

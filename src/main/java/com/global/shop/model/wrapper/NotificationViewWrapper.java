@@ -5,6 +5,8 @@ import com.global.shop.model.notification.NotificationType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 /**
  * DTO for displaying single notification.
  *
@@ -16,8 +18,13 @@ import lombok.Setter;
 public class NotificationViewWrapper {
 
     private Long id;
-    private Long idOfEntity;
+    private String title;
+    private LocalDate updateDate;
+    private Long publisherId;
+    private Long recipientId;
     private NotificationType notificationType;
     private NotificationEntityType notificationEntityType;
+    private Long idOfEntity;
     private Boolean isRead;
+
 }

@@ -52,7 +52,6 @@ public class ProjectUtils {
 
         User loginUser = userService.getUserByLogin(principal.getName());
         if (loginUser != null) {
-            log.info("User with id: " + loginUser.getId() + " is already exist.");
             return loginUser;
         }
 
@@ -68,7 +67,9 @@ public class ProjectUtils {
         newUser.setLocked(false);
         newUser.setRoles(String.join(", ", token.getRealmAccess().getRoles()));
 
-        return userService.createUser(newUser);
+        User user = userService.createUser(newUser);
+        log.info("User has been created: " + user.getLogin());
+        return user;
     }
 
     public Long getUserAdminId() {

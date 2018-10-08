@@ -52,7 +52,7 @@ public class SectionController extends BaseController {
     @PostMapping("/startSection")
     @Secured("ROLE_user")
     public BaseResponse startSection(@RequestBody NotificationWrapper wrapper) {
-        notificationService.createNotificationToAdmin(mapper.wrapperToNotification(wrapper));
+        notificationService.createNotification(mapper.wrapperToNotification(wrapper));
         sectionService.startSection(mapper.wrapperToNotification(wrapper));
         return new BaseResponse();
     }
