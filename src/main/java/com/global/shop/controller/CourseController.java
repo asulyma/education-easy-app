@@ -45,7 +45,7 @@ public class CourseController extends BaseController {
     @GetMapping
     @Secured("ROLE_user")
     public BaseResponse<List<CourseWrapper>> getListOfCourses() {
-        return new BaseResponse<>(mapper.courseToListOfWrappers(courseService.getListOfCourse()));
+        return new BaseResponse<>(mapper.coursesToListOfWrappers(courseService.getListOfCourse()));
     }
 
 

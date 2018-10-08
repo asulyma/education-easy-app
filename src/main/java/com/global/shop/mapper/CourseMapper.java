@@ -23,6 +23,6 @@ public interface CourseMapper {
 
     CourseWrapper courseToWrapper(Course course);
 
-    List<CourseWrapper> courseToListOfWrappers(List<Course> courses);
+    List<CourseWrapper> coursesToListOfWrappers(List<Course> courses);
 
 }

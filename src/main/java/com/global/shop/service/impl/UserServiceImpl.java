@@ -25,9 +25,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserWrapper> getListOfUsers() {
-        List<User> users = userRepository.findAll();
-        return buildUserWrappers(users);
+    public List<User> getListOfUsers() {
+        return userRepository.findAll();
     }
 
     @Override
@@ -45,22 +44,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByRolesContaining(role);
     }
 
-    private List<UserWrapper> buildUserWrappers(List<User> users) {
-
-        List<UserWrapper> wrappers = new ArrayList<>();
-        users.forEach(user -> {
-            UserWrapper wrapper = new UserWrapper();
-            wrapper.setId(user.getId());
-            wrapper.setLogin(user.getLogin());
-            wrapper.setEmail(user.getEmail());
-            wrapper.setFamilyName(user.getFamilyName());
-            wrapper.setGivenName(user.getGivenName());
-            wrapper.setRegistrationDate(user.getRegistrationDate());
-            wrapper.setActive(user.isActive());
-            wrapper.setLocked(user.isLocked());
-            wrapper.setRoles(user.getRoles());
-            wrappers.add(wrapper);
-        });
-        return wrappers;
-    }
 }

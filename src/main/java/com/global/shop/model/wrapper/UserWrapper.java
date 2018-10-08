@@ -14,10 +14,7 @@ import java.time.LocalDate;
 @Setter
 public class UserWrapper {
 
-    private Long id;
     private String login;
-    private String givenName;
-    private String familyName;
     private String email;
     private boolean isActive;
     private boolean isLocked;

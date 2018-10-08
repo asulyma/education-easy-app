@@ -46,7 +46,7 @@ public class NotificationController extends BaseController {
     @Secured({"ROLE_user"})
     public BaseResponse<List<NotificationViewWrapper>> getNotifications(Principal principal) {
         User user = projectUtils.getUserInfo(principal);
-        return new BaseResponse<>(mapper.notificationToListOfWrappers(notificationService.getAllNotifications(user)));
+        return new BaseResponse<>(mapper.notificationsToListOfWrappers(notificationService.getAllNotifications(user)));
     }
 
     @GetMapping("/{id}")
