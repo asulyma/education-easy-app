@@ -34,7 +34,8 @@ public class NotificationController extends BaseController {
     @Autowired
     public NotificationController(NotificationService notificationService,
                                   CourseService courseService,
-                                  ProjectUtils projectUtils, NotificationMapper mapper) {
+                                  ProjectUtils projectUtils,
+                                  NotificationMapper mapper) {
         this.notificationService = notificationService;
         this.courseService = courseService;
         this.projectUtils = projectUtils;

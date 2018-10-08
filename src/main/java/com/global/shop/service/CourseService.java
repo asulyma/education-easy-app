@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface CourseService {
 
-    List<CourseWrapper> getListOfCourse();
+    List<Course> getListOfCourse();
 
     Course getCourseById(Long id, User user);
 

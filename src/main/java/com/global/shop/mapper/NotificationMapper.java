@@ -15,7 +15,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
 public interface NotificationMapper {
 
-    List<NotificationViewWrapper> notificationToListOfWrappers(List<Notification> notification);
+    List<NotificationViewWrapper> notificationToListOfWrappers(List<Notification> notifications);
 
     Notification wrapperToNotification(NotificationWrapper notification);
 }

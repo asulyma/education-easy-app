@@ -42,10 +42,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseWrapper> getListOfCourse() {
-
-        List<Course> courses = courseRepository.findAll();
-        return buildCourseWrappers(courses);
+    public List<Course> getListOfCourse() {
+        return courseRepository.findAll();
     }
 
     @Override
@@ -79,22 +77,5 @@ public class CourseServiceImpl implements CourseService {
             userRepository.saveAndFlush(user);
             log.info("Given access for user: " + user.getLogin() + " to course with id: " + course.getId());
         }
-    }
-
-
-    private List<CourseWrapper> buildCourseWrappers(List<Course> courses) {
-
-        List<CourseWrapper> wrappers = new ArrayList<>();
-        courses.forEach(course -> {
-            CourseWrapper wrapper = new CourseWrapper();
-            wrapper.setId(course.getId());
-            wrapper.setName(course.getName());
-            wrapper.setTitle(course.getTitle());
-            wrapper.setCost(course.getCost());
-            wrapper.setAllowedUsers(course.getAllowedUsers().stream().map(User::getId).collect(Collectors.toList()));
-            wrappers.add(wrapper);
-        });
-        return wrappers;
-
     }
 }
