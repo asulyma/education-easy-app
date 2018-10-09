@@ -16,9 +16,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
 public interface SectionMapper {
 
-    @Mapping(expression = "java(section.getAllowedUsers()" +
-            ".stream().map(com.global.shop.model.user.User::getId)" +
-            ".collect(java.util.stream.Collectors.toList()))", target = "allowedUsers")
     SectionWrapper sectionToWrapper(Section section);
 
     List<SectionWrapper> sectionsToListOfWrapper(List<Section> sections);

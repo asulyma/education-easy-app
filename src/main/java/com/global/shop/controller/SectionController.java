@@ -2,18 +2,18 @@ package com.global.shop.controller;
 
 import com.global.shop.controller.response.BaseController;
 import com.global.shop.controller.response.BaseResponse;
-import com.global.shop.mapper.NotificationMapper;
 import com.global.shop.mapper.SectionMapper;
-import com.global.shop.model.learning.Section;
-import com.global.shop.model.wrapper.NotificationWrapper;
+import com.global.shop.model.user.User;
 import com.global.shop.model.wrapper.SectionViewWrapper;
 import com.global.shop.model.wrapper.SectionWrapper;
-import com.global.shop.service.NotificationService;
+import com.global.shop.model.wrapper.UserEntityDTO;
 import com.global.shop.service.SectionService;
+import com.global.shop.util.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -25,19 +25,17 @@ import java.util.List;
 public class SectionController extends BaseController {
 
     private final SectionService sectionService;
-    private final NotificationService notificationService;
 
-    private final NotificationMapper notificationMapper;
+    private final ProjectUtils projectUtils;
+
     private final SectionMapper sectionMapper;
 
     @Autowired
     public SectionController(SectionService sectionService,
-                             NotificationService notificationService,
-                             NotificationMapper notificationMapper,
+                             ProjectUtils projectUtils,
                              SectionMapper sectionMapper) {
         this.sectionService = sectionService;
-        this.notificationService = notificationService;
-        this.notificationMapper = notificationMapper;
+        this.projectUtils = projectUtils;
         this.sectionMapper = sectionMapper;
     }
 
@@ -48,20 +46,24 @@ public class SectionController extends BaseController {
         return new BaseResponse<>(sectionMapper.sectionsToListOfWrapper(sectionService.getSectionsByCourseName(name)));
     }
 
+
     @GetMapping(path = "/{sectionId}")
     @Secured("ROLE_user")
-    public BaseResponse<SectionViewWrapper> getSectionByCourseAndId(@PathVariable(name = "course") String nameOfCourse,
+    public BaseResponse<SectionViewWrapper> getSectionByCourseAndId(Principal principal,
+                                                                    @PathVariable(name = "course") String nameOfCourse,
                                                                     @PathVariable(name = "sectionId") Long id) {
 
-        return new BaseResponse<>(sectionMapper.sectionToViewWrapper(sectionService.getSectionByCourseAndId(nameOfCourse, id)));
+        User userInfo = projectUtils.getUserInfo(principal);
+        return new BaseResponse<>(sectionMapper.sectionToViewWrapper(
+                sectionService.getSectionByCourseAndId(nameOfCourse, id, userInfo)));
     }
+
 
     @PostMapping("/startSection")
     @Secured("ROLE_user")
-    public BaseResponse startSection(@RequestBody NotificationWrapper wrapper) {
-        //TODO
-        notificationService.createNotification(notificationMapper.wrapperToNotification(wrapper));
-        sectionService.startSection(notificationMapper.wrapperToNotification(wrapper));
+    public BaseResponse startSection(@RequestBody UserEntityDTO wrapper) {
+        //TODO testing
+        sectionService.startSection(wrapper);
         return new BaseResponse();
     }
 }

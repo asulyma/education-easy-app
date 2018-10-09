@@ -14,7 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -46,12 +48,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course getCourseById(Long id, User user) {
         Optional<Course> optionalCourse = courseRepository.findById(id);
-        Course course = optionalCourse.orElseThrow(() -> new NotFoundRuntimeException("Course with id: " + id + " does not exist!"));
+        Course course = optionalCourse.orElseThrow(() ->
+                new NotFoundRuntimeException("Course with id: " + id + " does not exist!"));
 
         if (course.getAllowedUsers().contains(user)) {
             return course;
         } else {
-            throw new NotAllowedRuntimeException("Course: " + course.getName() + " are not allowed for user: " + user.getLogin());
+            throw new NotAllowedRuntimeException("Course: '" + course.getName() + "' are not allowed for user: " + user.getLogin());
         }
     }
 
@@ -64,12 +67,15 @@ public class CourseServiceImpl implements CourseService {
             Optional<Course> optionalCourse = courseRepository.findById(notification.getIdOfEntity());
             Optional<User> optionalUser = userRepository.findById(notification.getRecipientId());
 
-            Course course = optionalCourse.orElseThrow(() -> new NotFoundRuntimeException("No available course: " + notification.getIdOfEntity()));
-            User user = optionalUser.orElseThrow(() -> new NotFoundRuntimeException("No available user:" + notification.getRecipientId()));
+            Course course = optionalCourse.orElseThrow(() ->
+                    new NotFoundRuntimeException("No available course: " + notification.getIdOfEntity()));
+            User user = optionalUser.orElseThrow(() ->
+                    new NotFoundRuntimeException("No available user:" + notification.getRecipientId()));
 
             user.getAllowedCourses().add(course);
+            user.getProgress().put(course.getName(), 0L);
             userRepository.saveAndFlush(user);
-            log.info("Given access for user: " + user.getLogin() + " to course with id: " + course.getId());
+            log.info("Given access for user: '" + user.getLogin() + "' to course with id: " + course.getId());
         }
 
         //send notification (approve or decline)

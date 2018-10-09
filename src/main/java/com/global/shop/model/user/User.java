@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Pojo class.
@@ -98,7 +99,9 @@ public class User {
     @OneToOne(mappedBy = "author")
     private Comment comment;
 
-    @Min(value = 0)
-    @Max(value = 1000)
-    private Long progress;
+    @ElementCollection
+    @CollectionTable(name="course_progress")
+    @MapKeyJoinColumn(name="course")
+    @Column(name="progress")
+    private Map<String, Long> progress;
 }

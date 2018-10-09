@@ -1,7 +1,8 @@
 package com.global.shop.controller.response;
 
+import com.global.shop.exception.BadRequestParametersRuntimeException;
+import com.global.shop.exception.NotAllowedRuntimeException;
 import com.global.shop.exception.NotFoundRuntimeException;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -12,13 +13,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Component
 public class BaseController {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public BaseResponse handleResourceNotFound(ResourceNotFoundException e) {
+    @ExceptionHandler(NotFoundRuntimeException.class)
+    public BaseResponse handleNotFoundRuntimeException(NotFoundRuntimeException e) {
         return BaseResponse.buildErrorResponse(404, e);
     }
 
-    @ExceptionHandler(NotFoundRuntimeException.class)
-    public BaseResponse handleRuntimeException(NotFoundRuntimeException e){
+    @ExceptionHandler(NotAllowedRuntimeException.class)
+    public BaseResponse handleNotAllowedRuntimeException(NotAllowedRuntimeException e) {
         return BaseResponse.buildErrorResponse(500, e);
+    }
+
+    @ExceptionHandler(BadRequestParametersRuntimeException.class)
+    public BaseResponse handleBadRequestRuntimeException(BadRequestParametersRuntimeException e) {
+        return BaseResponse.buildErrorResponse(400, e);
     }
 }
