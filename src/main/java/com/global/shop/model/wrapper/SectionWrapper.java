@@ -15,5 +15,4 @@ public class SectionWrapper {
 
     private Long id;
     private String title;
-    private Long progress;
 }

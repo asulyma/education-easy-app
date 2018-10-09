@@ -62,7 +62,7 @@ public class SectionServiceImpl implements SectionService {
         if (section.getAllowedUsers().contains(user)) {
             return section;
         } else {
-            throw new NotAllowedRuntimeException("Section: '" + section.getTitle() + "' are not allowed for user: " + user.getLogin());
+            throw new NotAllowedRuntimeException("Section with id: " + section.getId() + " are not allowed for user: " + user.getLogin());
         }
     }
 

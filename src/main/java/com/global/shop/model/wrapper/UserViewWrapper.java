@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Aleksandr Sulyma
@@ -30,6 +31,6 @@ public class UserViewWrapper {
     private LocalDate registrationDate;
 
     private List<String> allowedCourses;
-    private Long progress;
+    private Map<String, Long> progress;
 
 }

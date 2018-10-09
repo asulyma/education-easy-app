@@ -1,6 +1,5 @@
 package com.global.shop.model.wrapper;
 
-import com.global.shop.model.learning.Course;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +16,7 @@ public class SectionViewWrapper {
     private Long id;
     private String title;
     private String description;
-    private Course course;
+    private Long courseId;
     private List<Long> allowedUsers;
-    private Long progress;
 
 }

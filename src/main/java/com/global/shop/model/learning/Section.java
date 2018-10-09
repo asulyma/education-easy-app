@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -42,9 +40,5 @@ public class Section {
     @ManyToMany(mappedBy = "allowedSections")
     @Column(name = "allowed_users")
     private List<User> allowedUsers;
-
-    @Min(value = 0)
-    @Max(value = 500)
-    private Long progress;
 
 }

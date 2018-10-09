@@ -54,7 +54,7 @@ public class CourseServiceImpl implements CourseService {
         if (course.getAllowedUsers().contains(user)) {
             return course;
         } else {
-            throw new NotAllowedRuntimeException("Course: '" + course.getName() + "' are not allowed for user: " + user.getLogin());
+            throw new NotAllowedRuntimeException("Course with id " + course.getId() + " are not allowed for user: " + user.getLogin());
         }
     }
 

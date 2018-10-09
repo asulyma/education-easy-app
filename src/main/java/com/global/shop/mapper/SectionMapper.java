@@ -5,6 +5,7 @@ import com.global.shop.model.wrapper.SectionViewWrapper;
 import com.global.shop.model.wrapper.SectionWrapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
@@ -20,9 +21,12 @@ public interface SectionMapper {
 
     List<SectionWrapper> sectionsToListOfWrapper(List<Section> sections);
 
-    @Mapping(expression = "java(section.getAllowedUsers()" +
-            ".stream().map(com.global.shop.model.user.User::getId)" +
-            ".collect(java.util.stream.Collectors.toList()))", target = "allowedUsers")
+    @Mappings({
+            @Mapping(expression = "java(section.getAllowedUsers()" +
+                    ".stream().map(com.global.shop.model.user.User::getId)" +
+                    ".collect(java.util.stream.Collectors.toList()))", target = "allowedUsers"),
+            @Mapping(expression = "java(section.getCourse().getId()", target = "courseId")
+    })
     SectionViewWrapper sectionToViewWrapper(Section section);
 
 }
