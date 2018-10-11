@@ -5,7 +5,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Custom RuntimeException class.
+ * The custom runtime exception.
+ * Using when some information was not found for concrete query.
  *
  * @author Aleksandr Sulyma
  * @version 1.0

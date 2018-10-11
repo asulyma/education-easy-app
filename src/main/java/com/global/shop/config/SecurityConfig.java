@@ -18,6 +18,9 @@ import org.springframework.security.web.authentication.session.RegisterSessionAu
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 /**
+ * This class implements configurations of security.
+ * Also this class using as adapter with KeyCloak Framework.
+ *
  * @author Aleksandr Sulyma
  * @version 1.0
  */

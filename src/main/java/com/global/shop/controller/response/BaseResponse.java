@@ -3,6 +3,9 @@ package com.global.shop.controller.response;
 import lombok.Data;
 
 /**
+ * This class using for building response for front-end side.
+ * For other objects - this class as wrapper, which contains field 'data' and other useful metadata.
+ *
  * @author Aleksandr Sulyma
  * @version 1.0
  */

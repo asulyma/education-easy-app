@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
+ * The class for working with DataBases.
+ * Only for {@link NotificationTranslation} entity.
+ *
  * @author Aleksandr Sulyma
  * @version 1.0
  */

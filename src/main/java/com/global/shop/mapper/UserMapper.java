@@ -11,6 +11,8 @@ import org.mapstruct.NullValueCheckStrategy;
 import java.util.List;
 
 /**
+ * This class using for mapping between {@link User} entity and DTO`s.
+ *
  * @author Aleksandr Sulyma
  * @version 1.0
  */

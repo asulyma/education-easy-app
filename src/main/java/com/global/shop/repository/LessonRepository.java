@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * The class for working with DataBases.
+ * Only for {@link Lesson} entity.
+ *
  * @author Aleksandr Sulyma
  * @version 1.0
  */

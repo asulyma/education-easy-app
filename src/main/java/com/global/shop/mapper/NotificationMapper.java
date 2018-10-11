@@ -9,6 +9,8 @@ import org.mapstruct.NullValueCheckStrategy;
 import java.util.List;
 
 /**
+ * This class using for mapping between {@link Notification} entity and DTO`s.
+ *
  * @author Aleksandr Sulyma
  * @version 1.0
  */
