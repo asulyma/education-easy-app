@@ -6,7 +6,6 @@ import com.global.shop.mapper.SectionMapper;
 import com.global.shop.model.user.User;
 import com.global.shop.model.wrapper.SectionViewWrapper;
 import com.global.shop.model.wrapper.SectionWrapper;
-import com.global.shop.model.wrapper.UserEntityDTO;
 import com.global.shop.service.SectionService;
 import com.global.shop.util.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +58,12 @@ public class SectionController extends BaseController {
     }
 
 
-    @PostMapping("/startSection")
+    @PutMapping("/{sectionId}")
     @Secured("ROLE_user")
-    public BaseResponse startSection(@RequestBody UserEntityDTO wrapper) {
-        //TODO testing
-        sectionService.startSection(wrapper);
+    public BaseResponse startSection(@PathVariable(name = "sectionId") Long sectionId,
+                                     @RequestParam(name = "userId") Long userId) {
+
+        sectionService.startSection(sectionId, userId);
         return new BaseResponse();
     }
 }

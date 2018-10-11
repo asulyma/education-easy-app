@@ -2,7 +2,6 @@ package com.global.shop.service;
 
 import com.global.shop.model.learning.Section;
 import com.global.shop.model.user.User;
-import com.global.shop.model.wrapper.UserEntityDTO;
 
 import java.util.List;
 
@@ -16,5 +15,5 @@ public interface SectionService {
 
     Section getSectionByCourseAndId(String name, Long id, User user);
 
-    void startSection(UserEntityDTO wrapper);
+    void startSection(Long sectionId, Long userId);
 }

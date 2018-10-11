@@ -1,10 +1,10 @@
 package com.global.shop.service.impl;
 
+import com.global.shop.exception.BadRequestParametersRuntimeException;
 import com.global.shop.exception.NotAllowedRuntimeException;
 import com.global.shop.exception.NotFoundRuntimeException;
 import com.global.shop.model.learning.Section;
 import com.global.shop.model.user.User;
-import com.global.shop.model.wrapper.UserEntityDTO;
 import com.global.shop.repository.SectionRepository;
 import com.global.shop.repository.UserRepository;
 import com.global.shop.service.SectionService;
@@ -39,15 +39,20 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public void startSection(UserEntityDTO wrapper) {
+    public void startSection(Long sectionId, Long userId) {
 
-        Optional<Section> optionalSection = sectionRepository.findById(wrapper.getEntityId());
-        Optional<User> optionalUser = userRepository.findById(wrapper.getUserId());
+        Optional<Section> optionalSection = sectionRepository.findById(sectionId);
+        Optional<User> optionalUser = userRepository.findById(userId);
 
         Section section = optionalSection.orElseThrow(() ->
-                new NotFoundRuntimeException("No available section: " + wrapper.getEntityId()));
+                new NotFoundRuntimeException("No available section: " + sectionId));
         User user = optionalUser.orElseThrow(() ->
-                new NotFoundRuntimeException("No available user: " + wrapper.getUserId()));
+                new NotFoundRuntimeException("No available user: " + userId));
+
+        if (user.getAllowedSections().contains(section)) {
+            throw new BadRequestParametersRuntimeException("Section: " + sectionId
+                    + " already allowed for user: " + userId);
+        }
 
         user.getAllowedSections().add(section);
         userRepository.saveAndFlush(user);

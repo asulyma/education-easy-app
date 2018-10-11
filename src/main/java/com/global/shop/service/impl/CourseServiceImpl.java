@@ -1,5 +1,6 @@
 package com.global.shop.service.impl;
 
+import com.global.shop.exception.BadRequestParametersRuntimeException;
 import com.global.shop.exception.NotAllowedRuntimeException;
 import com.global.shop.exception.NotFoundRuntimeException;
 import com.global.shop.model.notification.Notification;
@@ -14,9 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -71,6 +70,11 @@ public class CourseServiceImpl implements CourseService {
                     new NotFoundRuntimeException("No available course: " + notification.getIdOfEntity()));
             User user = optionalUser.orElseThrow(() ->
                     new NotFoundRuntimeException("No available user:" + notification.getRecipientId()));
+
+            if (user.getAllowedCourses().contains(course)) {
+                throw new BadRequestParametersRuntimeException("Course: " + course.getId()
+                        + " already allowed for user: " + user.getId());
+            }
 
             user.getAllowedCourses().add(course);
             user.getProgress().put(course.getName(), 0L);

@@ -27,7 +27,7 @@ public interface SectionMapper {
             @Mapping(expression = "java(section.getAllowedUsers()" +
                     ".stream().map(com.global.shop.model.user.User::getId)" +
                     ".collect(java.util.stream.Collectors.toList()))", target = "allowedUsers"),
-            @Mapping(expression = "java(section.getCourse().getId()", target = "courseId")
+            @Mapping(expression = "java(section.getCourse().getId())", target = "courseId")
     })
     SectionViewWrapper sectionToViewWrapper(Section section);
 
