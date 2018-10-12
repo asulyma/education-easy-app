@@ -2,6 +2,7 @@ package com.global.shop.controller;
 
 import com.global.shop.controller.response.BaseController;
 import com.global.shop.controller.response.BaseResponse;
+import com.global.shop.mapper.LessonMapper;
 import com.global.shop.model.learning.Lesson;
 import com.global.shop.model.wrapper.LessonWrapper;
 import com.global.shop.service.LessonService;
@@ -24,9 +25,13 @@ public class LessonController extends BaseController {
 
     private final LessonService lessonService;
 
+    private final LessonMapper lessonMapper;
+
     @Autowired
-    public LessonController(LessonService lessonService) {
+    public LessonController(LessonService lessonService,
+                            LessonMapper lessonMapper) {
         this.lessonService = lessonService;
+        this.lessonMapper = lessonMapper;
     }
 
 
@@ -35,7 +40,8 @@ public class LessonController extends BaseController {
     public BaseResponse<List<LessonWrapper>> getLessonsByCourseNameAndId(@PathVariable(name = "course") String nameOfCourse,
                                                                          @PathVariable(name = "sectionId") Long sectionId) {
 
-        return new BaseResponse<>(lessonService.getLessonsByCourseAndId(nameOfCourse, sectionId));
+        return new BaseResponse<>(lessonMapper.lessonsToListOfWrappers(
+                lessonService.getLessonsByCourseAndId(nameOfCourse, sectionId)));
     }
 
 

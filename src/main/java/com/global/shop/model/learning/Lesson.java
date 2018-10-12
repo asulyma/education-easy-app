@@ -9,7 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -33,9 +33,8 @@ public class Lesson {
     @Size(max = 2048)
     private String description;
 
-    @Version
     @Column(name = "update_date")
-    private Timestamp updateDate;
+    private LocalDate updateDate;
 
     @ManyToOne
     @JoinColumn(name = "section_id")

@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-class Like {
+public class Like {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

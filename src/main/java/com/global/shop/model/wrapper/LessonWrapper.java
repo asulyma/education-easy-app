@@ -3,6 +3,7 @@ package com.global.shop.model.wrapper;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -15,6 +16,6 @@ public class LessonWrapper {
 
     private Long id;
     private String title;
-    private List<Long> allowedUsers;
-    private List<Long> alreadyDone;
+    private LocalDate updateDate;
+    private Long countOfComments;
 }
