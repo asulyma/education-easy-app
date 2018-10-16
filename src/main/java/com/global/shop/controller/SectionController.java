@@ -60,10 +60,11 @@ public class SectionController extends BaseController {
 
     @PutMapping("/{sectionId}")
     @Secured("ROLE_user")
-    public BaseResponse startSection(@PathVariable(name = "sectionId") Long sectionId,
-                                     @RequestParam(name = "userId") Long userId) {
+    public BaseResponse startSection(Principal principal,
+                                     @PathVariable(name = "sectionId") Long sectionId) {
 
-        sectionService.startSection(sectionId, userId);
+        User userInfo = projectUtils.getUserInfo(principal);
+        sectionService.startSection(sectionId, userInfo.getId());
         return new BaseResponse();
     }
 }

@@ -6,7 +6,7 @@ import com.global.shop.mapper.CourseMapper;
 import com.global.shop.model.user.User;
 import com.global.shop.model.wrapper.CourseViewWrapper;
 import com.global.shop.model.wrapper.CourseWrapper;
-import com.global.shop.model.wrapper.NotificationWrapper;
+import com.global.shop.model.wrapper.NotificationDTO;
 import com.global.shop.service.CourseService;
 import com.global.shop.service.NotificationService;
 import com.global.shop.util.ProjectUtils;
@@ -57,10 +57,10 @@ public class CourseController extends BaseController {
         return new BaseResponse<>(mapper.courseToViewWrapper(courseService.getCourseById(courseById, userInfo)));
     }
 
-    @PostMapping(path = "/allowCourse")
+    @PostMapping("/allowCourse")
     @Secured("ROLE_user")
-    public BaseResponse sendPermissionRequestOnCourse(@RequestBody NotificationWrapper wrapper) {
-        notificationService.requestToAllowCourse(wrapper);
+    public BaseResponse sendPermissionRequestOnCourse(@RequestBody NotificationDTO dto) {
+        notificationService.requestToAllowCourse(dto);
         return new BaseResponse();
     }
 
