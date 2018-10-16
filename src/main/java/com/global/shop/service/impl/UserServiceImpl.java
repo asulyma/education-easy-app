@@ -1,13 +1,11 @@
 package com.global.shop.service.impl;
 
 import com.global.shop.model.user.User;
-import com.global.shop.model.wrapper.UserWrapper;
 import com.global.shop.repository.UserRepository;
 import com.global.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

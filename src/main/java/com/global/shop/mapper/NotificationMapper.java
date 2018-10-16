@@ -21,8 +21,6 @@ public interface NotificationMapper {
 
     NotificationViewWrapper notificationToViewWrapper(Notification notification);
 
-    Notification wrapperToNotification(NotificationWrapper notification);
-
     List<NotificationWrapper> notificationsToListOfWrappers(List<Notification> notifications);
 
     Notification dtoToNotification(NotificationDTO notificationDTO);

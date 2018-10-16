@@ -3,7 +3,6 @@ package com.global.shop.controller;
 import com.global.shop.controller.response.BaseController;
 import com.global.shop.controller.response.BaseResponse;
 import com.global.shop.mapper.UserMapper;
-import com.global.shop.model.user.User;
 import com.global.shop.model.wrapper.UserViewWrapper;
 import com.global.shop.model.wrapper.UserWrapper;
 import com.global.shop.service.UserService;
@@ -26,7 +25,8 @@ public class UserController extends BaseController {
     private final UserMapper mapper;
 
     @Autowired
-    public UserController(UserService userService, UserMapper mapper) {
+    public UserController(UserService userService,
+                          UserMapper mapper) {
         this.userService = userService;
         this.mapper = mapper;
     }

@@ -1,9 +1,12 @@
 package com.global.shop.model.user;
 
+import lombok.Getter;
+
 /**
  * @author Aleksandr Sulyma
  * @version 1.0
  */
+@Getter
 public enum Role {
 
     ADMIN("admin"),
@@ -14,9 +17,5 @@ public enum Role {
 
     Role(String description) {
         this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }

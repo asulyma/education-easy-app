@@ -1,9 +1,12 @@
 package com.global.shop.model.user;
 
+import lombok.Getter;
+
 /**
  * @author Aleksandr Sulyma
  * @version 1.0
  */
+@Getter
 public enum Rank {
 
     JAVA_JUNIOR_ONE("Java Junior 1"),
@@ -13,7 +16,7 @@ public enum Rank {
     JAVA_MIDDLE_TWO("Java Middle 2"),
     JAVA_SENIOR("Java Senior");
 
-    public final String description;
+    private final String description;
 
     Rank(String description) {
         this.description = description;

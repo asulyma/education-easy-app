@@ -1,7 +1,6 @@
 package com.global.shop.service;
 
 import com.global.shop.model.user.User;
-import com.global.shop.model.wrapper.UserWrapper;
 
 import java.util.List;
 
