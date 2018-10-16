@@ -1,0 +1,31 @@
+GET:    /courses                                        - get list of CourseWrappers.
+GET:    /courses/{id}                                   - get single course as CourseViewWrapper.
+POST:   /courses/allowCourse                            - send 2 notifications: to user and to admin
+{ "idOfEntity": 3, "publisherId": 1, "notificationEntityType": "COURSE", "notificationType": "PERMISSION_TO_ADMIN", "isRead": false, "updateDate": "2018-12-12" }
+
+
+
+GET:    /{course}/sections                              - get list of SectionWrappers by courseName.
+GET:    /{course}/sections/{id}                         - get single SectionViewWrapper by courseName and sectionId.
+PUT:    /{course}/sections/{id}                         - user has started the passage of the section
+
+
+
+GET:    /{course}/{sectionId}/lessons                   - get list of lessonWrappers by courseName and sectionId.
+GET:    /{course}/{sectionId}/lessons/{id}              - get single ListViewWrapper by id.
+PUT:    /{course}/{sectionId}/lessons/{id}              - user has been done of lesson and add progress.
+
+
+
+GET:    /notifications                                  - get list of NotificationWrappers.
+GET:    /notifications/{id}                             - get single NotificationViewWrapper by id.
+DELETE: /notifications/{id}                             - remove entity by id.
+POST:   /notifications/{id}                             - allow access to course and send notification to user
+{ "idOfEntity": 3, "publisherId": 2, "recipientId": 1, "notificationEntityType": "COURSE", "notificationType": "APPROVE_PERMISSION", "isRead": false, "updateDate": "2018-12-12" }
+
+
+
+GET:    /users                                          - get list of UserWrappers.
+GET:    /users/{login}                                  - get single UserViewWrapper by login.
+
+
