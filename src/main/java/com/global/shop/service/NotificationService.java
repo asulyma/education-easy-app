@@ -2,7 +2,7 @@ package com.global.shop.service;
 
 import com.global.shop.model.notification.Notification;
 import com.global.shop.model.user.User;
-import com.global.shop.model.wrapper.NotificationWrapper;
+import com.global.shop.model.wrapper.NotificationDTO;
 
 import java.util.List;
 
@@ -16,8 +16,10 @@ public interface NotificationService {
 
     Notification getNotificationById(User user, Long id);
 
-    void requestToAllowCourse(NotificationWrapper wrapper);
+    void requestToAllowCourse(NotificationDTO dto);
 
     void createNotification(Notification notification);
+
+    void removeNotification(Long notificationId, User user);
 
 }

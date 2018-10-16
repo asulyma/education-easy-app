@@ -1,6 +1,7 @@
 package com.global.shop.mapper;
 
 import com.global.shop.model.notification.Notification;
+import com.global.shop.model.wrapper.NotificationDTO;
 import com.global.shop.model.wrapper.NotificationViewWrapper;
 import com.global.shop.model.wrapper.NotificationWrapper;
 import org.mapstruct.Mapper;
@@ -20,7 +21,9 @@ public interface NotificationMapper {
 
     NotificationViewWrapper notificationToViewWrapper(Notification notification);
 
+    Notification wrapperToNotification(NotificationWrapper notification);
+
     List<NotificationWrapper> notificationsToListOfWrappers(List<Notification> notifications);
 
-    Notification wrapperToNotification(NotificationWrapper notification);
+    Notification dtoToNotification(NotificationDTO notificationDTO);
 }

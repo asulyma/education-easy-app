@@ -4,6 +4,7 @@ import com.global.shop.controller.response.BaseController;
 import com.global.shop.controller.response.BaseResponse;
 import com.global.shop.mapper.NotificationMapper;
 import com.global.shop.model.user.User;
+import com.global.shop.model.wrapper.NotificationDTO;
 import com.global.shop.model.wrapper.NotificationViewWrapper;
 import com.global.shop.model.wrapper.NotificationWrapper;
 import com.global.shop.service.CourseService;
@@ -56,11 +57,24 @@ public class NotificationController extends BaseController {
         return new BaseResponse<>(mapper.notificationToViewWrapper(notificationService.getNotificationById(user, id)));
     }
 
-    @PostMapping(path = "/decision")
+    @PostMapping("/{id}")
     @Secured({"ROLE_admin"})
-    public BaseResponse decisionOfNotification(@RequestBody NotificationWrapper wrapper) {
-        courseService.decisionOfNotification(mapper.wrapperToNotification(wrapper));
+    public BaseResponse decisionOfNotification(@RequestBody NotificationDTO dto,
+                                               @PathVariable("id") Long notificationId) {
+
+        courseService.decisionOfNotification(mapper.dtoToNotification(dto));
         return new BaseResponse<>();
     }
+
+    @DeleteMapping("/{id}")
+    @Secured({"ROLE_user"})
+    public BaseResponse removeNotification(Principal principal,
+                                           @PathVariable("id") Long notificationId) {
+
+        User user = projectUtils.getUserInfo(principal);
+        notificationService.removeNotification(notificationId, user);
+        return new BaseResponse<>();
+    }
+
 
 }
