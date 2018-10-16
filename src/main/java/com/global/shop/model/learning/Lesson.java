@@ -41,10 +41,6 @@ public class Lesson {
     @JsonIgnore
     private Section section;
 
-    @ManyToMany(mappedBy = "allowedLessons")
-    @Column(name = "allowed_users")
-    private List<User> allowedUsers;
-
     @ManyToMany(mappedBy = "alreadyDoneLesson")
     @Column(name = "already_done")
     private List<User> alreadyDone;

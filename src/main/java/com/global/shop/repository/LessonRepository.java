@@ -20,4 +20,6 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
     Lesson findBySectionCourseNameAndSectionIdAndId(String nameOfCourse, Long sectionId, Long lessonId);
 
+    Long countAllBySectionCourseName(String nameOfCourse);
+
 }

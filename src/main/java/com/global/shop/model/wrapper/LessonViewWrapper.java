@@ -2,8 +2,6 @@ package com.global.shop.model.wrapper;
 
 import com.global.shop.model.learning.Comment;
 import com.global.shop.model.learning.Like;
-import com.global.shop.model.learning.Section;
-import com.global.shop.model.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,9 +20,8 @@ public class LessonViewWrapper {
     private String title;
     private String description;
     private LocalDate updateDate;
-    private Section section;
-    private List<User> allowedUsers;
-    private List<User> alreadyDone;
+    private Long sectionId;
+    private List<Long> alreadyDoneIds;
     private Like lessonLike;
     private List<Comment> comment;
 

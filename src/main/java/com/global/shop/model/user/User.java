@@ -81,14 +81,6 @@ public class User {
     private List<Section> allowedSections;
 
 
-    @Column(name = "allowed_lessons")
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_lessons",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "lesson_id")})
-    private List<Lesson> allowedLessons;
-
-
     @Column(name = "already_done_lesson")
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_already_done_lessons",
