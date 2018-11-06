@@ -1,8 +1,10 @@
 package com.global.shop.controller;
 
 import com.global.shop.controller.response.BaseController;
+import com.global.shop.model.user.User;
 import com.global.shop.util.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,11 +30,15 @@ public class DashboardController extends BaseController {
     }
 
     @GetMapping
+    @Secured("ROLE_user")
     public ModelAndView index(Principal principal) {
 
         //TODO make wrapper like BaseController for returns ModelAndView
         projectUtils.getUserInfo(principal);
 
-        return new ModelAndView("external");
+        User userInfo = projectUtils.getUserInfo(principal);
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("username", userInfo.getLogin());
+        return modelAndView;
     }
 }
