@@ -1,5 +1,6 @@
 package com.global.shop.model.learning;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.global.shop.model.CreatableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +21,11 @@ import javax.persistence.Table;
  * @version 1.0
  */
 @Entity
-@Table(name = "section")
+@Table(name = "lesson")
 @NoArgsConstructor
 @Getter
 @Setter
-public class Section extends CreatableEntity {
+public class LessonEntity extends CreatableEntity {
 
     @Column(name = "title")
     private String title;
@@ -33,10 +34,10 @@ public class Section extends CreatableEntity {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @JoinColumn(name = "section_id")
+    private SectionEntity section;
 
-    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
-    private List<Lesson> lessons;
-
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = "lesson", allowSetters = true)
+    private List<Comment> comment;
 }

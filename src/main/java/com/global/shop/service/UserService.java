@@ -1,6 +1,9 @@
 package com.global.shop.service;
 
-import com.global.shop.model.user.User;
+import com.global.shop.model.user.UserEntity;
+import com.global.shop.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -8,14 +11,30 @@ import java.util.List;
  * @author Aleksandr Sulyma
  * @version 1.0
  */
-public interface UserService {
+@Service
+public class UserService {
 
-    List<User> getListOfUsers();
+    private final UserRepository userRepository;
 
-    User getUserByLogin(String login);
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-    User createUser(User user);
+    public List<UserEntity> getListOfUsers() {
+        return userRepository.findAll();
+    }
 
-    User getUserByRole(String role);
+    public UserEntity getUserByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
+
+    public UserEntity createUser(UserEntity userEntity) {
+        return userRepository.saveAndFlush(userEntity);
+    }
+
+    public UserEntity getUserByRole(String role) {
+        return userRepository.findByRolesContaining(role);
+    }
 
 }

@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Course extends CreatableEntity {
+public class CourseEntity extends CreatableEntity {
 
     @Column(name = "name")
     private String name;
@@ -43,7 +43,7 @@ public class Course extends CreatableEntity {
     @Column(name = "cost")
     private Integer cost;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<Section> sections;
+    @OneToMany(mappedBy = "courseEntity", cascade = CascadeType.ALL)
+    private List<SectionEntity> sections;
 
 }

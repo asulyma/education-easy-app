@@ -2,10 +2,10 @@ package com.global.shop.model.user;
 
 import com.global.shop.model.CreatableEntity;
 import com.global.shop.model.learning.Comment;
-import com.global.shop.model.learning.Course;
-import com.global.shop.model.learning.Lesson;
+import com.global.shop.model.learning.CourseEntity;
+import com.global.shop.model.learning.LessonEntity;
 import com.global.shop.model.learning.Progress;
-import com.global.shop.model.learning.Section;
+import com.global.shop.model.learning.SectionEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,7 +30,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Getter
 @Setter
-public class User extends CreatableEntity {
+public class UserEntity extends CreatableEntity {
 
     @Column(name = "login")
     private String login;
@@ -62,19 +62,19 @@ public class User extends CreatableEntity {
     @JoinTable(name = "user_course",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "course_id")})
-    private List<Course> allowedCourses;
+    private List<CourseEntity> allowedCourses;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_sections",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "section_id")})
-    private List<Section> allowedSections;
+    private List<SectionEntity> allowedSections;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_already_done_lessons",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "lesson_id")})
-    private List<Lesson> alreadyDoneLesson;
+    private List<LessonEntity> alreadyDoneLessons;
 
     @OneToOne(mappedBy = "author")
     private Comment comment;

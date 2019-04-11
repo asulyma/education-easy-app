@@ -1,7 +1,7 @@
 package com.global.shop.controller;
 
 import com.global.shop.controller.response.BaseController;
-import com.global.shop.model.user.User;
+import com.global.shop.model.user.UserEntity;
 import com.global.shop.util.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -14,7 +14,6 @@ import java.security.Principal;
 
 /**
  * Home page. TODO
- *
  * @author Aleksands Sulyma
  * @version 1.0
  */
@@ -36,9 +35,9 @@ public class DashboardController extends BaseController {
         //TODO make wrapper like BaseController for returns ModelAndView
         projectUtils.getUserInfo(principal);
 
-        User userInfo = projectUtils.getUserInfo(principal);
+        UserEntity userEntityInfo = projectUtils.getUserInfo(principal);
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("username", userInfo.getLogin());
+        modelAndView.addObject("username", userEntityInfo.getLogin());
         return modelAndView;
     }
 }
