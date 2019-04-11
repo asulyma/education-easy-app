@@ -3,16 +3,20 @@ package com.global.shop.controller;
 import com.global.shop.controller.response.BaseController;
 import com.global.shop.controller.response.BaseResponse;
 import com.global.shop.mapper.CourseMapper;
-import com.global.shop.model.user.User;
-import com.global.shop.model.wrapper.CourseViewWrapper;
-import com.global.shop.model.wrapper.CourseWrapper;
+import com.global.shop.model.user.UserEntity;
+import com.global.shop.model.wrapper.CourseResponse;
 import com.global.shop.model.wrapper.NotificationDTO;
 import com.global.shop.service.CourseService;
 import com.global.shop.service.NotificationService;
 import com.global.shop.util.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
@@ -33,9 +37,9 @@ public class CourseController extends BaseController {
 
     @Autowired
     public CourseController(CourseService courseService,
-                            NotificationService notificationService,
-                            ProjectUtils projectUtils,
-                            CourseMapper mapper) {
+            NotificationService notificationService,
+            ProjectUtils projectUtils,
+            CourseMapper mapper) {
         this.courseService = courseService;
         this.notificationService = notificationService;
         this.projectUtils = projectUtils;
@@ -44,17 +48,15 @@ public class CourseController extends BaseController {
 
     @GetMapping
     @Secured("ROLE_user")
-    public BaseResponse<List<CourseWrapper>> getListOfCourses() {
-        return new BaseResponse<>(mapper.coursesToListOfWrappers(courseService.getListOfCourse()));
+    public BaseResponse<List<CourseResponse>> getListOfCourses() {
+        return new BaseResponse<>(mapper.buildCourses(courseService.getListOfCourse()));
     }
-
 
     @GetMapping("/{id}")
     @Secured("ROLE_user")
-    public BaseResponse<CourseViewWrapper> getCourseById(Principal principal,
-                                                         @PathVariable(name = "id") Long courseById) {
-        User userInfo = projectUtils.getUserInfo(principal);
-        return new BaseResponse<>(mapper.courseToViewWrapper(courseService.getCourseById(courseById, userInfo)));
+    public BaseResponse<CourseResponse> getCourseById(Principal principal, @PathVariable(name = "id") Long id) {
+        UserEntity userEntityInfo = projectUtils.getUserInfo(principal);
+        return new BaseResponse<>(mapper.buildCourse(courseService.getCourseById(id, userEntityInfo)));
     }
 
     @PostMapping("/allowCourse")
