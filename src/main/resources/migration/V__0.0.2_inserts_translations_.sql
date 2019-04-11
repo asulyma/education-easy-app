@@ -11,8 +11,8 @@ insert into notification_translation (id, notification_entity_type, notification
 
 
 -- users
-INSERT INTO user (id, age, birth_date, email, family_name, gender, given_name, is_active, is_locked, login, rank, registration_date, roles) VALUES (1, null, null, 'uses@user.com', 'UserLastName', null, 'UserName', true, false, 'user', null, '2018-10-09', 'offline_access, uma_authorization, user');
-INSERT INTO user (id, age, birth_date, email, family_name, gender, given_name, is_active, is_locked, login, rank, registration_date, roles) VALUES (2, null, null, 'admin@admin.com', 'Administrator', null, 'Administrator', true, false, 'admin', null, '2018-10-09', 'offline_access, moderator, admin, uma_authorization, user');
+INSERT INTO user_table (id, age, email, gender, given_name, is_active, is_locked, login, rank, registration_date, roles) VALUES (1, null, null, 'uses@user.com', 'UserLastName', null, 'UserName', true, false, 'user', null, '2018-10-09', 'offline_access, uma_authorization, user');
+INSERT INTO user_table (id, age, email, gender, given_name, is_active, is_locked, login, rank, registration_date, roles) VALUES (2, null, null, 'admin@admin.com', 'Administrator', null, 'Administrator', true, false, 'admin', null, '2018-10-09', 'offline_access, moderator, admin, uma_authorization, user');
 
 -- allow to courses
 INSERT INTO user_courses (user_id, course_id) VALUES (1, 3);

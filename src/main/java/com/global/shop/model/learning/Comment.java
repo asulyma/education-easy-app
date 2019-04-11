@@ -1,12 +1,13 @@
 package com.global.shop.model.learning;
 
 import com.global.shop.model.CreatableEntity;
-import com.global.shop.model.user.User;
+import com.global.shop.model.user.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,12 +27,13 @@ public class Comment extends CreatableEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
-    private User author;
+    private UserEntity author;
 
     @ManyToOne
     @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
+    private LessonEntity lesson;
 
+    @Column(name = "content")
     private String content;
 
 }

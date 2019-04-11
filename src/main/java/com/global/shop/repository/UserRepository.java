@@ -1,21 +1,19 @@
 package com.global.shop.repository;
 
-import com.global.shop.model.user.User;
+import com.global.shop.model.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * The class for working with DataBases.
- * Only for {@link User} entity.
- *
+ * The class for working with DataBases. Only for {@link UserEntity} entity.
  * @author Aleksandr Sulyma
  * @version 1.0
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    User findByLogin(String login);
+    UserEntity findByLogin(String login);
 
-    User findByRolesContaining(String role);
+    UserEntity findByRolesContaining(String role);
 
 }
