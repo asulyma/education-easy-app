@@ -1,16 +1,18 @@
 package com.global.shop.model.learning;
 
-import com.global.shop.model.user.User;
+import com.global.shop.model.CreatableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * @author Aleksandr Sulyma
@@ -21,32 +23,27 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Course {
+public class Course extends CreatableEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Size(max = 32)
+    @Column(name = "name")
     private String name;
 
-    @Size(max = 256)
+    @Column(name = "title")
     private String title;
 
-    @Size(max = 1024)
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "begin_date")
     private LocalDate beginDate;
 
+    @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Min(value = 0)
-    private BigDecimal cost;
+    @Column(name = "cost")
+    private Integer cost;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Section> sections;
 
-    @ManyToMany(mappedBy = "allowedCourses")
-    @Column(name = "allowed_users")
-    private List<User> allowedUsers;
 }

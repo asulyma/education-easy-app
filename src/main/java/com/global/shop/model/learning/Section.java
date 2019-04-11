@@ -1,13 +1,19 @@
 package com.global.shop.model.learning;
 
-import com.global.shop.model.user.User;
+import com.global.shop.model.CreatableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * @author Aleksandr Sulyma
@@ -18,16 +24,12 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Section {
+public class Section extends CreatableEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Size(max = 256)
+    @Column(name = "title")
     private String title;
 
-    @Size(max = 1024)
+    @Column(name = "description")
     private String description;
 
     @ManyToOne
@@ -36,9 +38,5 @@ public class Section {
 
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
     private List<Lesson> lessons;
-
-    @ManyToMany(mappedBy = "allowedSections")
-    @Column(name = "allowed_users")
-    private List<User> allowedUsers;
 
 }

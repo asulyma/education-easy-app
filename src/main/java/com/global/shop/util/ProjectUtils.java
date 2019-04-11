@@ -1,20 +1,15 @@
 package com.global.shop.util;
 
-
 import com.global.shop.exception.NotFoundRuntimeException;
 import com.global.shop.model.user.Role;
 import com.global.shop.model.user.User;
 import com.global.shop.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.keycloak.adapters.OidcKeycloakAccount;
-import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
-import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -47,29 +42,31 @@ public class ProjectUtils {
      */
     public User getUserInfo(Principal principal) {
 
-        OidcKeycloakAccount account = ((KeycloakAuthenticationToken) principal).getAccount();
-        AccessToken token = account.getKeycloakSecurityContext().getToken();
+        return null;
 
-        User loginUser = userService.getUserByLogin(principal.getName());
-        if (loginUser != null) {
-            return loginUser;
-        }
-
-        User newUser = new User();
-
-        newUser.setLogin(principal.getName());
-        newUser.setEmail(token.getEmail());
-        newUser.setGivenName(token.getGivenName());
-        newUser.setGender(token.getGender());
-        newUser.setFamilyName(token.getFamilyName());
-        newUser.setRegistrationDate(LocalDate.now());
-        newUser.setActive(true);
-        newUser.setLocked(false);
-        newUser.setRoles(String.join(", ", token.getRealmAccess().getRoles()));
-
-        User user = userService.createUser(newUser);
-        log.info("User has been created: " + user.getLogin());
-        return user;
+//        OidcKeycloakAccount account = ((KeycloakAuthenticationToken) principal).getAccount();
+//        AccessToken token = account.getKeycloakSecurityContext().getToken();
+//
+//        User loginUser = userService.getUserByLogin(principal.getName());
+//        if (loginUser != null) {
+//            return loginUser;
+//        }
+//
+//        User newUser = new User();
+//
+//        newUser.setLogin(principal.getName());
+//        newUser.setEmail(token.getEmail());
+//        newUser.setGivenName(token.getGivenName());
+//        newUser.setGender(token.getGender());
+//        newUser.setFamilyName(token.getFamilyName());
+//        newUser.setRegistrationDate(LocalDate.now());
+//        newUser.setActive(true);
+//        newUser.setLocked(false);
+//        newUser.setRoles(String.join(", ", token.getRealmAccess().getRoles()));
+//
+//        User user = userService.createUser(newUser);
+//        log.info("User has been created: " + user.getLogin());
+//        return user;
     }
 
     public Long getUserAdminId() {

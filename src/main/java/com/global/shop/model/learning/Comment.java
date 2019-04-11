@@ -1,28 +1,28 @@
 package com.global.shop.model.learning;
 
+import com.global.shop.model.CreatableEntity;
 import com.global.shop.model.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
- * @version 1.0
- *
  * @author Aleksandr Sulyma
+ * @version 1.0
  */
 @Entity
 @Table(name = "comment")
 @NoArgsConstructor
 @Getter
 @Setter
-public class Comment {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Comment extends CreatableEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
@@ -33,8 +33,5 @@ public class Comment {
     private Lesson lesson;
 
     private String content;
-
-    @Column(name = "update_date")
-    private LocalDate updateDate;
 
 }

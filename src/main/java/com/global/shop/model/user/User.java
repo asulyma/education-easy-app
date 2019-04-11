@@ -1,87 +1,75 @@
 package com.global.shop.model.user;
 
-import com.global.shop.model.learning.*;
+import com.global.shop.model.CreatableEntity;
+import com.global.shop.model.learning.Comment;
+import com.global.shop.model.learning.Course;
+import com.global.shop.model.learning.Lesson;
+import com.global.shop.model.learning.Progress;
+import com.global.shop.model.learning.Section;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
-/**
- * Pojo class.
- *
- * @author Aleksandr Sulyma
- * @version 1.0
- */
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 @Entity
-@Table(name = "user")
+@Table(name = "user_table")
 @NoArgsConstructor
 @Getter
 @Setter
-public class User {
+public class User extends CreatableEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
+    @Column(name = "login")
     private String login;
 
-    @Size(min = 2, max = 32)
-    private String givenName;
+    @Column(name = "name")
+    private String name;
 
-    @Size(min = 2, max = 32)
-    private String familyName;
-
-    @Min(value = 12)
-    @Max(value = 80)
+    @Column(name = "age")
     private Integer age;
 
-    @Email
-    @Column(unique = true)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "is_locked")
-    private boolean isLocked;
-
-    @Column(name = "is_active")
-    private boolean isActive;
+    @Column(name = "active")
+    private boolean active;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "rank")
     private Rank rank;
 
-    private String roles;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 
-    private LocalDate birthDate;
-
-    @Size(max = 6)
+    @Column(name = "gender")
     private String gender;
 
-    @NotNull
-    @Column(name = "registration_date")
-    private LocalDate registrationDate;
-
-
-    @Column(name = "allowed_courses")
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_courses",
+    @JoinTable(name = "user_course",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "course_id")})
     private List<Course> allowedCourses;
 
-
-    @Column(name = "allowed_sections")
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_sections",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "section_id")})
     private List<Section> allowedSections;
 
-
-    @Column(name = "already_done_lesson")
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_already_done_lessons",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -91,9 +79,8 @@ public class User {
     @OneToOne(mappedBy = "author")
     private Comment comment;
 
-    @ElementCollection
-    @CollectionTable(name="course_progress")
-    @MapKeyJoinColumn(name="course")
-    @Column(name="progress")
-    private Map<String, Long> progress;
+    @Column(name = "progress", columnDefinition = "jsonb")
+    @Type(type = "jsonb", parameters = {@Parameter(name = "classType",
+            value = "com.global.shop.model.learning.Progress")})
+    private Progress progress;
 }
