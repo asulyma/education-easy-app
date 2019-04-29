@@ -5,6 +5,7 @@ import com.global.shop.model.user.UserEntity;
 import com.global.shop.util.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +18,7 @@ import java.security.Principal;
  * @author Aleksands Sulyma
  * @version 1.0
  */
-@RestController
-@RequestMapping("/")
+@Controller
 public class DashboardController extends BaseController {
 
     private final ProjectUtils projectUtils;
@@ -28,16 +28,22 @@ public class DashboardController extends BaseController {
         this.projectUtils = projectUtils;
     }
 
-    @GetMapping
+    @GetMapping("/home")
     @Secured("ROLE_user")
-    public ModelAndView index(Principal principal) {
+    public String index(Principal principal) {
 
         //TODO make wrapper like BaseController for returns ModelAndView
-        projectUtils.getUserInfo(principal);
+//        projectUtils.getUserInfo(principal);
+//
+//        UserEntity userEntityInfo = projectUtils.getUserInfo(principal);
+//        ModelAndView modelAndView = new ModelAndView("index");
+//        modelAndView.addObject("username", userEntityInfo.getLogin());
+//        return modelAndView;
+        return "index";
+    }
 
-        UserEntity userEntityInfo = projectUtils.getUserInfo(principal);
-        ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("username", userEntityInfo.getLogin());
-        return modelAndView;
+    @GetMapping("/login")
+    public String login(Principal principal){
+        return "login";
     }
 }

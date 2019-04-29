@@ -5,17 +5,18 @@ import com.global.shop.model.user.Role;
 import com.global.shop.model.user.UserEntity;
 import com.global.shop.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
 
 /**
  * The class for the use of frequent logic, which will work in several classes.
- *
- * @author Aleksandr Sulyma
- * @version 1.0
  */
 @Component
 @Scope("singleton")
@@ -34,39 +35,31 @@ public class ProjectUtils {
      * returns instance. If not - create and persist to DB new UserEntity.
      *
      * @param principal - the object to check security.
-     * @return - the instance of UserEntity.
+     * @return the instance of UserEntity.
      */
     public UserEntity getUserInfo(Principal principal) {
+        Object tokenObject = ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        User securityUser = (User) tokenObject;
 
-        //TODO
-        //findById
+        UserEntity loginUser = userService.getUserByLogin(securityUser.getUsername());
+        if (loginUser != null) {
+            return loginUser;
+        }
 
+        UserEntity newUser = new UserEntity();
+        newUser.setLogin(securityUser.getUsername());
+        newUser.setActive(true);
 
-        return null;
+        String role = securityUser.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElse(StringUtils.EMPTY);
+        newUser.setRole(Role.valueOf(role));
 
-        //        OidcKeycloakAccount account = ((KeycloakAuthenticationToken) principal).getAccount();
-        //        AccessToken token = account.getKeycloakSecurityContext().getToken();
-        //
-        //        UserEntity loginUser = userService.getUserByLogin(principal.getName());
-        //        if (loginUser != null) {
-        //            return loginUser;
-        //        }
-        //
-        //        UserEntity newUser = new UserEntity();
-        //
-        //        newUser.setLogin(principal.getName());
-        //        newUser.setEmail(token.getEmail());
-        //        newUser.setGivenName(token.getGivenName());
-        //        newUser.setGender(token.getGender());
-        //        newUser.setFamilyName(token.getFamilyName());
-        //        newUser.setRegistrationDate(LocalDate.now());
-        //        newUser.setActive(true);
-        //        newUser.setLocked(false);
-        //        newUser.setRoles(String.join(", ", token.getRealmAccess().getRoles()));
-        //
-        //        UserEntity user = userService.createUser(newUser);
-        //        log.info("UserEntity has been created: " + user.getLogin());
-        //        return user;
+        UserEntity user = userService.createUser(newUser);
+        log.info("UserEntity has been created: " + user.getLogin());
+        return user;
     }
 
     public Long getUserAdminId() {
