@@ -14,10 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * @author Aleksandr Sulyma
- * @version 1.0
- */
 @RestController
 @RequestMapping("/users")
 public class UserController extends BaseController {
@@ -41,6 +37,5 @@ public class UserController extends BaseController {
     public BaseResponse<UserResponse> getUserByLogin(@PathVariable(name = "login") String login) {
         return new BaseResponse<>(mapper.buildFullUser(userService.getUserByLogin(login)));
     }
-
 
 }

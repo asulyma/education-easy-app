@@ -1,0 +1,5 @@
+course:
+  info-to-user: "Thank you about your choice. As soon as the administrator approves the application, we will send you an alert."
+  permission-to-admin: "The user asks for permission to access the course."
+  approve-permission: "Congratulations! You were given access to the course. You can go in and learn."
+  decline-permission: "We apologize, but you were not given access to the course."

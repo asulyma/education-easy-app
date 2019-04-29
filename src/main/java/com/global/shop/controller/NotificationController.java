@@ -26,7 +26,7 @@ import java.util.List;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/notification")
 public class NotificationController extends BaseController {
 
     private final NotificationService notificationService;

@@ -39,17 +39,12 @@ public class SectionService {
     @Transactional
     public void startSection(Long sectionId, Long userId) {
 
-        Optional<SectionEntity> optionalSection = sectionRepository.findById(sectionId);
-        Optional<UserEntity> optionalUser = userRepository.findById(userId);
-
-        SectionEntity sectionEntity = optionalSection.orElseThrow(() ->
-                new NotFoundRuntimeException("No available sectionEntity: " + sectionId));
-        UserEntity userEntity = optionalUser.orElseThrow(() ->
-                new NotFoundRuntimeException("No available userEntity: " + userId));
+        SectionEntity sectionEntity = sectionRepository.findById(sectionId).orElseThrow(NotFoundRuntimeException::new);
+        UserEntity userEntity = userRepository.findById(userId).orElseThrow(NotFoundRuntimeException::new);
 
         if (userEntity.getAllowedSections().contains(sectionEntity)) {
             throw new BadRequestParametersRuntimeException("SectionEntity: " + sectionId
-                    + " already allowed for userEntity: " + userId);
+                    + " has been started previously for user: " + userId);
         }
 
         userEntity.getAllowedSections().add(sectionEntity);

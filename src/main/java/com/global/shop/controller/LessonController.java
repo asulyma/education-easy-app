@@ -28,27 +28,27 @@ public class LessonController extends BaseController {
 
     @Autowired
     public LessonController(LessonService lessonService,
-            ProjectUtils projectUtils) {
+                            ProjectUtils projectUtils) {
         this.lessonService = lessonService;
         this.projectUtils = projectUtils;
     }
 
     @GetMapping
     @Secured("ROLE_user")
-    public BaseResponse<List<LessonResponse>> getLessonsByCourseNameAndId(Principal principal,
-            @PathVariable(name = "course") String courseName,
-            @PathVariable(name = "sectionId") Long sectionId) {
+    public BaseResponse<List<LessonResponse>> getLessons(Principal principal,
+                                                         @PathVariable(name = "course") String courseName,
+                                                         @PathVariable(name = "sectionId") Long sectionId) {
 
         UserEntity userEntity = projectUtils.getUserInfo(principal);
         return new BaseResponse<>(
-                lessonMapper.buildLessons(lessonService.getLessonsByCourseAndId(courseName, sectionId, userEntity)));
+                lessonMapper.buildLessons(lessonService.getCourseLessonsBySectionId(courseName, sectionId, userEntity)));
     }
 
     @GetMapping("/{id}")
     @Secured("ROLE_user")
     public BaseResponse<LessonResponse> getLessonById(@PathVariable(name = "course") String courseName,
-            @PathVariable(name = "sectionId") Long sectionId,
-            @PathVariable(name = "id") Long lessonId) {
+                                                      @PathVariable(name = "sectionId") Long sectionId,
+                                                      @PathVariable(name = "id") Long lessonId) {
 
         return new BaseResponse<>(
                 lessonMapper.buildLesson(lessonService.getLessonById(courseName, sectionId, lessonId)));
@@ -56,13 +56,13 @@ public class LessonController extends BaseController {
 
     @PutMapping("/{id}")
     @Secured("ROLE_user")
-    public BaseResponse processing(Principal principal,
-            @PathVariable(name = "course") String courseName,
-            @PathVariable(name = "sectionId") Long sectionId,
-            @PathVariable(name = "id") Long lessonId) {
+    public BaseResponse finishLesson(Principal principal,
+                                     @PathVariable(name = "course") String courseName,
+                                     @PathVariable(name = "sectionId") Long sectionId,
+                                     @PathVariable(name = "id") Long lessonId) {
 
         UserEntity userEntity = projectUtils.getUserInfo(principal);
-        lessonService.processing(courseName, sectionId, lessonId, userEntity.getId());
+        lessonService.finishLesson(courseName, sectionId, lessonId, userEntity);
         return new BaseResponse();
     }
 }

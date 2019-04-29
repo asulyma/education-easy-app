@@ -11,19 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
 
-/**
- * @author Aleksandr Sulyma
- * @version 1.0
- */
 @RestController
-@RequestMapping("/{course}/sections")
+@RequestMapping("/{course}/section")
 public class SectionController extends BaseController {
 
     private final SectionService sectionService;
@@ -43,7 +39,7 @@ public class SectionController extends BaseController {
         return new BaseResponse<>(sectionMapper.buildSections(sectionService.getSectionsByCourseName(name)));
     }
 
-    @GetMapping(path = "/{sectionId}")
+    @GetMapping("/{sectionId}")
     @Secured("ROLE_user")
     public BaseResponse<SectionResponse> getSectionBySectionId(Principal principal,
             @PathVariable(name = "course") String courseName,
@@ -54,10 +50,10 @@ public class SectionController extends BaseController {
                 sectionMapper.buildSection(sectionService.getSectionByCourseAndId(courseName, id, userEntityInfo)));
     }
 
-    @PutMapping("/{sectionId}")
+    @PostMapping("/{sectionId}")
     @Secured("ROLE_user")
-    public BaseResponse startSection(Principal principal, @PathVariable(name = "sectionId") Long sectionId) {
-
+    public BaseResponse startSection(Principal principal,
+                                     @PathVariable(name = "sectionId") Long sectionId) {
         UserEntity userEntityInfo = projectUtils.getUserInfo(principal);
         sectionService.startSection(sectionId, userEntityInfo.getId());
         return new BaseResponse();

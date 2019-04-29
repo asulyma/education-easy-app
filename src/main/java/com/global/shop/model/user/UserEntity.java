@@ -6,11 +6,12 @@ import com.global.shop.model.learning.CourseEntity;
 import com.global.shop.model.learning.LessonEntity;
 import com.global.shop.model.learning.Progress;
 import com.global.shop.model.learning.SectionEntity;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Getter
 @Setter
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class UserEntity extends CreatableEntity {
 
     @Column(name = "login")
@@ -79,8 +81,7 @@ public class UserEntity extends CreatableEntity {
     @OneToOne(mappedBy = "author")
     private Comment comment;
 
+    @Type(type = "jsonb")
     @Column(name = "progress", columnDefinition = "jsonb")
-    @Type(type = "jsonb", parameters = {@Parameter(name = "classType",
-            value = "com.global.shop.model.learning.Progress")})
     private Progress progress;
 }

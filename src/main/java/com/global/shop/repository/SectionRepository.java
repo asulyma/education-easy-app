@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * The class for working with DataBases. Only for {@link SectionEntity} entity.
- * @author Aleksandr Sulyma
- * @version 1.0
  */
 @Repository
 public interface SectionRepository extends JpaRepository<SectionEntity, Long> {

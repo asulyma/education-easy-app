@@ -14,10 +14,10 @@ import java.util.List;
 @Repository
 public interface LessonRepository extends JpaRepository<LessonEntity, Long> {
 
-    List<LessonEntity> findAllBySectionCourseNameAndSectionId(String nameOfCourse, Long sectionId);
+    List<LessonEntity> findAllBySectionCourseNameAndSectionId(String courseName, Long sectionId);
 
-    LessonEntity findBySectionCourseNameAndSectionIdAndId(String nameOfCourse, Long sectionId, Long lessonId);
+    LessonEntity findBySectionCourseNameAndSectionIdAndId(String courseName, Long sectionId, Long lessonId);
 
-    Long countAllBySectionCourseName(String nameOfCourse);
+    Long countAllBySectionCourseName(String courseName);
 
 }

@@ -36,8 +36,8 @@ public class CourseController extends BaseController {
 
     @GetMapping
     @Secured("ROLE_user")
-    public BaseResponse<List<CourseResponse>> getListOfCourses() {
-        return new BaseResponse<>(courseMapper.buildCourses(courseService.getListOfCourse()));
+    public BaseResponse<List<CourseResponse>> getCourses() {
+        return new BaseResponse<>(courseMapper.buildCourses(courseService.getCourses()));
     }
 
     @GetMapping("/{id}")
@@ -47,14 +47,14 @@ public class CourseController extends BaseController {
         return new BaseResponse<>(courseMapper.buildCourse(courseService.getCourseById(id, userEntityInfo)));
     }
 
-    @PostMapping("/approve/{courseId}")
+    @PostMapping("/{courseId}/approve")
     @Secured({"ROLE_admin"})
     public BaseResponse approveCourse(@PathVariable("courseId") Long courseId,
                                       @RequestParam("notificationId") Long notificationId) {
         return courseService.approveCourse(courseId, notificationId);
     }
 
-    @PostMapping("/decline/{courseId}")
+    @PostMapping("/{courseId}/decline")
     @Secured({"ROLE_admin"})
     public BaseResponse declineCourse(@PathVariable("courseId") Long courseId,
                                       @RequestParam("notificationId") Long notificationId) {

@@ -38,6 +38,10 @@ public class ProjectUtils {
      */
     public UserEntity getUserInfo(Principal principal) {
 
+        //TODO
+        //findById
+
+
         return null;
 
         //        OidcKeycloakAccount account = ((KeycloakAuthenticationToken) principal).getAccount();

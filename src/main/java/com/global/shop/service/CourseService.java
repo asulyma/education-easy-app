@@ -39,7 +39,7 @@ public class CourseService {
         this.notificationService = notificationService;
     }
 
-    public List<CourseEntity> getListOfCourse() {
+    public List<CourseEntity> getCourses() {
         return courseRepository.findAll();
     }
 
