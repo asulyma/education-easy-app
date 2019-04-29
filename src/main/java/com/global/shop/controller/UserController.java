@@ -23,12 +23,11 @@ import java.util.List;
 public class UserController extends BaseController {
 
     private final UserService userService;
-    private final UserMapper mapper;
+    private final UserMapper mapper = UserMapper.INSTANCE;
 
     @Autowired
-    public UserController(UserService userService, UserMapper mapper) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.mapper = mapper;
     }
 
     @GetMapping

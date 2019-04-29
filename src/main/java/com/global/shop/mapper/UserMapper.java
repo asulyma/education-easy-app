@@ -6,6 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
 public interface UserMapper {
+
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     List<UserResponse> buildUsersResponse(List<UserEntity> userEntities);
 

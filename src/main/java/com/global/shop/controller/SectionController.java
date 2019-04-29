@@ -28,15 +28,13 @@ public class SectionController extends BaseController {
 
     private final SectionService sectionService;
     private final ProjectUtils projectUtils;
-    private final SectionMapper sectionMapper;
+    private final SectionMapper sectionMapper = SectionMapper.INSTANCE;
 
     @Autowired
     public SectionController(SectionService sectionService,
-            ProjectUtils projectUtils,
-            SectionMapper sectionMapper) {
+                             ProjectUtils projectUtils) {
         this.sectionService = sectionService;
         this.projectUtils = projectUtils;
-        this.sectionMapper = sectionMapper;
     }
 
     @GetMapping
@@ -52,8 +50,8 @@ public class SectionController extends BaseController {
             @PathVariable(name = "sectionId") Long id) {
 
         UserEntity userEntityInfo = projectUtils.getUserInfo(principal);
-        return new BaseResponse<>(sectionMapper.buildSection(
-                sectionService.getSectionByCourseAndId(courseName, id, userEntityInfo)));
+        return new BaseResponse<>(
+                sectionMapper.buildSection(sectionService.getSectionByCourseAndId(courseName, id, userEntityInfo)));
     }
 
     @PutMapping("/{sectionId}")

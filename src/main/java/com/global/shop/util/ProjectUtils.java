@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
-import java.util.Optional;
 
 /**
  * The class for the use of frequent logic, which will work in several classes.
+ *
  * @author Aleksandr Sulyma
  * @version 1.0
  */
@@ -32,6 +32,7 @@ public class ProjectUtils {
     /**
      * The method for mapping the KeyCloak of the user and entity that is in the database. If user is exist in DB - only
      * returns instance. If not - create and persist to DB new UserEntity.
+     *
      * @param principal - the object to check security.
      * @return - the instance of UserEntity.
      */
@@ -65,9 +66,11 @@ public class ProjectUtils {
     }
 
     public Long getUserAdminId() {
-        UserEntity admin = Optional.ofNullable(userService.getUserByRole(Role.ADMIN.getDescription()))
-                                   .orElseThrow(() -> new NotFoundRuntimeException(
-                                           "No available user with role:" + Role.ADMIN.getDescription()));
+        UserEntity admin = userService.getUserByRole(Role.ADMIN)
+                .stream()
+                .findFirst()
+                .orElseThrow(NotFoundRuntimeException::new);
+
         return admin.getId();
     }
 

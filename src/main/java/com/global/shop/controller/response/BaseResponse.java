@@ -1,6 +1,7 @@
 package com.global.shop.controller.response;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * This class using for building response for front-end side.
@@ -10,6 +11,7 @@ import lombok.Data;
  * @version 1.0
  */
 @Data
+@NoArgsConstructor
 public class BaseResponse<T> {
 
     private Boolean success = true;
@@ -24,9 +26,6 @@ public class BaseResponse<T> {
 
     public BaseResponse(T data) {
         this.data = data;
-    }
-
-    public BaseResponse() {
     }
 
     static BaseResponse buildErrorResponse(int responseCode, Exception e) {

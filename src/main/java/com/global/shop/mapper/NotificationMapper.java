@@ -1,16 +1,16 @@
 package com.global.shop.mapper;
 
-import com.global.shop.model.notification.Notification;
-import com.global.shop.model.wrapper.NotificationDTO;
-import com.global.shop.model.wrapper.NotificationViewWrapper;
-import com.global.shop.model.wrapper.NotificationWrapper;
+import com.global.shop.model.notification.NotificationEntity;
+import com.global.shop.model.wrapper.NotificationDto;
+import com.global.shop.model.wrapper.NotificationResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 /**
- * This class using for mapping between {@link Notification} entity and DTO`s.
+ * This class using for mapping between {@link NotificationEntity} entity and DTO`s.
  *
  * @author Aleksandr Sulyma
  * @version 1.0
@@ -18,10 +18,11 @@ import java.util.List;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
 public interface NotificationMapper {
 
+    NotificationMapper INSTANCE = Mappers.getMapper(NotificationMapper.class);
 
-    NotificationViewWrapper notificationToViewWrapper(Notification notification);
+    NotificationResponse notificationToViewWrapper(NotificationEntity notificationEntity);
 
-    List<NotificationWrapper> notificationsToListOfWrappers(List<Notification> notifications);
+    List<NotificationResponse> notificationsToListOfWrappers(List<NotificationEntity> notificationEntities);
 
-    Notification dtoToNotification(NotificationDTO notificationDTO);
+    NotificationEntity dtoToNotification(NotificationDto notificationDTO);
 }

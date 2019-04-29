@@ -23,15 +23,13 @@ import java.util.List;
 public class LessonController extends BaseController {
 
     private final LessonService lessonService;
-    private final LessonMapper lessonMapper;
+    private final LessonMapper lessonMapper = LessonMapper.INSTANCE;
     private final ProjectUtils projectUtils;
 
     @Autowired
     public LessonController(LessonService lessonService,
-            LessonMapper lessonMapper,
             ProjectUtils projectUtils) {
         this.lessonService = lessonService;
-        this.lessonMapper = lessonMapper;
         this.projectUtils = projectUtils;
     }
 
@@ -42,8 +40,8 @@ public class LessonController extends BaseController {
             @PathVariable(name = "sectionId") Long sectionId) {
 
         UserEntity userEntity = projectUtils.getUserInfo(principal);
-        return new BaseResponse<>(lessonMapper.buildLessons(
-                lessonService.getLessonsByCourseAndId(courseName, sectionId, userEntity)));
+        return new BaseResponse<>(
+                lessonMapper.buildLessons(lessonService.getLessonsByCourseAndId(courseName, sectionId, userEntity)));
     }
 
     @GetMapping("/{id}")
@@ -52,8 +50,8 @@ public class LessonController extends BaseController {
             @PathVariable(name = "sectionId") Long sectionId,
             @PathVariable(name = "id") Long lessonId) {
 
-        return new BaseResponse<>(lessonMapper.buildLesson(
-                lessonService.getLessonById(courseName, sectionId, lessonId)));
+        return new BaseResponse<>(
+                lessonMapper.buildLesson(lessonService.getLessonById(courseName, sectionId, lessonId)));
     }
 
     @PutMapping("/{id}")

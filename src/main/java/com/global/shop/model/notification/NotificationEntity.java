@@ -1,5 +1,6 @@
 package com.global.shop.model.notification;
 
+import com.global.shop.model.CreatableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,29 +20,28 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Notification {
+public class NotificationEntity extends CreatableEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(name = "description")
+    private String description;
 
-    @Size(max = 256)
-    private String title;
-
-    @Column(name = "update_date")
-    private LocalDate updateDate;
-
+    @Column(name = "publisher_id")
     private Long publisherId;
 
+    @Column(name = "recipient_id")
     private Long recipientId;
 
+    @Column(name = "notification_type")
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
+    @Column(name = "entity_type")
     @Enumerated(EnumType.STRING)
-    private NotificationEntityType notificationEntityType;
+    private EntityType entityType;
 
-    private Long idOfEntity;
+    @Column(name = "entity_id")
+    private Long entityId;
 
-    private Boolean isRead;
+    @Column(name = "is_read")
+    private boolean isRead;
 }

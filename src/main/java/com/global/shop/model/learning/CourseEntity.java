@@ -43,7 +43,7 @@ public class CourseEntity extends CreatableEntity {
     @Column(name = "cost")
     private Integer cost;
 
-    @OneToMany(mappedBy = "courseEntity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<SectionEntity> sections;
 
 }

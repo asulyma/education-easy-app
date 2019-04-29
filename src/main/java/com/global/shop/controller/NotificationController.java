@@ -4,10 +4,8 @@ import com.global.shop.controller.response.BaseController;
 import com.global.shop.controller.response.BaseResponse;
 import com.global.shop.mapper.NotificationMapper;
 import com.global.shop.model.user.UserEntity;
-import com.global.shop.model.wrapper.NotificationDTO;
-import com.global.shop.model.wrapper.NotificationViewWrapper;
-import com.global.shop.model.wrapper.NotificationWrapper;
-import com.global.shop.service.CourseService;
+import com.global.shop.model.wrapper.NotificationDto;
+import com.global.shop.model.wrapper.NotificationResponse;
 import com.global.shop.service.NotificationService;
 import com.global.shop.util.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,25 +30,20 @@ import java.util.List;
 public class NotificationController extends BaseController {
 
     private final NotificationService notificationService;
-    private final CourseService courseService;
 
     private final ProjectUtils projectUtils;
-    private final NotificationMapper mapper;
+    private final NotificationMapper mapper = NotificationMapper.INSTANCE;
 
     @Autowired
     public NotificationController(NotificationService notificationService,
-                                  CourseService courseService,
-                                  ProjectUtils projectUtils,
-                                  NotificationMapper mapper) {
+                                  ProjectUtils projectUtils) {
         this.notificationService = notificationService;
-        this.courseService = courseService;
         this.projectUtils = projectUtils;
-        this.mapper = mapper;
     }
 
     @GetMapping
     @Secured({"ROLE_user"})
-    public BaseResponse<List<NotificationWrapper>> getNotifications(Principal principal) {
+    public BaseResponse<List<NotificationResponse>> getNotifications(Principal principal) {
         UserEntity userEntity = projectUtils.getUserInfo(principal);
         return new BaseResponse<>(mapper.notificationsToListOfWrappers(notificationService.getAllNotifications(
                 userEntity)));
@@ -58,26 +51,22 @@ public class NotificationController extends BaseController {
 
     @GetMapping("/{id}")
     @Secured({"ROLE_user"})
-    public BaseResponse<NotificationViewWrapper> getNotificationById(Principal principal,
-            @PathVariable("id") Long id) {
-        UserEntity userEntity = projectUtils.getUserInfo(principal);
+    public BaseResponse<NotificationResponse> getNotificationById(@PathVariable("id") Long id) {
         return new BaseResponse<>(
-                mapper.notificationToViewWrapper(notificationService.getNotificationById(userEntity, id)));
+                mapper.notificationToViewWrapper(notificationService.getNotificationById(id)));
     }
 
     @PostMapping("/{id}")
-    @Secured({"ROLE_admin"})
-    public BaseResponse decisionOfNotification(@RequestBody NotificationDTO dto,
-            @PathVariable("id") Long notificationId) {
-
-        courseService.decisionOfNotification(mapper.dtoToNotification(dto));
-        return new BaseResponse<>();
+    @Secured("ROLE_user")
+    public BaseResponse sendPermissionRequestOnCourse(@PathVariable(name = "id") Long courseId,
+                                                      @RequestBody NotificationDto dto) {
+        return notificationService.requestToPermissionOfCourse(courseId, dto);
     }
 
     @DeleteMapping("/{id}")
     @Secured({"ROLE_user"})
     public BaseResponse removeNotification(Principal principal,
-            @PathVariable("id") Long notificationId) {
+                                           @PathVariable("id") Long notificationId) {
 
         UserEntity userEntity = projectUtils.getUserInfo(principal);
         notificationService.removeNotification(notificationId, userEntity);

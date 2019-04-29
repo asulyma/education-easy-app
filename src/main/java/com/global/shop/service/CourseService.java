@@ -1,11 +1,12 @@
 package com.global.shop.service;
 
+import com.global.shop.controller.response.BaseResponse;
 import com.global.shop.exception.BadRequestParametersRuntimeException;
 import com.global.shop.exception.NotAllowedRuntimeException;
 import com.global.shop.exception.NotFoundRuntimeException;
 import com.global.shop.model.learning.CourseEntity;
 import com.global.shop.model.learning.Progress;
-import com.global.shop.model.notification.Notification;
+import com.global.shop.model.notification.NotificationEntity;
 import com.global.shop.model.notification.NotificationType;
 import com.global.shop.model.user.UserEntity;
 import com.global.shop.repository.CourseRepository;
@@ -32,7 +33,7 @@ public class CourseService {
 
     @Autowired
     public CourseService(CourseRepository courseRepository, UserRepository userRepository,
-            NotificationService notificationService) {
+                         NotificationService notificationService) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
         this.notificationService = notificationService;
@@ -55,32 +56,38 @@ public class CourseService {
         }
     }
 
-    public void decisionOfNotification(Notification notification) {
+    public BaseResponse approveCourse(Long courseId, Long notificationId) {
 
-        //change Java logic
-        if (notification.getNotificationType().equals(NotificationType.APPROVE_PERMISSION)) {
+        NotificationEntity notificationEntity = notificationService.getNotificationById(notificationId);
+        CourseEntity courseEntity = courseRepository.findById(courseId).orElseThrow(NotFoundRuntimeException::new);
 
-            Optional<CourseEntity> optionalCourse = courseRepository.findById(notification.getIdOfEntity());
-            Optional<UserEntity> optionalUser = userRepository.findById(notification.getRecipientId());
+        Long userId = notificationEntity.getPublisherId();
+        UserEntity userEntity = userRepository.findById(userId).orElseThrow(NotFoundRuntimeException::new);
 
-            CourseEntity courseEntity = optionalCourse.orElseThrow(() ->
-                    new NotFoundRuntimeException("No available courseEntity: " + notification.getIdOfEntity()));
-            UserEntity userEntity = optionalUser.orElseThrow(() ->
-                    new NotFoundRuntimeException("No available userEntity:" + notification.getRecipientId()));
 
-            if (userEntity.getAllowedCourses().contains(courseEntity)) {
-                throw new BadRequestParametersRuntimeException("CourseEntity: " + courseEntity.getId()
-                        + " already allowed for userEntity: " + userEntity.getId());
-            }
-
-            userEntity.getAllowedCourses().add(courseEntity);
-            userEntity.setProgress(new Progress(courseEntity.getName(), 0L));
-            userRepository.saveAndFlush(userEntity);
-            log.info("Given access for userEntity: '" + userEntity.getLogin() + "' to courseEntity with id: "
-                    + courseEntity.getId());
+        if (userEntity.getAllowedCourses().contains(courseEntity)) {
+            throw new BadRequestParametersRuntimeException("CourseEntity: " + courseEntity.getId()
+                    + " already allowed for userEntity: " + userEntity.getId());
         }
 
-        //send notification (approve or decline)
-        notificationService.createNotification(notification);
+        userEntity.getAllowedCourses().add(courseEntity);
+        userEntity.setProgress(new Progress(courseEntity.getName(), 0L));
+        userRepository.saveAndFlush(userEntity);
+        log.info("Given access for userEntity: '" + userEntity.getLogin() + "' to courseEntity with id: "
+                + courseEntity.getId());
+
+        return notificationService.requestToAllowOrDeclinePermissionOfCourse(courseEntity.getId(), userEntity.getId(),
+                NotificationType.APPROVE_PERMISSION_INFO_TO_ADMIN, NotificationType.APPROVE_PERMISSION_INFO_TO_USER);
     }
+
+    public BaseResponse declineCourse(Long courseId, Long notificationId){
+        NotificationEntity notificationEntity = notificationService.getNotificationById(notificationId);
+        Long userId = notificationEntity.getPublisherId();
+        UserEntity userEntity = userRepository.findById(userId).orElseThrow(NotFoundRuntimeException::new);
+
+        return notificationService.requestToAllowOrDeclinePermissionOfCourse(courseId, userEntity.getId(),
+                NotificationType.DECLINE_PERMISSION_INFO_TO_ADMIN, NotificationType.DECLINE_PERMISSION_INFO_TO_USER);
+
+    }
+
 }

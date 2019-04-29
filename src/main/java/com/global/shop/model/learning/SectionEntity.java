@@ -36,7 +36,7 @@ public class SectionEntity extends CreatableEntity {
     @JoinColumn(name = "course_id")
     private CourseEntity course;
 
-    @OneToMany(mappedBy = "sectionEntity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
     private List<LessonEntity> lessons;
 
 }
