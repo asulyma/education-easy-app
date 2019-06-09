@@ -1,31 +1,26 @@
-GET:    /courses                                                - get list of CourseResponse.
-GET:    /courses/{id}                                           - get single course as CourseResponse.
-POST:   /{courseId}/approve?notificationId=2                    - approve permission for course by {id}.
-POST:   /{courseId}/decline?notificationId=2                    - decline permission for course by {id}.
-
-
-
-GET:    /{course}/section                              - get list of SectionResponse by courseName.
-GET:    /{course}/section/{id}                         - get single SectionResponse by courseName and sectionId.
-POST:   /{course}/section/{id}                         - user has started the passage of the section.
-
-
-
-GET:    /{course}/{sectionId}/lessons                   - get list of LessonResponse by courseName and sectionId.
-GET:    /{course}/{sectionId}/lessons/{id}              - get single LessonResponse by id.
-PUT:    /{course}/{sectionId}/lessons/{id}              - finish lesson and add progress.
-
+GET:    /course                                        - get list of CourseResponse.
+GET:    /course/{id}                                   - get single course as CourseResponse.
 
 
 GET:    /notification                                  - get list of NotificationResponse.
 GET:    /notification/{id}                             - get single NotificationResponse by id.
-POST:   /notification/{id}                             - send permission request about course.
+POST:   /notification/{id}                             - get allow for course.
+POST:   /notification/{courseId}/approve               - approve permission by id. Must contains notificationId in body.
+POST:   /notification/{courseId}/decline               - decline permission by id. Must contains notificationId in body.
 DELETE: /notification/{id}                             - remove notification by id.
 
 
+GET:    /{course}/section                              - get list of SectionResponse by courseName.
+GET:    /{course}/section/{id}                         - get single SectionResponse by courseName and sectionId.
 
-GET:    /users                                          - get list of UserResponse.
-GET:    /users/{login}                                  - get single UserResponse by login.
+
+GET:    /{course}/{sectionId}/lesson                   - get list of LessonResponse by courseName and sectionId.
+GET:    /{course}/{sectionId}/lesson/{id}              - get single LessonResponse by id.
+PUT:    /{course}/{sectionId}/lesson/{id}              - finish lesson and add progress.
+
+
+GET:    /user                                          - get list of UserResponse.
+GET:    /user/{login}                                  - get single UserResponse by login.
 
 
 

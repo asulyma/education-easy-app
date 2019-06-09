@@ -2,12 +2,10 @@ package com.global.education.controller;
 
 import com.global.education.controller.response.BaseController;
 import com.global.education.controller.response.BaseResponse;
-import com.global.education.mapper.NotificationMapper;
 import com.global.education.model.user.UserEntity;
-import com.global.education.model.wrapper.NotificationDto;
 import com.global.education.model.wrapper.NotificationResponse;
 import com.global.education.service.NotificationService;
-import com.global.education.util.ProjectUtils;
+import com.global.education.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,60 +14,67 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
 
+import static com.global.education.mapper.NotificationMapper.INSTANCE;
+
 /**
- * @author Aleksandr Sulyma
- * @version 1.0
+ * Controller for CRUD operations on NotificationEntity.
  */
 @RestController
 @RequestMapping("/notification")
 public class NotificationController extends BaseController {
 
-    private final NotificationService notificationService;
-
-    private final ProjectUtils projectUtils;
-    private final NotificationMapper mapper = NotificationMapper.INSTANCE;
+    @Autowired
+    private NotificationService notificationService;
 
     @Autowired
-    public NotificationController(NotificationService notificationService,
-                                  ProjectUtils projectUtils) {
-        this.notificationService = notificationService;
-        this.projectUtils = projectUtils;
-    }
+    private UserUtils userUtils;
 
     @GetMapping
-    @Secured({"ROLE_user"})
+    @Secured({"ROLE_USER"})
     public BaseResponse<List<NotificationResponse>> getNotifications(Principal principal) {
-        UserEntity userEntity = projectUtils.getUserInfo(principal);
-        return new BaseResponse<>(mapper.notificationsToListOfWrappers(notificationService.getAllNotifications(
-                userEntity)));
+        UserEntity userInfo = userUtils.getUserInfo(principal);
+        return new BaseResponse<>(
+                INSTANCE.notificationsToListOfWrappers(notificationService.getNotifications(userInfo)));
     }
 
     @GetMapping("/{id}")
-    @Secured({"ROLE_user"})
+    @Secured({"ROLE_USER"})
     public BaseResponse<NotificationResponse> getNotificationById(@PathVariable("id") Long id) {
-        return new BaseResponse<>(
-                mapper.notificationToViewWrapper(notificationService.getNotificationById(id)));
+        return new BaseResponse<>(INSTANCE.notificationToViewWrapper(notificationService.getNotification(id)));
     }
 
-    @PostMapping("/{id}")
-    @Secured("ROLE_user")
-    public BaseResponse sendPermissionRequestOnCourse(@PathVariable(name = "id") Long courseId,
-                                                      @RequestBody NotificationDto dto) {
-        return notificationService.requestToPermissionOfCourse(courseId, dto);
+    @PostMapping("/{courseId}")
+    @Secured("ROLE_USER")
+    public BaseResponse getAccessForCourse(Principal principal, @PathVariable(name = "courseId") Long courseId) {
+        notificationService.getAccessForCourse(courseId, userUtils.getUserInfo(principal).getId());
+        return new BaseResponse();
+    }
+
+    @PostMapping("/{courseId}/approve")
+    @Secured({"ROLE_ADMIN"})
+    public BaseResponse approveCourse(@PathVariable("courseId") Long courseId, @RequestBody Long notificationId) {
+        notificationService.approveCourse(courseId, notificationId);
+        return new BaseResponse();
+    }
+
+    @PostMapping("/{courseId}/decline")
+    @Secured({"ROLE_ADMIN"})
+    public BaseResponse declineCourse(@PathVariable("courseId") Long courseId,
+            @RequestParam("notificationId") Long notificationId) {
+        notificationService.declineCourse(courseId, notificationId);
+        return new BaseResponse();
     }
 
     @DeleteMapping("/{id}")
-    @Secured({"ROLE_user"})
-    public BaseResponse removeNotification(Principal principal,
-                                           @PathVariable("id") Long notificationId) {
-
-        UserEntity userEntity = projectUtils.getUserInfo(principal);
-        notificationService.removeNotification(notificationId, userEntity);
+    @Secured({"ROLE_USER"})
+    public BaseResponse removeNotification(Principal principal, @PathVariable("id") Long notificationId) {
+        notificationService.removeNotification(notificationId, userUtils.getUserInfo(principal));
         return new BaseResponse<>();
     }
 

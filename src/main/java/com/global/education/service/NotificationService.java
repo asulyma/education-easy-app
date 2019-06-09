@@ -1,115 +1,103 @@
 package com.global.education.service;
 
-import com.global.education.controller.response.BaseResponse;
-import com.global.education.exception.NotFoundRuntimeException;
-import com.global.education.mapper.NotificationMapper;
-import com.global.education.model.notification.EntityType;
+import com.global.education.config.TranslationHolder;
 import com.global.education.model.notification.NotificationEntity;
 import com.global.education.model.notification.NotificationType;
 import com.global.education.model.user.UserEntity;
-import com.global.education.model.wrapper.NotificationDto;
 import com.global.education.repository.NotificationRepository;
-import com.global.education.util.ProjectUtils;
+import com.global.education.util.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
+import static com.global.education.model.notification.EntityType.COURSE;
+import static com.global.education.model.notification.NotificationType.APPROVE_PERMISSION_INFO_TO_ADMIN;
+import static com.global.education.model.notification.NotificationType.APPROVE_PERMISSION_INFO_TO_USER;
+import static com.global.education.model.notification.NotificationType.DECLINE_PERMISSION_INFO_TO_ADMIN;
+import static com.global.education.model.notification.NotificationType.DECLINE_PERMISSION_INFO_TO_USER;
+import static com.global.education.model.notification.NotificationType.INFO_TO_USER;
+import static com.global.education.model.notification.NotificationType.PERMISSION_TO_ADMIN;
+import static com.global.education.util.ProjectUtils.checkAndGetOptional;
 
-@Service
 @Slf4j
+@Service
 public class NotificationService {
 
-    private final NotificationRepository notificationRepository;
-    private final ProjectUtils projectUtils;
-    private final NotificationMapper mapper = NotificationMapper.INSTANCE;
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @Autowired
-    public NotificationService(NotificationRepository notificationRepository,
-                               ProjectUtils projectUtils) {
-        this.notificationRepository = notificationRepository;
-        this.projectUtils = projectUtils;
-    }
+    private CourseService courseService;
 
-    public List<NotificationEntity> getAllNotifications(UserEntity userEntity) {
+    @Autowired
+    private UserUtils userUtils;
+
+    @Autowired
+    private TranslationHolder translationHolder;
+
+    public List<NotificationEntity> getNotifications(UserEntity userEntity) {
         return notificationRepository.findAllByRecipientId(userEntity.getId());
     }
 
-    public NotificationEntity getNotificationById(Long notificationId) {
-
-        NotificationEntity notificationEntity = notificationRepository.findById(notificationId)
-                .orElseThrow(NotFoundRuntimeException::new);
-
-        notificationEntity.setRead(Boolean.TRUE);
-        notificationRepository.saveAndFlush(notificationEntity);
-        return notificationEntity;
+    @Transactional
+    public NotificationEntity getNotification(Long id) {
+        NotificationEntity notification = checkAndGetOptional(notificationRepository.findById(id), id);
+        notification.setRead(Boolean.TRUE);
+        return notification;
     }
 
-    public BaseResponse requestToPermissionOfCourse(Long courseId, NotificationDto dto) {
-        Long adminId = projectUtils.getUserAdminId();
+    public void getAccessForCourse(Long courseId, Long userId) {
+        Long adminId = userUtils.getUserAdminId();
 
-        // Create notification to ADMIN
-        NotificationEntity toAdmin = mapper.dtoToNotification(dto);
-        toAdmin.setRecipientId(adminId);
-        toAdmin.setNotificationType(NotificationType.PERMISSION_TO_ADMIN);
-        createNotification(toAdmin);
-
-        // Create notification to USER (creator is receiver)
-        NotificationEntity toUser = mapper.dtoToNotification(dto);
-        toUser.setRecipientId(toUser.getPublisherId());
-        toUser.setNotificationType(NotificationType.INFO_TO_USER);
-        createNotification(toUser);
-
-        return new BaseResponse();
+        // Create notification to ADMIN and USER (creator is receiver)
+        createNotification(userId, adminId, PERMISSION_TO_ADMIN, courseId);
+        createNotification(null, userId, INFO_TO_USER, courseId);
     }
 
-    public BaseResponse requestToAllowOrDeclinePermissionOfCourse(Long courseId, Long recipientId,
-                                                                  NotificationType toAdminType,
-                                                                  NotificationType toUserType) {
-        Long adminId = projectUtils.getUserAdminId();
-
-        // Create notification to ADMIN
-        NotificationEntity toAdmin = new NotificationEntity();
-        toAdmin.setPublisherId(adminId);
-        toAdmin.setRecipientId(adminId);
-        toAdmin.setNotificationType(toAdminType);
-        toAdmin.setEntityType(EntityType.COURSE);
-        toAdmin.setEntityId(courseId);
-        createNotification(toAdmin);
-
-        // Create notification to USER
-        NotificationEntity toUser = new NotificationEntity();
-        toUser.setRecipientId(recipientId);
-        toUser.setNotificationType(toUserType);
-        toUser.setEntityType(EntityType.COURSE);
-        toUser.setEntityId(courseId);
-        createNotification(toUser);
-
-        return new BaseResponse();
+    public void approveCourse(Long courseId, Long notificationId) {
+        NotificationEntity notificationEntity = getNotification(notificationId);
+        Long userId = courseService.allowCourseForUser(notificationEntity.getPublisherId(), courseId);
+        allowOrDeclineCourse(courseId, userId, APPROVE_PERMISSION_INFO_TO_ADMIN, APPROVE_PERMISSION_INFO_TO_USER);
     }
 
-    public void createNotification(NotificationEntity entity) {
+    public void declineCourse(Long courseId, Long notificationId) {
+        NotificationEntity notificationEntity = getNotification(notificationId);
+        Long userId = notificationEntity.getPublisherId();
+        allowOrDeclineCourse(courseId, userId, DECLINE_PERMISSION_INFO_TO_ADMIN, DECLINE_PERMISSION_INFO_TO_USER);
+    }
 
-            //TODO description
-//        TranslationEntity translation = translationRepository.findByEntityTypeAndNotificationType(
-//                entity.getEntityType(), entity.getNotificationType());
-//        entity.setDescription(translation.getDescription());
-//
-//        notificationRepository.saveAndFlush(entity);
-//        log.info("NotificationEntity for user: " + entity.getRecipientId() + " was created.");
+    private void allowOrDeclineCourse(Long courseId, Long recipientId, NotificationType toAdmin,
+            NotificationType toUser) {
+        Long adminId = userUtils.getUserAdminId();
+
+        // Create notification to ADMIN and USER (he would not know about admin)
+        createNotification(adminId, adminId, toAdmin, courseId);
+        createNotification(null, recipientId, toUser, courseId);
+    }
+
+    private void createNotification(Long publisherId, Long recipientId, NotificationType type, Long entityId) {
+        NotificationEntity notification = new NotificationEntity();
+        notification.setPublisherId(publisherId);
+        notification.setRecipientId(recipientId);
+        notification.setNotificationType(type);
+        notification.setEntityType(COURSE);
+        notification.setEntityId(entityId);
+        setTranslationAndSave(notification);
+    }
+
+    private void setTranslationAndSave(NotificationEntity entity) {
+        entity.setDescription(translationHolder.getPair().get(entity.getNotificationType()));
+        notificationRepository.saveAndFlush(entity);
+        log.info("NotificationEntity for user: " + entity.getRecipientId() + " was created.");
     }
 
     @Transactional
     public void removeNotification(Long notificationId, UserEntity userEntity) {
-        if (notificationRepository.existsById(notificationId)) {
-            notificationRepository.deleteByIdAndRecipientId(notificationId, userEntity.getId());
-            log.info("NotificationEntity with id: " + notificationId + " has been removed.");
-        } else {
-            throw new NotFoundRuntimeException("No available notification by id: " + notificationId);
-        }
-
-
+        notificationRepository.deleteByIdAndRecipientId(notificationId, userEntity.getId());
+        log.info("NotificationEntity with id: " + notificationId + " has been removed.");
     }
 }

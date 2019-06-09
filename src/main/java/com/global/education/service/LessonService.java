@@ -1,8 +1,6 @@
 package com.global.education.service;
 
 import com.global.education.exception.BadRequestParametersRuntimeException;
-import com.global.education.exception.NotAllowedRuntimeException;
-import com.global.education.model.BaseEntity;
 import com.global.education.model.learning.LessonEntity;
 import com.global.education.model.learning.Progress;
 import com.global.education.model.user.UserEntity;
@@ -14,29 +12,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class LessonService {
 
-    private final LessonRepository lessonRepository;
-
     @Autowired
-    public LessonService(LessonRepository lessonRepository) {
-        this.lessonRepository = lessonRepository;
-    }
+    private LessonRepository lessonRepository;
 
-    public List<LessonEntity> getCourseLessonsBySectionId(String courseName, Long sectionId, UserEntity userEntity) {
-        List<Long> allowedSections = userEntity.getAllowedSections()
-                .stream()
-                .map(BaseEntity::getId)
-                .collect(Collectors.toList());
-
-        if (!allowedSections.contains(sectionId)) {
-            throw new NotAllowedRuntimeException("No available lessons for user: " + userEntity.getId());
-        }
-
+    public List<LessonEntity> getLessons(String courseName, Long sectionId) {
         return lessonRepository.findAllBySectionCourseNameAndSectionId(courseName, sectionId);
     }
 
@@ -46,9 +30,7 @@ public class LessonService {
 
     @Transactional
     public void finishLesson(String courseName, Long sectionId, Long lessonId, UserEntity userEntity) {
-
-        LessonEntity lessonEntity =
-                lessonRepository.findBySectionCourseNameAndSectionIdAndId(courseName, sectionId, lessonId);
+        LessonEntity lessonEntity = getLessonById(courseName, sectionId, lessonId);
 
         if (userEntity.getAlreadyDoneLessons().contains(lessonEntity)) {
             throw new BadRequestParametersRuntimeException("LessonEntity: " + lessonId
@@ -64,7 +46,8 @@ public class LessonService {
                 .setProgress(progress.getProgress() + coefficient);
 
         log.info("LessonEntity: " + lessonId + " has been done for userEntity: '" + userEntity.getLogin());
-        log.info("Add progress: " + coefficient + " for userEntity '" + userEntity.getLogin() + "'. CourseEntity: " + courseName);
+        log.info("Add progress: " + coefficient + " for userEntity '" + userEntity.getLogin() + "'. CourseEntity: "
+                + courseName);
     }
 
 }

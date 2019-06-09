@@ -67,12 +67,6 @@ public class UserEntity extends CreatableEntity {
     private List<CourseEntity> allowedCourses;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_sections",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "section_id")})
-    private List<SectionEntity> allowedSections;
-
-    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_already_done_lessons",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "lesson_id")})

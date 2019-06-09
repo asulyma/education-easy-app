@@ -2,11 +2,10 @@ package com.global.education.controller;
 
 import com.global.education.controller.response.BaseController;
 import com.global.education.controller.response.BaseResponse;
-import com.global.education.mapper.LessonMapper;
 import com.global.education.model.user.UserEntity;
 import com.global.education.model.wrapper.LessonResponse;
 import com.global.education.service.LessonService;
-import com.global.education.util.ProjectUtils;
+import com.global.education.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,51 +17,41 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.List;
 
+import static com.global.education.mapper.LessonMapper.INSTANCE;
+
 @RestController
-@RequestMapping(value = "/{course}/{sectionId}/lessons")
+@RequestMapping(value = "/{course}/{sectionId}/lesson")
 public class LessonController extends BaseController {
 
-    private final LessonService lessonService;
-    private final LessonMapper lessonMapper = LessonMapper.INSTANCE;
-    private final ProjectUtils projectUtils;
+    @Autowired
+    private LessonService lessonService;
 
     @Autowired
-    public LessonController(LessonService lessonService,
-                            ProjectUtils projectUtils) {
-        this.lessonService = lessonService;
-        this.projectUtils = projectUtils;
-    }
+    private UserUtils userUtils;
 
     @GetMapping
-    @Secured("ROLE_user")
-    public BaseResponse<List<LessonResponse>> getLessons(Principal principal,
-                                                         @PathVariable(name = "course") String courseName,
-                                                         @PathVariable(name = "sectionId") Long sectionId) {
-
-        UserEntity userEntity = projectUtils.getUserInfo(principal);
-        return new BaseResponse<>(
-                lessonMapper.buildLessons(lessonService.getCourseLessonsBySectionId(courseName, sectionId, userEntity)));
+    @Secured("ROLE_USER")
+    public BaseResponse<List<LessonResponse>> getLessons(@PathVariable(name = "course") String courseName,
+            @PathVariable(name = "sectionId") Long sectionId) {
+        return new BaseResponse<>(INSTANCE.buildLessons(lessonService.getLessons(courseName, sectionId)));
     }
 
     @GetMapping("/{id}")
-    @Secured("ROLE_user")
+    @Secured("ROLE_USER")
     public BaseResponse<LessonResponse> getLessonById(@PathVariable(name = "course") String courseName,
-                                                      @PathVariable(name = "sectionId") Long sectionId,
-                                                      @PathVariable(name = "id") Long lessonId) {
+            @PathVariable(name = "sectionId") Long sectionId,
+            @PathVariable(name = "id") Long lessonId) {
 
-        return new BaseResponse<>(
-                lessonMapper.buildLesson(lessonService.getLessonById(courseName, sectionId, lessonId)));
+        return new BaseResponse<>(INSTANCE.buildLesson(lessonService.getLessonById(courseName, sectionId, lessonId)));
     }
 
     @PutMapping("/{id}")
-    @Secured("ROLE_user")
+    @Secured("ROLE_USER")
     public BaseResponse finishLesson(Principal principal,
-                                     @PathVariable(name = "course") String courseName,
-                                     @PathVariable(name = "sectionId") Long sectionId,
-                                     @PathVariable(name = "id") Long lessonId) {
-
-        UserEntity userEntity = projectUtils.getUserInfo(principal);
-        lessonService.finishLesson(courseName, sectionId, lessonId, userEntity);
+            @PathVariable(name = "course") String courseName,
+            @PathVariable(name = "sectionId") Long sectionId,
+            @PathVariable(name = "id") Long lessonId) {
+        lessonService.finishLesson(courseName, sectionId, lessonId, userUtils.getUserInfo(principal));
         return new BaseResponse();
     }
 }

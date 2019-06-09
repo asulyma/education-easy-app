@@ -1,7 +1,6 @@
 package com.global.education.handler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,27 +9,24 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * обрабатывает 403 ошибку перенаправляя в случае ее вызова на /403 страницу
  */
-
+@Slf4j
 @Component
-public class MyAccessDeniedHandler implements AccessDeniedHandler {
-
-    private static Logger logger = LoggerFactory.getLogger(MyAccessDeniedHandler.class);
+public class ProjectAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse,
-            AccessDeniedException e) throws IOException, ServletException {
+            AccessDeniedException e) throws IOException {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
-            logger.info("UserEntity '" + auth.getName() + "' attempted to access the protected URL: "
+            log.info("UserEntity '" + auth.getName() + "' attempted to access the protected URL: "
                     + httpServletRequest.getRequestURI());
         }
         httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/403");

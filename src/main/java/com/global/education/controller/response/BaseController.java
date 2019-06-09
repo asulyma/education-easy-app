@@ -7,10 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
- * This class using as parent for all controller classes.
- * Each class, which marks as 'Controller' - extends this class.
+ * This class using as parent for all controller classes. Each class, which marks as 'Controller' - extends this class.
  * The main logic - catching exceptions (in more time - customs runtime exceptions).
- *
  * @author Aleksandr Sulyma
  * @version 1.0
  */

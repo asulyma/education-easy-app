@@ -1,29 +1,30 @@
 package com.global.education.service;
 
-import com.global.education.exception.NotFoundRuntimeException;
+import com.global.education.model.learning.CourseEntity;
+import com.global.education.model.learning.Progress;
 import com.global.education.model.user.Role;
 import com.global.education.model.user.UserEntity;
 import com.global.education.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.global.education.util.ProjectUtils.checkAndGetOptional;
+
 /**
- * @author Aleksandr Sulyma
- * @version 1.0
+ * Service for CRUD operations on UserEntity.
  */
+@Slf4j
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
-    public List<UserEntity> getListOfUsers() {
+    public List<UserEntity> getUsers() {
         return userRepository.findAll();
     }
 
@@ -39,8 +40,17 @@ public class UserService {
         return userRepository.findByRoleContaining(role);
     }
 
-    public UserEntity getUserById(Long userId){
-        return userRepository.findById(userId).orElseThrow(NotFoundRuntimeException::new);
+    public UserEntity getUserById(Long userId) {
+        return checkAndGetOptional(userRepository.findById(userId), userId);
+    }
+
+    @Transactional
+    public Long addCourseForUser(UserEntity userEntity, CourseEntity courseEntity) {
+        userEntity.getAllowedCourses().add(courseEntity);
+        userEntity.setProgress(new Progress(courseEntity.getName(), 0L));
+        log.info("Given access for userEntity: '" + userEntity.getLogin() + "' to courseEntity with id: "
+                + courseEntity.getId());
+        return userEntity.getId();
     }
 
 }

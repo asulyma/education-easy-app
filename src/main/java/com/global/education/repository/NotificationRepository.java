@@ -7,11 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The class for working with DataBases.
- * Only for {@link NotificationEntity} entity.
- *
- * @author Aleksandr Sulyma
- * @version 1.0
+ * Repository for {@link NotificationEntity} class.
  */
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {

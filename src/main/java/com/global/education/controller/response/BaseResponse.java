@@ -4,11 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * This class using for building response for front-end side.
- * For other objects - this class as wrapper, which contains field 'data' and other useful metadata.
- *
- * @author Aleksandr Sulyma
- * @version 1.0
+ * This class using for building response for front-end side. For other objects - this class as wrapper, which contains
+ * field 'data' and other useful metadata.
  */
 @Data
 @NoArgsConstructor

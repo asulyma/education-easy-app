@@ -49,15 +49,6 @@ CREATE TABLE section
 ALTER TABLE section
     ADD CONSTRAINT fk_section_id FOREIGN KEY (course_id) REFERENCES course (id);
 
--- ManyToMany
-CREATE TABLE user_section
-(
-    user_id    BIGINT NOT NULL,
-    section_id BIGINT NOT NULL,
-    PRIMARY KEY (user_id, section_id),
-    CONSTRAINT user_section_user_id_fkey FOREIGN KEY (user_id) REFERENCES user_table (id),
-    CONSTRAINT user_section_section_id_fkey FOREIGN KEY (section_id) REFERENCES section (id)
-);
 
 CREATE TABLE lesson
 (
