@@ -5,6 +5,7 @@ import com.global.education.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 
@@ -17,13 +18,19 @@ public class DashboardController extends BaseController {
     @Autowired
     private UserUtils userUtils;
 
-    @GetMapping("/home")
+    @GetMapping("/api")
+    @ResponseBody
     public String index(Principal principal) {
+        return "Successfully login";
+    }
+
+    @GetMapping("/home")
+    public String homePage(Principal principal) {
         return "index";
     }
 
     @GetMapping("/login")
-    public String login(Principal principal) {
+    public String loginPage(Principal principal) {
         return "login";
     }
 }

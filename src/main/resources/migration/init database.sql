@@ -1,7 +1,7 @@
 CREATE TABLE user_table
 (
-    id           bigint not null primary key,
-    created_date TIMESTAMP,
+    id           BIGSERIAL not null primary key,
+    created_date BIGINT,
     login        varchar(255),
     name         varchar(255),
     age          BIGINT,
@@ -16,8 +16,8 @@ CREATE TABLE user_table
 
 CREATE TABLE course
 (
-    id           bigint not null primary key,
-    created_date TIMESTAMP,
+    id           BIGSERIAL not null primary key,
+    created_date BIGINT,
     name         varchar(32),
     title        varchar(256),
     description  varchar(1024),
@@ -38,8 +38,8 @@ CREATE TABLE user_course
 
 CREATE TABLE section
 (
-    id           bigint not null primary key,
-    created_date TIMESTAMP,
+    id           BIGSERIAL not null primary key,
+    created_date BIGINT,
     title        varchar(255),
     description  varchar(1024),
     course_id    bigint
@@ -52,8 +52,8 @@ ALTER TABLE section
 
 CREATE TABLE lesson
 (
-    id           bigint not null primary key,
-    created_date TIMESTAMP,
+    id           BIGSERIAL not null primary key,
+    created_date BIGINT,
     title        varchar(255),
     description  varchar(1024),
     section_id   bigint
@@ -75,8 +75,8 @@ CREATE TABLE user_lesson
 
 CREATE TABLE comment
 (
-    id           bigint not null primary key,
-    created_date TIMESTAMP,
+    id           BIGSERIAL not null primary key,
+    created_date BIGINT,
     author_id    bigint,
     lesson_id    bigint,
     content      varchar(1024)
@@ -91,8 +91,8 @@ ALTER TABLE comment
 
 CREATE TABLE notification
 (
-    id                bigint not null primary key,
-    created_date      TIMESTAMP,
+    id                BIGSERIAL not null primary key,
+    created_date      BIGINT,
     description       varchar(512),
     publisher_id      bigint,
     recipient_id      bigint,

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -39,5 +40,5 @@ public class LessonEntity extends CreatableEntity {
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = "lesson", allowSetters = true)
-    private List<Comment> comment;
+    private List<Comment> comment = new ArrayList<>();
 }

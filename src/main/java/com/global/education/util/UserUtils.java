@@ -40,8 +40,8 @@ public class UserUtils {
         }
 
         UserEntity newUser = new UserEntity();
-        newUser.setLogin(securityUser.getUsername());
-        newUser.setActive(true);
+        newUser.setLogin(securityUser.getUsername())
+               .setActive(securityUser.isEnabled());
 
         String role = securityUser.getAuthorities()
                                   .stream()
@@ -56,7 +56,7 @@ public class UserUtils {
     }
 
     public Long getUserAdminId() {
-        UserEntity admin = userService.getUserByRole(Role.ADMIN)
+        UserEntity admin = userService.getUserByRole(Role.ROLE_ADMIN)
                                       .stream()
                                       .findFirst()
                                       .orElseThrow(NotFoundRuntimeException::new);

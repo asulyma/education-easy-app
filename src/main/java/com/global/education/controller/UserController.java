@@ -23,13 +23,13 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @GetMapping
-    @Secured({"ADMIN"})
+    @Secured("ROLE_ADMIN")
     public BaseResponse<List<UserResponse>> getUsers() {
         return new BaseResponse<>(INSTANCE.buildUsersResponse(userService.getUsers()));
     }
 
     @GetMapping(path = "/{login}")
-    @Secured({"ROLE_ADMIN"})
+    @Secured("ROLE_ADMIN")
     public BaseResponse<UserResponse> getUserByLogin(@PathVariable(name = "login") String login) {
         return new BaseResponse<>(INSTANCE.buildFullUser(userService.getUserByLogin(login)));
     }

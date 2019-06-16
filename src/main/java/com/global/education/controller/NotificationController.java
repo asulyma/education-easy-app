@@ -36,7 +36,6 @@ public class NotificationController extends BaseController {
     private UserUtils userUtils;
 
     @GetMapping
-    @Secured({"ROLE_USER"})
     public BaseResponse<List<NotificationResponse>> getNotifications(Principal principal) {
         UserEntity userInfo = userUtils.getUserInfo(principal);
         return new BaseResponse<>(
@@ -44,27 +43,25 @@ public class NotificationController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    @Secured({"ROLE_USER"})
     public BaseResponse<NotificationResponse> getNotificationById(@PathVariable("id") Long id) {
         return new BaseResponse<>(INSTANCE.notificationToViewWrapper(notificationService.getNotification(id)));
     }
 
     @PostMapping("/{courseId}")
-    @Secured("ROLE_USER")
     public BaseResponse getAccessForCourse(Principal principal, @PathVariable(name = "courseId") Long courseId) {
         notificationService.getAccessForCourse(courseId, userUtils.getUserInfo(principal).getId());
         return new BaseResponse();
     }
 
     @PostMapping("/{courseId}/approve")
-    @Secured({"ROLE_ADMIN"})
+    @Secured("ROLE_ADMIN")
     public BaseResponse approveCourse(@PathVariable("courseId") Long courseId, @RequestBody Long notificationId) {
         notificationService.approveCourse(courseId, notificationId);
         return new BaseResponse();
     }
 
     @PostMapping("/{courseId}/decline")
-    @Secured({"ROLE_ADMIN"})
+    @Secured("ROLE_ADMIN")
     public BaseResponse declineCourse(@PathVariable("courseId") Long courseId,
             @RequestParam("notificationId") Long notificationId) {
         notificationService.declineCourse(courseId, notificationId);
@@ -72,7 +69,6 @@ public class NotificationController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    @Secured({"ROLE_USER"})
     public BaseResponse removeNotification(Principal principal, @PathVariable("id") Long notificationId) {
         notificationService.removeNotification(notificationId, userUtils.getUserInfo(principal));
         return new BaseResponse<>();

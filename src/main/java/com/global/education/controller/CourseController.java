@@ -7,7 +7,6 @@ import com.global.education.model.wrapper.CourseResponse;
 import com.global.education.service.CourseService;
 import com.global.education.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,13 +28,11 @@ public class CourseController extends BaseController {
     private UserUtils userUtils;
 
     @GetMapping
-    @Secured("ROLE_USER")
     public BaseResponse<List<CourseResponse>> getCourses() {
         return new BaseResponse<>(INSTANCE.buildCourses(courseService.getCourses()));
     }
 
     @GetMapping("/{id}")
-    @Secured("ROLE_USER")
     public BaseResponse<CourseResponse> getCourse(Principal principal, @PathVariable(name = "id") Long id) {
         UserEntity userInfo = userUtils.getUserInfo(principal);
         return new BaseResponse<>(INSTANCE.buildCourse(courseService.getCourseById(id, userInfo)));

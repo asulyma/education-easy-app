@@ -2,12 +2,10 @@ package com.global.education.controller;
 
 import com.global.education.controller.response.BaseController;
 import com.global.education.controller.response.BaseResponse;
-import com.global.education.model.user.UserEntity;
 import com.global.education.model.wrapper.LessonResponse;
 import com.global.education.service.LessonService;
 import com.global.education.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,14 +28,12 @@ public class LessonController extends BaseController {
     private UserUtils userUtils;
 
     @GetMapping
-    @Secured("ROLE_USER")
     public BaseResponse<List<LessonResponse>> getLessons(@PathVariable(name = "course") String courseName,
             @PathVariable(name = "sectionId") Long sectionId) {
         return new BaseResponse<>(INSTANCE.buildLessons(lessonService.getLessons(courseName, sectionId)));
     }
 
     @GetMapping("/{id}")
-    @Secured("ROLE_USER")
     public BaseResponse<LessonResponse> getLessonById(@PathVariable(name = "course") String courseName,
             @PathVariable(name = "sectionId") Long sectionId,
             @PathVariable(name = "id") Long lessonId) {
@@ -46,7 +42,6 @@ public class LessonController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    @Secured("ROLE_USER")
     public BaseResponse finishLesson(Principal principal,
             @PathVariable(name = "course") String courseName,
             @PathVariable(name = "sectionId") Long sectionId,

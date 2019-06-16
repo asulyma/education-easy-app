@@ -2,16 +2,12 @@ package com.global.education.model.user;
 
 import lombok.Getter;
 
-/**
- * @author Aleksandr Sulyma
- * @version 1.0
- */
 @Getter
 public enum Role {
 
-    ADMIN("admin"),
-    MODERATOR("moderator"),
-    USER("user");
+    ROLE_ADMIN("admin"),
+    ROLE_MODERATOR("moderator"),
+    ROLE_USER("user");
 
     private final String description;
 

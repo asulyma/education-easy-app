@@ -5,7 +5,6 @@ import com.global.education.controller.response.BaseResponse;
 import com.global.education.model.wrapper.SectionResponse;
 import com.global.education.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +22,11 @@ public class SectionController extends BaseController {
     private SectionService sectionService;
 
     @GetMapping
-    @Secured("ROLE_USER")
     public BaseResponse<List<SectionResponse>> getSections(@PathVariable(name = "course") String name) {
         return new BaseResponse<>(INSTANCE.buildSections(sectionService.getSections(name)));
     }
 
     @GetMapping("/{sectionId}")
-    @Secured("ROLE_USER")
     public BaseResponse<SectionResponse> getSectionBySectionId(@PathVariable(name = "course") String courseName,
             @PathVariable(name = "sectionId") Long id) {
         return new BaseResponse<>(INSTANCE.buildSection(sectionService.getSectionByCourseAndId(courseName, id)));

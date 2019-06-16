@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -37,6 +38,6 @@ public class SectionEntity extends CreatableEntity {
     private CourseEntity course;
 
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
-    private List<LessonEntity> lessons;
+    private List<LessonEntity> lessons = new ArrayList<>();
 
 }

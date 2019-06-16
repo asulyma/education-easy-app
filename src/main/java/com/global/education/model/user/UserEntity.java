@@ -10,9 +10,11 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -26,11 +28,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "user_table")
-@NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "user_table")
+@Accessors(chain = true)
+@NoArgsConstructor
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class UserEntity extends CreatableEntity {
 
@@ -64,13 +67,13 @@ public class UserEntity extends CreatableEntity {
     @JoinTable(name = "user_course",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "course_id")})
-    private List<CourseEntity> allowedCourses;
+    private List<CourseEntity> allowedCourses = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_already_done_lessons",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "lesson_id")})
-    private List<LessonEntity> alreadyDoneLessons;
+    private List<LessonEntity> alreadyDoneLessons = new ArrayList<>();
 
     @OneToOne(mappedBy = "author")
     private Comment comment;
