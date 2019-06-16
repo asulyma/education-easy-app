@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -53,18 +51,17 @@ public class NotificationController extends BaseController {
         return new BaseResponse();
     }
 
-    @PostMapping("/{courseId}/approve")
+    @PostMapping("/{id}/approve")
     @Secured("ROLE_ADMIN")
-    public BaseResponse approveCourse(@PathVariable("courseId") Long courseId, @RequestBody Long notificationId) {
-        notificationService.approveCourse(courseId, notificationId);
+    public BaseResponse approveCourse(@PathVariable("id") Long notificationId) {
+        notificationService.approveCourse(notificationId);
         return new BaseResponse();
     }
 
-    @PostMapping("/{courseId}/decline")
+    @PostMapping("/{id}/decline")
     @Secured("ROLE_ADMIN")
-    public BaseResponse declineCourse(@PathVariable("courseId") Long courseId,
-            @RequestParam("notificationId") Long notificationId) {
-        notificationService.declineCourse(courseId, notificationId);
+    public BaseResponse declineCourse(@PathVariable("id") Long notificationId) {
+        notificationService.declineCourse(notificationId);
         return new BaseResponse();
     }
 

@@ -18,13 +18,13 @@ import java.time.LocalDate;
 public class NotificationResponse {
 
     private Long id;
-    private String title;
-    private LocalDate updateDate;
+    private Long createdDate;
+    private String description;
     private Long publisherId;
     private Long recipientId;
     private NotificationType notificationType;
     private EntityType entityType;
-    private Long idOfEntity;
-    private Boolean isRead;
+    private Long entityId;
+    private boolean isRead;
 
 }

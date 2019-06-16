@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public List<UserEntity> getUserByRole(Role role) {
-        return userRepository.findByRoleContaining(role);
+        return userRepository.findByRole(role);
     }
 
     public UserEntity getUserById(Long userId) {

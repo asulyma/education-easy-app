@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 import static com.global.education.model.notification.EntityType.COURSE;
 import static com.global.education.model.notification.NotificationType.APPROVE_PERMISSION_INFO_TO_ADMIN;
@@ -40,7 +39,7 @@ public class NotificationService {
     private TranslationHolder translationHolder;
 
     public List<NotificationEntity> getNotifications(UserEntity userEntity) {
-        return notificationRepository.findAllByRecipientId(userEntity.getId());
+        return notificationRepository.findAllByRecipientIdOrderByCreatedDateDesc(userEntity.getId());
     }
 
     @Transactional
@@ -58,15 +57,17 @@ public class NotificationService {
         createNotification(null, userId, INFO_TO_USER, courseId);
     }
 
-    public void approveCourse(Long courseId, Long notificationId) {
-        NotificationEntity notificationEntity = getNotification(notificationId);
-        Long userId = courseService.allowCourseForUser(notificationEntity.getPublisherId(), courseId);
+    public void approveCourse(Long notificationId) {
+        NotificationEntity entity = getNotification(notificationId);
+        Long courseId = entity.getEntityId();
+        Long userId = courseService.allowCourseForUser(entity.getPublisherId(), courseId);
         allowOrDeclineCourse(courseId, userId, APPROVE_PERMISSION_INFO_TO_ADMIN, APPROVE_PERMISSION_INFO_TO_USER);
     }
 
-    public void declineCourse(Long courseId, Long notificationId) {
-        NotificationEntity notificationEntity = getNotification(notificationId);
-        Long userId = notificationEntity.getPublisherId();
+    public void declineCourse(Long notificationId) {
+        NotificationEntity entity = getNotification(notificationId);
+        Long userId = entity.getPublisherId();
+        Long courseId = entity.getEntityId();
         allowOrDeclineCourse(courseId, userId, DECLINE_PERMISSION_INFO_TO_ADMIN, DECLINE_PERMISSION_INFO_TO_USER);
     }
 
@@ -97,7 +98,9 @@ public class NotificationService {
 
     @Transactional
     public void removeNotification(Long notificationId, UserEntity userEntity) {
-        notificationRepository.deleteByIdAndRecipientId(notificationId, userEntity.getId());
-        log.info("NotificationEntity with id: " + notificationId + " has been removed.");
+        int count = notificationRepository.deleteByIdAndRecipientId(notificationId, userEntity.getId());
+        if (count > 0) {
+            log.info("NotificationEntity with id: " + notificationId + " has been removed.");
+        }
     }
 }
