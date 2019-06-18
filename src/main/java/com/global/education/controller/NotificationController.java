@@ -3,7 +3,7 @@ package com.global.education.controller;
 import com.global.education.controller.response.BaseController;
 import com.global.education.controller.response.BaseResponse;
 import com.global.education.model.user.UserEntity;
-import com.global.education.model.wrapper.NotificationResponse;
+import com.global.education.controller.dto.NotificationResponse;
 import com.global.education.service.NotificationService;
 import com.global.education.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import java.security.Principal;
 import java.util.List;
 
 import static com.global.education.mapper.NotificationMapper.INSTANCE;
+import static com.global.education.util.Constants.ID_REGEXP;
 
 /**
  * Controller for CRUD operations on NotificationEntity.
@@ -40,7 +41,7 @@ public class NotificationController extends BaseController {
                 INSTANCE.notificationsToListOfWrappers(notificationService.getNotifications(userInfo)));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:" + ID_REGEXP + "}")
     public BaseResponse<NotificationResponse> getNotificationById(@PathVariable("id") Long id) {
         return new BaseResponse<>(INSTANCE.notificationToViewWrapper(notificationService.getNotification(id)));
     }
@@ -65,7 +66,7 @@ public class NotificationController extends BaseController {
         return new BaseResponse();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id:" + ID_REGEXP + "}")
     public BaseResponse removeNotification(Principal principal, @PathVariable("id") Long notificationId) {
         notificationService.removeNotification(notificationId, userUtils.getUserInfo(principal));
         return new BaseResponse<>();

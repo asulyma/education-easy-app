@@ -13,8 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
+import static com.global.education.util.ProjectUtils.checkAndGetOptional;
+
 @Slf4j
+@Service
 public class LessonService {
 
     @Autowired
@@ -26,6 +28,10 @@ public class LessonService {
 
     public LessonEntity getLessonById(String courseName, Long sectionId, Long lessonId) {
         return lessonRepository.findBySectionCourseNameAndSectionIdAndId(courseName, sectionId, lessonId);
+    }
+
+    public LessonEntity getLessonById(Long lessonId) {
+        return checkAndGetOptional(lessonRepository.findById(lessonId), lessonId);
     }
 
     @Transactional

@@ -1,8 +1,8 @@
 package com.global.education.controller;
 
+import com.global.education.controller.dto.SectionResponse;
 import com.global.education.controller.response.BaseController;
 import com.global.education.controller.response.BaseResponse;
-import com.global.education.model.wrapper.SectionResponse;
 import com.global.education.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +27,7 @@ public class SectionController extends BaseController {
     }
 
     @GetMapping("/{sectionId}")
-    public BaseResponse<SectionResponse> getSectionBySectionId(@PathVariable(name = "course") String courseName,
+    public BaseResponse<SectionResponse> getSection(@PathVariable(name = "course") String courseName,
             @PathVariable(name = "sectionId") Long id) {
         return new BaseResponse<>(INSTANCE.buildSection(sectionService.getSectionByCourseAndId(courseName, id)));
     }

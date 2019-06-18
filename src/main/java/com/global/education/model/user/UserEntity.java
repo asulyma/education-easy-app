@@ -1,11 +1,9 @@
 package com.global.education.model.user;
 
 import com.global.education.model.CreatableEntity;
-import com.global.education.model.learning.Comment;
 import com.global.education.model.learning.CourseEntity;
 import com.global.education.model.learning.LessonEntity;
 import com.global.education.model.learning.Progress;
-import com.global.education.model.learning.SectionEntity;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +23,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Getter
@@ -74,9 +71,6 @@ public class UserEntity extends CreatableEntity {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "lesson_id")})
     private List<LessonEntity> alreadyDoneLessons = new ArrayList<>();
-
-    @OneToOne(mappedBy = "author")
-    private Comment comment;
 
     @Type(type = "jsonb")
     @Column(name = "progress", columnDefinition = "jsonb")

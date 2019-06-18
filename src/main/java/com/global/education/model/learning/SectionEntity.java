@@ -4,6 +4,7 @@ import com.global.education.model.CreatableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +18,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- * @author Aleksandr Sulyma
- * @version 1.0
+ * Entity, which contains information about section.
  */
-@Entity
-@Table(name = "section")
-@NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "section")
+@Accessors(chain = true)
+@NoArgsConstructor
 public class SectionEntity extends CreatableEntity {
 
     @Column(name = "title")

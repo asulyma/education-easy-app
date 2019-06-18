@@ -1,7 +1,7 @@
 package com.global.education.mapper;
 
 import com.global.education.model.notification.NotificationEntity;
-import com.global.education.model.wrapper.NotificationResponse;
+import com.global.education.controller.dto.NotificationResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.factory.Mappers;

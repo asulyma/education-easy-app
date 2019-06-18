@@ -2,7 +2,7 @@ package com.global.education.controller;
 
 import com.global.education.controller.response.BaseController;
 import com.global.education.controller.response.BaseResponse;
-import com.global.education.model.wrapper.UserResponse;
+import com.global.education.controller.dto.UserResponse;
 import com.global.education.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;

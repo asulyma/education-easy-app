@@ -1,7 +1,7 @@
 package com.global.education.mapper;
 
 import com.global.education.model.learning.LessonEntity;
-import com.global.education.model.wrapper.LessonResponse;
+import com.global.education.controller.dto.LessonResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -23,7 +23,8 @@ public interface LessonMapper {
     List<LessonResponse> buildLessons(List<LessonEntity> lessonEntities);
 
     @Mappings({
-            @Mapping(expression = "java(lessonEntity.getSection().getId())", target = "sectionId")
+            @Mapping(expression = "java(lessonEntity.getSection().getId())", target = "sectionId"),
+            @Mapping(expression = "java(lessonEntity.getComments().stream().map(e -> new com.global.education.controller.dto.CommentResponse(e.getAuthorId(), e.getLesson().getId(), e.getContent())).collect(java.util.stream.Collectors.toList()))", target = "comments")
     })
     LessonResponse buildLesson(LessonEntity lessonEntity);
 

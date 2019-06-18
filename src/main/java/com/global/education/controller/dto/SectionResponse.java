@@ -1,4 +1,4 @@
-package com.global.education.model.wrapper;
+package com.global.education.controller.dto;
 
 import lombok.Getter;
 import lombok.Setter;

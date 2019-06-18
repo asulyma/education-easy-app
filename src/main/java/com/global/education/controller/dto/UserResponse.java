@@ -1,17 +1,13 @@
-package com.global.education.model.wrapper;
+package com.global.education.controller.dto;
 
 import com.global.education.model.learning.Progress;
 import com.global.education.model.user.Rank;
+import com.global.education.model.user.Role;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 
-/**
- * @author Aleksandr Sulyma
- * @version 1.0
- */
 @Getter
 @Setter
 public class UserResponse {
@@ -19,17 +15,13 @@ public class UserResponse {
     private Long id;
     private String login;
     private String name;
-    private String familyName;
     private Integer age;
     private String email;
-    private boolean isLocked;
-    private boolean isActive;
+    private boolean active;
     private Rank rank;
-    private String role;
-    private LocalDate birthDate;
+    private Role role;
     private String gender;
-    private LocalDate registrationDate;
-
-    private List<String> allowedCourses;
+    private List<Long> allowedCourses;
+    private List<Long> alreadyDoneLessons;
     private Progress progress;
 }

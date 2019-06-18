@@ -1,7 +1,7 @@
 package com.global.education.mapper;
 
 import com.global.education.model.learning.CourseEntity;
-import com.global.education.model.wrapper.CourseResponse;
+import com.global.education.controller.dto.CourseResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.factory.Mappers;

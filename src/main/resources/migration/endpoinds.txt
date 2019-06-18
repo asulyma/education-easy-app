@@ -23,14 +23,7 @@ GET:    /user                                          - get list of UserRespons
 GET:    /user/{login}                                  - get single UserResponse by login.
 
 
+GET:    /comment                                       - get list of CommentResponse(need to add lessonId as query param).
+POST:   /comment                                       - create new comment.
 
 
-
-{
-"idOfEntity": 3,
-"publisherId": 1,
-"entityType": "COURSE",
-"notificationType": "PERMISSION_TO_ADMIN",
-"isRead": false,
-"updateDate": "2018-12-12"
-}

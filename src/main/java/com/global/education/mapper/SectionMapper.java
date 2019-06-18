@@ -1,7 +1,7 @@
 package com.global.education.mapper;
 
 import com.global.education.model.learning.SectionEntity;
-import com.global.education.model.wrapper.SectionResponse;
+import com.global.education.controller.dto.SectionResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

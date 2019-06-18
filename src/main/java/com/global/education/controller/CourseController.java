@@ -3,7 +3,7 @@ package com.global.education.controller;
 import com.global.education.controller.response.BaseController;
 import com.global.education.controller.response.BaseResponse;
 import com.global.education.model.user.UserEntity;
-import com.global.education.model.wrapper.CourseResponse;
+import com.global.education.controller.dto.CourseResponse;
 import com.global.education.service.CourseService;
 import com.global.education.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import java.security.Principal;
 import java.util.List;
 
 import static com.global.education.mapper.CourseMapper.INSTANCE;
+import static com.global.education.util.Constants.ID_REGEXP;
 
 @RestController
 @RequestMapping(value = "/course")
@@ -32,7 +33,7 @@ public class CourseController extends BaseController {
         return new BaseResponse<>(INSTANCE.buildCourses(courseService.getCourses()));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:" + ID_REGEXP + "}")
     public BaseResponse<CourseResponse> getCourse(Principal principal, @PathVariable(name = "id") Long id) {
         UserEntity userInfo = userUtils.getUserInfo(principal);
         return new BaseResponse<>(INSTANCE.buildCourse(courseService.getCourseById(id, userInfo)));

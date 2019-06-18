@@ -1,4 +1,4 @@
-package com.global.education.model.wrapper;
+package com.global.education.controller.dto;
 
 import com.global.education.model.notification.EntityType;
 import com.global.education.model.notification.NotificationType;

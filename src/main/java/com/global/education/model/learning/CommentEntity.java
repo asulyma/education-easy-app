@@ -1,33 +1,26 @@
 package com.global.education.model.learning;
 
 import com.global.education.model.CreatableEntity;
-import com.global.education.model.user.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-/**
- * @author Aleksandr Sulyma
- * @version 1.0
- */
-@Entity
-@Table(name = "comment")
-@NoArgsConstructor
 @Getter
 @Setter
-public class Comment extends CreatableEntity {
+@Entity
+@Table(name = "comment")
+@Accessors(chain = true)
+@NoArgsConstructor
+public class CommentEntity extends CreatableEntity {
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "author_id")
-    private UserEntity author;
+    private Long authorId;
 
     @ManyToOne
     @JoinColumn(name = "lesson_id")

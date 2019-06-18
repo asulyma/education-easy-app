@@ -1,6 +1,5 @@
 package com.global.education.model.learning;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.global.education.model.CreatableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,15 +16,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- * @author Aleksandr Sulyma
- * @version 1.0
- */
+@Getter
+@Setter
 @Entity
 @Table(name = "lesson")
 @NoArgsConstructor
-@Getter
-@Setter
 public class LessonEntity extends CreatableEntity {
 
     @Column(name = "title")
@@ -39,6 +34,5 @@ public class LessonEntity extends CreatableEntity {
     private SectionEntity section;
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value = "lesson", allowSetters = true)
-    private List<Comment> comment = new ArrayList<>();
+    private List<CommentEntity> comments = new ArrayList<>();
 }

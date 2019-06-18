@@ -1,7 +1,7 @@
 package com.global.education.mapper;
 
 import com.global.education.model.user.UserEntity;
-import com.global.education.model.wrapper.UserResponse;
+import com.global.education.controller.dto.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -24,8 +24,11 @@ public interface UserMapper {
 
     @Mappings({
             @Mapping(expression = "java(userEntity.getAllowedCourses()" +
-                    ".stream().map(com.global.education.model.learning.CourseEntity::getName)" +
-                    ".collect(java.util.stream.Collectors.toList()))", target = "allowedCourses")
+                    ".stream().map(com.global.education.model.learning.CourseEntity::getId)" +
+                    ".collect(java.util.stream.Collectors.toList()))", target = "allowedCourses"),
+            @Mapping(expression = "java(userEntity.getAlreadyDoneLessons()" +
+                    ".stream().map(com.global.education.model.learning.LessonEntity::getId)" +
+                    ".collect(java.util.stream.Collectors.toList()))", target = "alreadyDoneLessons")
     })
     UserResponse buildFullUser(UserEntity userEntity);
 
