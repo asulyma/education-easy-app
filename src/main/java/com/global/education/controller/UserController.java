@@ -1,9 +1,12 @@
 package com.global.education.controller;
 
+import com.global.education.controller.dto.UserResponse;
+import com.global.education.controller.dto.UserSpecificationRequest;
 import com.global.education.controller.response.BaseController;
 import com.global.education.controller.response.BaseResponse;
-import com.global.education.controller.dto.UserResponse;
 import com.global.education.service.UserService;
+import com.global.education.service.specification.dto.UserSpecificationCriteria;
+import com.global.education.transformer.UserSpecificationTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import static com.global.education.mapper.UserMapper.INSTANCE;
 
 @RestController
@@ -21,6 +26,9 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserSpecificationTransformer userTransformer;
 
     @GetMapping
     @Secured("ROLE_ADMIN")
@@ -32,6 +40,14 @@ public class UserController extends BaseController {
     @Secured("ROLE_ADMIN")
     public BaseResponse<UserResponse> getUserByLogin(@PathVariable(name = "login") String login) {
         return new BaseResponse<>(INSTANCE.buildFullUser(userService.getUserByLogin(login)));
+    }
+
+    @GetMapping(path = "/search")
+    @Secured("ROLE_ADMIN")
+    public BaseResponse<List<UserResponse>> getUsers(@Valid UserSpecificationRequest request) {
+        UserSpecificationCriteria criteria = userTransformer.buildSpecificationCriteria(request);
+        return new BaseResponse<>(INSTANCE.buildUsersResponse(userService.findAllByCriteria(criteria)));
+
     }
 
 }

@@ -64,7 +64,7 @@ ALTER TABLE lesson
     ADD CONSTRAINT fk_lesson_id FOREIGN KEY (section_id) REFERENCES section (id);
 
 -- ManyToMany
-CREATE TABLE user_lesson
+CREATE TABLE user_already_done_lessons
 (
     user_id   BIGINT NOT NULL,
     lesson_id BIGINT NOT NULL,

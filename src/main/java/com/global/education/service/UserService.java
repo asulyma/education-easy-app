@@ -5,6 +5,8 @@ import com.global.education.model.learning.Progress;
 import com.global.education.model.user.Role;
 import com.global.education.model.user.UserEntity;
 import com.global.education.repository.UserRepository;
+import com.global.education.service.specification.UserSpecificationBuilder;
+import com.global.education.service.specification.dto.UserSpecificationCriteria;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserSpecificationBuilder specificationBuilder;
+
     public List<UserEntity> getUsers() {
         return userRepository.findAll();
     }
@@ -42,6 +47,10 @@ public class UserService {
 
     public UserEntity getUserById(Long userId) {
         return checkAndGetOptional(userRepository.findById(userId), userId);
+    }
+
+    public List<UserEntity> findAllByCriteria(UserSpecificationCriteria criteria) {
+        return userRepository.findAll(specificationBuilder.build(criteria));
     }
 
     @Transactional
