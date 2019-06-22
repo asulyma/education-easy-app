@@ -14,6 +14,6 @@ import lombok.experimental.Accessors;
 public class Progress {
 
     private String courseName;
-    private Long progress;
+    private long progressValue;
 
 }

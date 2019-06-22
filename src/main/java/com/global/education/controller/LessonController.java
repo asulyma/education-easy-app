@@ -35,11 +35,9 @@ public class LessonController extends BaseController {
     }
 
     @GetMapping("/{id:" + ID_REGEXP + "}")
-    public BaseResponse<LessonResponse> getLessonById(@PathVariable(name = "course") String courseName,
-            @PathVariable(name = "sectionId") Long sectionId,
+    public BaseResponse<LessonResponse> getLessonById(@PathVariable(name = "sectionId") Long sectionId,
             @PathVariable(name = "id") Long lessonId) {
-
-        return new BaseResponse<>(INSTANCE.buildLesson(lessonService.getLessonById(courseName, sectionId, lessonId)));
+        return new BaseResponse<>(INSTANCE.buildLesson(lessonService.getLessonById(sectionId, lessonId)));
     }
 
     @PutMapping("/{id:" + ID_REGEXP + "}")
