@@ -12,9 +12,10 @@ import javax.validation.constraints.Min;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class CommonSpecificationRequest implements Serializable {
+public class SpecificationRequest implements Serializable {
 
     private String name;
+    private Long age;
 
     @Min(value = 0)
     @Max(value = Long.MAX_VALUE)

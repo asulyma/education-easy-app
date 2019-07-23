@@ -7,7 +7,8 @@ package com.global.education.util;
 public class Constants {
 
     public static final Long TOTAL_PROGRESS = 1000L;
+    public static final String ID_REGEXP = "^[0-9]{1,9}";
 
-    //todo add id_regex and uuid_regex
+    //todo add cache for user search
 
 }

@@ -1,14 +1,17 @@
 package com.global.education.service;
 
+import com.global.education.controller.dto.SpecificationRequest;
 import com.global.education.model.learning.CourseEntity;
 import com.global.education.model.learning.Progress;
 import com.global.education.model.user.Role;
 import com.global.education.model.user.UserEntity;
 import com.global.education.repository.UserRepository;
-import com.global.education.service.specification.UserSpecificationBuilder;
-import com.global.education.service.specification.dto.UserSpecificationCriteria;
+import com.global.education.service.specification.SpecificationCriteria;
+import com.global.education.service.specification.UserSpecificationFactory;
+import com.global.education.transformer.SpecificationTransformer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +30,10 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private UserSpecificationBuilder specificationBuilder;
+    private UserSpecificationFactory specificationBuilder;
+
+    @Autowired
+    private SpecificationTransformer specificationTransformer;
 
     public List<UserEntity> getUsers() {
         return userRepository.findAll();
@@ -49,8 +55,10 @@ public class UserService {
         return checkAndGetOptional(userRepository.findById(userId), userId);
     }
 
-    public List<UserEntity> findAllByCriteria(UserSpecificationCriteria criteria) {
-        return userRepository.findAll(specificationBuilder.build(criteria));
+    public List<UserEntity> findAll(SpecificationRequest request) {
+        SpecificationCriteria criteria = specificationTransformer.buildSpecificationCriteria(request);
+        Specification<UserEntity> specification = specificationBuilder.build(criteria);
+        return userRepository.findAll(specification);
     }
 
     @Transactional

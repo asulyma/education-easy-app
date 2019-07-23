@@ -1,18 +1,22 @@
 package com.global.education.service.specification;
 
-import com.global.education.model.user.UserEntity;
-import com.global.education.service.specification.dto.UserSpecificationCriteria;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
 
-@Component
-public class UserSpecificationBuilder {
+import java.util.Objects;
 
-    private static final UserLevelSpecificationBuilder<UserEntity> SPECIFICATION_BUILDER =
-            new UserLevelSpecificationBuilder<>();
+public class UserSpecificationBuilder<R> extends CommonSpecificationBuilder<R> {
 
-    public Specification<UserEntity> build(UserSpecificationCriteria criteria) {
-        return SPECIFICATION_BUILDER.build(criteria);
+    private static final String AGE = "age";
+
+    public Specification<R> build(SpecificationCriteria criteria) {
+        return Specification.where(super.build(criteria))
+                            .and(buildAge(criteria));
+    }
+
+    private Specification<R> buildAge(SpecificationCriteria criteria) {
+        return (root, cq, cb) -> Objects.isNull(criteria.getAge())
+                ? null
+                : cb.equal(root.get(AGE), criteria.getAge());
     }
 
 }
