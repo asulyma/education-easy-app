@@ -1,7 +1,7 @@
 package com.global.education.mapper;
 
+import com.global.education.controller.dto.Notification;
 import com.global.education.model.notification.NotificationEntity;
-import com.global.education.controller.dto.NotificationResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.factory.Mappers;
@@ -16,8 +16,8 @@ public interface NotificationMapper {
 
     NotificationMapper INSTANCE = Mappers.getMapper(NotificationMapper.class);
 
-    NotificationResponse notificationToViewWrapper(NotificationEntity notificationEntity);
+    Notification notificationToViewWrapper(NotificationEntity notificationEntity);
 
-    List<NotificationResponse> notificationsToListOfWrappers(List<NotificationEntity> notificationEntities);
+    List<Notification> notificationsToListOfWrappers(List<NotificationEntity> notificationEntities);
 
 }

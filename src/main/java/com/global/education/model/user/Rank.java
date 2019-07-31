@@ -1,12 +1,10 @@
 package com.global.education.model.user;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/**
- * @author Aleksandr Sulyma
- * @version 1.0
- */
-@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Rank {
 
     JAVA_JUNIOR_ONE("Java Junior 1"),
@@ -16,9 +14,6 @@ public enum Rank {
     JAVA_MIDDLE_TWO("Java Middle 2"),
     JAVA_SENIOR("Java Senior");
 
+    @Getter
     private final String description;
-
-    Rank(String description) {
-        this.description = description;
-    }
 }

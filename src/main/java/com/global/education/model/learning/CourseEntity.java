@@ -15,10 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- * @author Aleksandr Sulyma
- * @version 1.0
- */
 @Entity
 @Table(name = "course")
 @NoArgsConstructor

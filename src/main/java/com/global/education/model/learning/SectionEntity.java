@@ -17,9 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- * Entity, which contains information about section.
- */
 @Getter
 @Setter
 @Entity

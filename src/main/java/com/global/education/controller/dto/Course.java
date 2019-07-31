@@ -6,13 +6,9 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * @author Aleksandr Sulyma
- * @version 1.0
- */
 @Getter
 @Setter
-public class CourseResponse {
+public class Course {
 
     private Long id;
     private Long createdDate;

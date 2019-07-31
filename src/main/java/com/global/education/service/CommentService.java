@@ -1,6 +1,6 @@
 package com.global.education.service;
 
-import com.global.education.controller.dto.CommentResponse;
+import com.global.education.controller.dto.Comment;
 import com.global.education.model.learning.CommentEntity;
 import com.global.education.repository.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class CommentService {
     @Autowired
     private CommentRepository repository;
 
-    public CommentEntity createComment(Long authorId, CommentResponse comment) {
+    public CommentEntity createComment(Long authorId, Comment comment) {
         CommentEntity entity = new CommentEntity()
                 .setAuthorId(authorId)
                 .setContent(comment.getContent())

@@ -1,19 +1,19 @@
-package com.global.education.controller.response;
+package com.global.education.controller.handler;
 
-import com.global.education.exception.BadRequestParametersRuntimeException;
-import com.global.education.exception.NotAllowedRuntimeException;
-import com.global.education.exception.NotFoundRuntimeException;
+import com.global.education.controller.handler.exception.BadRequestParametersRuntimeException;
+import com.global.education.controller.handler.exception.NotAllowedRuntimeException;
+import com.global.education.controller.handler.exception.NotFoundRuntimeException;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
  * This class using as parent for all controller classes. Each class, which marks as 'Controller' - extends this class.
  * The main logic - catching exceptions (in more time - customs runtime exceptions).
- * @author Aleksandr Sulyma
- * @version 1.0
  */
 @Component
-public class BaseController {
+public class BaseHandler {
 
     @ExceptionHandler(NotFoundRuntimeException.class)
     public BaseResponse handleNotFoundRuntimeException(NotFoundRuntimeException e) {
@@ -28,5 +28,22 @@ public class BaseController {
     @ExceptionHandler(BadRequestParametersRuntimeException.class)
     public BaseResponse handleBadRequestRuntimeException(BadRequestParametersRuntimeException e) {
         return BaseResponse.buildErrorResponse(400, e);
+    }
+
+    @Getter
+    @Setter
+    private static class BaseResponse {
+
+        private int responseCode = 200;
+        private String errorMessage;
+        private boolean success = true;
+
+        static BaseResponse buildErrorResponse(int responseCode, Exception e) {
+            BaseResponse response = new BaseResponse();
+            response.setResponseCode(responseCode);
+            response.setErrorMessage(e.getMessage());
+            response.setSuccess(false);
+            return response;
+        }
     }
 }

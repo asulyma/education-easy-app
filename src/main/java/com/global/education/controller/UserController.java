@@ -1,9 +1,8 @@
 package com.global.education.controller;
 
 import com.global.education.controller.dto.SpecificationRequest;
-import com.global.education.controller.dto.UserResponse;
-import com.global.education.controller.response.BaseController;
-import com.global.education.controller.response.BaseResponse;
+import com.global.education.controller.dto.User;
+import com.global.education.controller.handler.BaseHandler;
 import com.global.education.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -19,28 +18,28 @@ import javax.validation.Valid;
 import static com.global.education.mapper.UserMapper.INSTANCE;
 
 @RestController
-@RequestMapping("/user")
-public class UserController extends BaseController {
+@RequestMapping(path = "/user")
+public class UserController extends BaseHandler {
 
     @Autowired
     private UserService userService;
 
     @GetMapping
     @Secured("ROLE_ADMIN")
-    public BaseResponse<List<UserResponse>> getUsers() {
-        return new BaseResponse<>(INSTANCE.buildUsersResponse(userService.getUsers()));
+    public List<User> getUsers() {
+        return INSTANCE.buildUsersResponse(userService.getUsers());
     }
 
     @GetMapping(path = "/{login}")
     @Secured("ROLE_ADMIN")
-    public BaseResponse<UserResponse> getUserByLogin(@PathVariable(name = "login") String login) {
-        return new BaseResponse<>(INSTANCE.buildFullUser(userService.getUserByLogin(login)));
+    public User getUserByLogin(@PathVariable(name = "login") String login) {
+        return INSTANCE.buildFullUser(userService.getUserByLogin(login));
     }
 
     @GetMapping(path = "/search")
     @Secured("ROLE_ADMIN")
-    public BaseResponse<List<UserResponse>> getUsers(@Valid SpecificationRequest request) {
-        return new BaseResponse<>(INSTANCE.buildUsersResponse(userService.findAll(request)));
+    public List<User> getUsers(@Valid SpecificationRequest request) {
+        return INSTANCE.buildUsersResponse(userService.findAll(request));
 
     }
 

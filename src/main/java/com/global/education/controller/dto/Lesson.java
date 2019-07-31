@@ -3,16 +3,15 @@ package com.global.education.controller.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author Aleksandr Sulyma
- * @version 1.0
- */
+import java.util.List;
+
 @Getter
 @Setter
-public class SectionResponse {
+public class Lesson {
 
     private Long id;
     private String title;
     private String description;
-    private Long courseId;
+    private Long sectionId;
+    private List<Comment> comments;
 }

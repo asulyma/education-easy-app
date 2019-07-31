@@ -1,8 +1,7 @@
 package com.global.education.controller;
 
-import com.global.education.controller.dto.LessonResponse;
-import com.global.education.controller.response.BaseController;
-import com.global.education.controller.response.BaseResponse;
+import com.global.education.controller.dto.Lesson;
+import com.global.education.controller.handler.BaseHandler;
 import com.global.education.service.LessonService;
 import com.global.education.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -19,8 +19,8 @@ import static com.global.education.mapper.LessonMapper.INSTANCE;
 import static com.global.education.util.Constants.ID_REGEXP;
 
 @RestController
-@RequestMapping(value = "/{course}/{sectionId}/lesson")
-public class LessonController extends BaseController {
+@RequestMapping(path = "/lesson")
+public class LessonController extends BaseHandler {
 
     @Autowired
     private LessonService lessonService;
@@ -29,23 +29,19 @@ public class LessonController extends BaseController {
     private UserUtils userUtils;
 
     @GetMapping
-    public BaseResponse<List<LessonResponse>> getLessons(@PathVariable(name = "course") String courseName,
-            @PathVariable(name = "sectionId") Long sectionId) {
-        return new BaseResponse<>(INSTANCE.buildLessons(lessonService.getLessons(courseName, sectionId)));
+    public List<Lesson> getLessons(@RequestParam(name = "course") String courseName,
+            @RequestParam(name = "sectionId") Long sectionId) {
+        return INSTANCE.buildLessons(lessonService.getLessons(courseName, sectionId));
     }
 
     @GetMapping("/{id:" + ID_REGEXP + "}")
-    public BaseResponse<LessonResponse> getLessonById(@PathVariable(name = "sectionId") Long sectionId,
-            @PathVariable(name = "id") Long lessonId) {
-        return new BaseResponse<>(INSTANCE.buildLesson(lessonService.getLessonById(sectionId, lessonId)));
+    public Lesson getLessonById(@PathVariable(name = "id") Long lessonId) {
+        return INSTANCE.buildLesson(lessonService.getLessonById(lessonId));
     }
 
     @PutMapping("/{id:" + ID_REGEXP + "}")
-    public BaseResponse finishLesson(Principal principal,
-            @PathVariable(name = "course") String courseName,
-            @PathVariable(name = "sectionId") Long sectionId,
-            @PathVariable(name = "id") Long lessonId) {
-        lessonService.finishLesson(courseName, sectionId, lessonId, userUtils.getUserInfo(principal));
-        return new BaseResponse();
+    public void finishLesson(Principal principal, @PathVariable(name = "id") Long lessonId,
+            @RequestParam(name = "course") String courseName) {
+        lessonService.finishLesson(courseName, lessonId, userUtils.getUserInfo(principal));
     }
 }

@@ -6,9 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Repository for {@link NotificationEntity} class.
- */
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
 

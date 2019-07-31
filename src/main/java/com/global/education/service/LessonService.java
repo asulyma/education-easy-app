@@ -1,7 +1,7 @@
 package com.global.education.service;
 
 import com.global.education.model.learning.LessonEntity;
-import com.global.education.model.learning.Progress;
+import com.global.education.model.user.Progress;
 import com.global.education.model.user.UserEntity;
 import com.global.education.repository.LessonRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,17 +25,13 @@ public class LessonService {
         return lessonRepository.findAllBySectionCourseNameAndSectionId(courseName, sectionId);
     }
 
-    public LessonEntity getLessonById(Long sectionId, Long lessonId) {
-        return lessonRepository.findBySectionIdAndId(sectionId, lessonId);
-    }
-
     public LessonEntity getLessonById(Long lessonId) {
         return checkAndGetOptional(lessonRepository.findById(lessonId), lessonId);
     }
 
     @Transactional
-    public void finishLesson(String courseName, Long sectionId, Long lessonId, UserEntity userEntity) {
-        LessonEntity lesson = getLessonById(sectionId, lessonId);
+    public void finishLesson(String courseName, Long lessonId, UserEntity userEntity) {
+        LessonEntity lesson = getLessonById(lessonId);
 
         if (userEntity.getAlreadyDoneLessons().contains(lesson)) {
             log.info("Lesson already done.");
@@ -44,9 +40,6 @@ public class LessonService {
         userEntity.getAlreadyDoneLessons().add(lesson);
 
         Progress progress = userEntity.getProgress();
-        if (progress == null) {
-            progress = new Progress();
-        }
         progress.setCourseName(courseName)
                 .setProgressValue(progress.getProgressValue() + getCoefficient(courseName));
         userEntity.setProgress(progress);

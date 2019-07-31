@@ -1,6 +1,6 @@
 package com.global.education.controller.dto;
 
-import com.global.education.model.learning.Progress;
+import com.global.education.model.user.Progress;
 import com.global.education.model.user.Rank;
 import com.global.education.model.user.Role;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UserResponse {
+public class User {
 
     private Long id;
     private String login;

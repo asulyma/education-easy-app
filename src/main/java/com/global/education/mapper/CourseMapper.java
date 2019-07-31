@@ -1,7 +1,7 @@
 package com.global.education.mapper;
 
 import com.global.education.model.learning.CourseEntity;
-import com.global.education.controller.dto.CourseResponse;
+import com.global.education.controller.dto.Course;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.factory.Mappers;
@@ -16,8 +16,8 @@ public interface CourseMapper {
 
     CourseMapper INSTANCE = Mappers.getMapper(CourseMapper.class);
 
-    List<CourseResponse> buildCourses(List<CourseEntity> courseEntities);
+    List<Course> buildCourses(List<CourseEntity> courseEntities);
 
-    CourseResponse buildCourse(CourseEntity courseEntity);
+    Course buildCourse(CourseEntity courseEntity);
 
 }

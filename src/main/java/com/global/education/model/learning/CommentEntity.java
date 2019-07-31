@@ -20,6 +20,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class CommentEntity extends CreatableEntity {
 
+    @Column(name = "author_id")
     private Long authorId;
 
     @ManyToOne

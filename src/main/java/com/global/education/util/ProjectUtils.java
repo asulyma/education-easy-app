@@ -1,14 +1,15 @@
 package com.global.education.util;
 
-import com.global.education.exception.NotAllowedRuntimeException;
-import com.global.education.exception.NotFoundRuntimeException;
+import com.global.education.controller.handler.exception.NotAllowedRuntimeException;
+import com.global.education.controller.handler.exception.NotFoundRuntimeException;
 import com.global.education.model.BaseEntity;
 import com.global.education.model.user.UserEntity;
-import lombok.extern.slf4j.Slf4j;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Optional;
 
-@Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProjectUtils {
 
     public static <T extends BaseEntity> T checkAndGetOptional(Optional<T> o, Long id) {

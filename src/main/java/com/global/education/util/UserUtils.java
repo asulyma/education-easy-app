@@ -1,6 +1,6 @@
 package com.global.education.util;
 
-import com.global.education.exception.NotFoundRuntimeException;
+import com.global.education.controller.handler.exception.NotFoundRuntimeException;
 import com.global.education.model.user.Role;
 import com.global.education.model.user.UserEntity;
 import com.global.education.service.UserService;

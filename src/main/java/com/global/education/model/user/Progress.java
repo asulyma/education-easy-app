@@ -1,4 +1,4 @@
-package com.global.education.model.learning;
+package com.global.education.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +14,7 @@ import lombok.experimental.Accessors;
 public class Progress {
 
     private String courseName;
-    private long progressValue;
+    private Long progressValue;
+    //todo make to distinct courses
 
 }

@@ -6,9 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * The class for working with {@link SectionEntity} class.
- */
 @Repository
 public interface SectionRepository extends JpaRepository<SectionEntity, Long> {
 

@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
-/**
- * Pojo class.
- *
- * @author Aleksandr Sulyma
- * @version 1.0
- */
 @Entity
 @Table(name = "notification")
 @NoArgsConstructor

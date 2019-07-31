@@ -1,6 +1,6 @@
 package com.global.education.service;
 
-import com.global.education.exception.BadRequestParametersRuntimeException;
+import com.global.education.controller.handler.exception.BadRequestParametersRuntimeException;
 import com.global.education.model.learning.CourseEntity;
 import com.global.education.model.user.UserEntity;
 import com.global.education.repository.CourseRepository;

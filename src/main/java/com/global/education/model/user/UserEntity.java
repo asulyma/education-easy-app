@@ -3,7 +3,6 @@ package com.global.education.model.user;
 import com.global.education.model.CreatableEntity;
 import com.global.education.model.learning.CourseEntity;
 import com.global.education.model.learning.LessonEntity;
-import com.global.education.model.learning.Progress;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -74,5 +73,5 @@ public class UserEntity extends CreatableEntity {
 
     @Type(type = "jsonb")
     @Column(name = "progress", columnDefinition = "jsonb")
-    private Progress progress;
+    private Progress progress = new Progress();
 }

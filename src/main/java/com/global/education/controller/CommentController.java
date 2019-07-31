@@ -1,7 +1,6 @@
 package com.global.education.controller;
 
-import com.global.education.controller.dto.CommentResponse;
-import com.global.education.controller.response.BaseResponse;
+import com.global.education.controller.dto.Comment;
 import com.global.education.model.user.UserEntity;
 import com.global.education.service.CommentService;
 import com.global.education.util.UserUtils;
@@ -19,7 +18,7 @@ import java.util.List;
 import static com.global.education.mapper.CommentMapper.INSTANCE;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping(path = "/comment")
 public class CommentController {
 
     @Autowired
@@ -29,15 +28,14 @@ public class CommentController {
     private UserUtils userUtils;
 
     @GetMapping
-    public BaseResponse<List<CommentResponse>> getComments(@RequestParam("lessonId") Long lessonId){
-        return new BaseResponse<>(INSTANCE.buildComments(commentService.getComments(lessonId)));
+    public List<Comment> getComments(@RequestParam("lessonId") Long lessonId) {
+        return INSTANCE.buildComments(commentService.getComments(lessonId));
     }
 
     @PostMapping
-    public BaseResponse<CommentResponse> createComment(Principal principal,
-            @RequestBody CommentResponse comment) {
+    public Comment createComment(Principal principal, @RequestBody Comment comment) {
         UserEntity userInfo = userUtils.getUserInfo(principal);
-        return new BaseResponse<>(INSTANCE.buildComment(commentService.createComment(userInfo.getId(), comment)));
+        return INSTANCE.buildComment(commentService.createComment(userInfo.getId(), comment));
     }
 
 }

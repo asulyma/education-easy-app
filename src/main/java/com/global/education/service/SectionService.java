@@ -1,6 +1,6 @@
 package com.global.education.service;
 
-import com.global.education.controller.dto.SectionResponse;
+import com.global.education.controller.dto.Section;
 import com.global.education.model.learning.SectionEntity;
 import com.global.education.repository.SectionRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class SectionService {
     }
 
     @Transactional
-    public SectionEntity createSection(SectionResponse section) {
+    public SectionEntity createSection(Section section) {
         SectionEntity entity = new SectionEntity();
         entity.setCourse(courseService.getCourseById(section.getCourseId()))
               .setDescription(section.getDescription())

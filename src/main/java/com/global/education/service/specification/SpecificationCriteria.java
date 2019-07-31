@@ -1,16 +1,16 @@
 package com.global.education.service.specification;
 
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
 
 @Getter
 @Setter
-@Builder
 @EqualsAndHashCode
+@NoArgsConstructor
 public class SpecificationCriteria implements Serializable {
 
     public String name;

@@ -1,17 +1,16 @@
 package com.global.education.model.user;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Role {
 
     ROLE_ADMIN("admin"),
     ROLE_MODERATOR("moderator"),
     ROLE_USER("user");
 
+    @Getter
     private final String description;
-
-    Role(String description) {
-        this.description = description;
-    }
 }

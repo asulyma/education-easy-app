@@ -1,6 +1,6 @@
 package com.global.education.mapper;
 
-import com.global.education.controller.dto.CommentResponse;
+import com.global.education.controller.dto.Comment;
 import com.global.education.model.learning.CommentEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,11 +18,11 @@ public interface CommentMapper {
 
     CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
-    List<CommentResponse> buildComments(List<CommentEntity> entities);
+    List<Comment> buildComments(List<CommentEntity> entities);
 
     @Mappings({
             @Mapping(expression = "java(entity.getLesson().getId())", target = "lessonId")
     })
-    CommentResponse buildComment(CommentEntity entity);
+    Comment buildComment(CommentEntity entity);
 
 }

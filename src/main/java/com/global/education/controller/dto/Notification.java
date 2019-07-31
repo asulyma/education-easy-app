@@ -10,12 +10,10 @@ import java.time.LocalDate;
 /**
  * DTO for displaying single notification.
  *
- * @author Aleksandr Sulyma
- * @version 1.0
  */
 @Getter
 @Setter
-public class NotificationResponse {
+public class Notification {
 
     private Long id;
     private Long createdDate;

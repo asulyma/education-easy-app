@@ -1,7 +1,7 @@
 package com.global.education.mapper;
 
+import com.global.education.controller.dto.Section;
 import com.global.education.model.learning.SectionEntity;
-import com.global.education.controller.dto.SectionResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -18,11 +18,11 @@ public interface SectionMapper {
 
     SectionMapper INSTANCE = Mappers.getMapper(SectionMapper.class);
 
-    List<SectionResponse> buildSections(List<SectionEntity> sectionEntities);
+    List<Section> buildSections(List<SectionEntity> sectionEntities);
 
     @Mappings({
             @Mapping(expression = "java(sectionEntity.getCourse().getId())", target = "courseId")
     })
-    SectionResponse buildSection(SectionEntity sectionEntity);
+    Section buildSection(SectionEntity sectionEntity);
 
 }
