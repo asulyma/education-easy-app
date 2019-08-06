@@ -1,33 +1,30 @@
 CREATE TABLE user_table
 (
-    id           BIGSERIAL not null primary key,
+    id           BIGSERIAL NOT NULL PRIMARY KEY,
     created_date BIGINT,
-    login        varchar(255),
-    name         varchar(255),
+    login        VARCHAR(255),
+    name         VARCHAR(255),
     age          BIGINT,
-    email        varchar(255),
+    email        VARCHAR(255),
     active       BOOLEAN,
-    rank         varchar(255),
-    role         varchar(255),
-    gender       varchar(255),
-    cost         BIGINT,
+    rank         VARCHAR(255),
+    role         VARCHAR(255),
     progress     JSONB
 );
 
 CREATE TABLE course
 (
-    id           BIGSERIAL not null primary key,
+    id           BIGSERIAL NOT NULL PRIMARY KEY,
     created_date BIGINT,
-    name         varchar(32),
-    title        varchar(256),
-    description  varchar(1024),
-    begin_date   date,
-    end_date     date,
+    title        VARCHAR(256),
+    description  VARCHAR(1024),
+    begin_date   BIGINT,
+    end_date     BIGINT,
     cost         BIGINT
 );
 
 -- ManyToMany
-CREATE TABLE user_course
+CREATE TABLE user_allowed_course
 (
     user_id   BIGINT NOT NULL,
     course_id BIGINT NOT NULL,
@@ -38,11 +35,11 @@ CREATE TABLE user_course
 
 CREATE TABLE section
 (
-    id           BIGSERIAL not null primary key,
+    id           BIGSERIAL NOT NULL PRIMARY KEY,
     created_date BIGINT,
-    title        varchar(255),
-    description  varchar(1024),
-    course_id    bigint
+    title        VARCHAR(255),
+    description  VARCHAR(1024),
+    course_id    BIGINT
 );
 
 -- ManyToOne
@@ -52,11 +49,11 @@ ALTER TABLE section
 
 CREATE TABLE lesson
 (
-    id           BIGSERIAL not null primary key,
+    id           BIGSERIAL NOT NULL PRIMARY KEY,
     created_date BIGINT,
-    title        varchar(255),
-    description  varchar(1024),
-    section_id   bigint
+    title        VARCHAR(255),
+    description  VARCHAR(1024),
+    section_id   BIGINT
 );
 
 -- ManyToOne
@@ -77,27 +74,25 @@ CREATE TABLE comment
 (
     id           BIGSERIAL not null primary key,
     created_date BIGINT,
-    author_id    bigint,
-    lesson_id    bigint,
-    content      varchar(1024)
+    author_id    BIGINT,
+    lesson_id    BIGINT,
+    content      VARCHAR(1024)
 );
 
 -- OneToOne
-ALTER TABLE comment
-    ADD CONSTRAINT fk_user_comment_id FOREIGN KEY (author_id) REFERENCES user_table (id);
 ALTER TABLE comment
     ADD CONSTRAINT fk_lesson_comment_id FOREIGN KEY (lesson_id) REFERENCES lesson (id);
 
 
 CREATE TABLE notification
 (
-    id                BIGSERIAL not null primary key,
+    id                BIGSERIAL NOT NULL PRIMARY KEY,
     created_date      BIGINT,
-    description       varchar(512),
-    publisher_id      bigint,
-    recipient_id      bigint,
-    notification_type varchar(255),
-    entity_type       varchar(255),
-    entity_id         bigint,
-    is_read           boolean
+    description       VARCHAR(512),
+    publisher_id      BIGINT,
+    recipient_id      BIGINT,
+    notification_type VARCHAR(255),
+    entity_type       VARCHAR(255),
+    entity_id         BIGINT,
+    is_read           BOOLEAN
 );

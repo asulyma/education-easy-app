@@ -21,8 +21,8 @@ public class LessonService {
     @Autowired
     private LessonRepository lessonRepository;
 
-    public List<LessonEntity> getLessons(String courseName, Long sectionId) {
-        return lessonRepository.findAllBySectionCourseNameAndSectionId(courseName, sectionId);
+    public List<LessonEntity> getLessons(String courseTitle, Long sectionId) {
+        return lessonRepository.findAllBySectionCourseTitleAndSectionId(courseTitle, sectionId);
     }
 
     public LessonEntity getLessonById(Long lessonId) {
@@ -51,8 +51,8 @@ public class LessonService {
     /**
      * Calculate coefficient for progress
      */
-    private long getCoefficient(String courseName) {
-        return TOTAL_PROGRESS / lessonRepository.countAllBySectionCourseName(courseName);
+    private long getCoefficient(String courseTitle) {
+        return TOTAL_PROGRESS / lessonRepository.countAllBySectionCourseTitle(courseTitle);
     }
 
 }

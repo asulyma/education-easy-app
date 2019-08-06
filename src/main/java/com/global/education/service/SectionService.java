@@ -23,12 +23,12 @@ public class SectionService {
     @Autowired
     private CourseService courseService;
 
-    public List<SectionEntity> getSections(String name) {
-        return sectionRepository.findAllByCourseName(name);
+    public List<SectionEntity> getSections(String title) {
+        return sectionRepository.findAllByCourseTitle(title);
     }
 
-    public SectionEntity getSectionByCourseAndId(String name, Long id) {
-        return sectionRepository.findByCourseNameAndId(name, id);
+    public SectionEntity getSectionByCourseAndId(String title, Long id) {
+        return sectionRepository.findByCourseTitleAndId(title, id);
     }
 
     @Transactional

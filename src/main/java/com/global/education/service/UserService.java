@@ -61,7 +61,7 @@ public class UserService {
     @Transactional
     public Long addCourseForUser(UserEntity userEntity, CourseEntity courseEntity) {
         userEntity.getAllowedCourses().add(courseEntity);
-        userEntity.setProgress(new Progress(courseEntity.getName(), 0L));
+        userEntity.setProgress(new Progress(courseEntity.getTitle(), 0L));
         log.info("Given access for userEntity: '" + userEntity.getLogin() + "' to courseEntity with id: "
                 + courseEntity.getId());
         return userEntity.getId();

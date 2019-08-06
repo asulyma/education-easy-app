@@ -18,7 +18,7 @@ public class EducationApplication {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
-    private static final String APP_PROPERTIES = "classpath:application.properties, classpath:translation.yml";
+    private static final String APP_PROPERTIES = "classpath:application.yml, classpath:translation.yml";
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(EducationApplication.class)

@@ -29,9 +29,9 @@ public class LessonController extends BaseHandler {
     private UserUtils userUtils;
 
     @GetMapping
-    public List<Lesson> getLessons(@RequestParam(name = "course") String courseName,
+    public List<Lesson> getLessons(@RequestParam(name = "course") String courseTitle,
             @RequestParam(name = "sectionId") Long sectionId) {
-        return INSTANCE.buildLessons(lessonService.getLessons(courseName, sectionId));
+        return INSTANCE.buildLessons(lessonService.getLessons(courseTitle, sectionId));
     }
 
     @GetMapping("/{id:" + ID_REGEXP + "}")

@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public interface SectionRepository extends JpaRepository<SectionEntity, Long> {
 
-    List<SectionEntity> findAllByCourseName(String name);
+    List<SectionEntity> findAllByCourseTitle(String title);
 
-    SectionEntity findByCourseNameAndId(String name, Long id);
+    SectionEntity findByCourseTitleAndId(String title, Long id);
 
 }

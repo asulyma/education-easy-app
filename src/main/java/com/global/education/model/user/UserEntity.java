@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -56,11 +57,8 @@ public class UserEntity extends CreatableEntity {
     @Column(name = "role")
     private Role role;
 
-    @Column(name = "gender")
-    private String gender;
-
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_course",
+    @JoinTable(name = "user_allowed_course",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "course_id")})
     private List<CourseEntity> allowedCourses = new ArrayList<>();
@@ -71,7 +69,7 @@ public class UserEntity extends CreatableEntity {
             inverseJoinColumns = {@JoinColumn(name = "lesson_id")})
     private List<LessonEntity> alreadyDoneLessons = new ArrayList<>();
 
-    @Type(type = "jsonb")
     @Column(name = "progress", columnDefinition = "jsonb")
+    @Type(type = "jsonb", parameters = {@Parameter(name = "classType", value = "com.global.education.model.user.Progress")})
     private Progress progress = new Progress();
 }

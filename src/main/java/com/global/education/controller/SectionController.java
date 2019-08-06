@@ -27,9 +27,9 @@ public class SectionController extends BaseHandler {
     }
 
     @GetMapping("/{sectionId}")
-    public Section getSection(@RequestParam(name = "course") String courseName,
+    public Section getSection(@RequestParam(name = "course") String courseTitle,
             @PathVariable(name = "sectionId") Long sectionId) {
-        return INSTANCE.buildSection(sectionService.getSectionByCourseAndId(courseName, sectionId));
+        return INSTANCE.buildSection(sectionService.getSectionByCourseAndId(courseTitle, sectionId));
     }
 
 }
