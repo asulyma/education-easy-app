@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/education_app?autoReconnect=true&useSSL=false
+    username: postgres
+    password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    properties.hibernate:
+      dialect: org.hibernate.dialect.PostgreSQL95Dialect
+      temp.use_jdbc_metadata_defaults: false
+      #show_sql: true
+      #use_sql_comments: true
+      #format_sql: true
+      #type: trace
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    out-of-order: true
+    url: ${spring.datasource.url}
+    user: postgres
+    password: postgres
+
+kafka-topics:
+  bootstrap-server: localhost:9092
+  education-event:
+    enabled: true
+    topic: education-topic-test
+    producer-properties:
+      "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
+      "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer
+      "[value.serializer]": org.apache.kafka.common.serialization.StringSerializer
+  education-event-consumer:
+    enabled: true
+    topic: education-topic-test
+    consumer-properties:
+      "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
+      "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      #"[group.id]": jvlesson-aleksandr
+
