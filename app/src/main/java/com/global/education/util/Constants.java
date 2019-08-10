@@ -8,7 +8,5 @@ public class Constants {
 
     public static final Long TOTAL_PROGRESS = 1000L;
     public static final String ID_REGEXP = "^[0-9]{1,9}";
-    //todo test
-    //todo test2
 
 }

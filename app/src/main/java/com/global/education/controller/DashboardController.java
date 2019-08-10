@@ -25,7 +25,7 @@ public class DashboardController extends BaseHandler {
     }
 
     @GetMapping("/home")
-    public String homePage(Principal principal) {
+    public String homePage() {
         return "index";
     }
 
