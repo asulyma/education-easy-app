@@ -1,4 +1,4 @@
 FROM openjdk:8
-ADD target/education-app.jar education-app.jar
+ADD target/app-module.jar app-module.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "education-app.jar"]
+ENTRYPOINT ["java", "-jar", "app-module.jar"]
