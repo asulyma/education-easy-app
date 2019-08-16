@@ -3,9 +3,7 @@ package com.global.education.service;
 import com.global.education.config.TranslationHolder;
 import com.global.education.model.notification.NotificationEntity;
 import com.global.education.model.notification.NotificationType;
-import com.global.education.model.user.UserEntity;
 import com.global.education.repository.NotificationRepository;
-import com.global.education.util.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +19,7 @@ import static com.global.education.model.notification.NotificationType.DECLINE_P
 import static com.global.education.model.notification.NotificationType.INFO_TO_USER;
 import static com.global.education.model.notification.NotificationType.PERMISSION_TO_ADMIN;
 import static com.global.education.util.ProjectUtils.checkAndGetOptional;
+import static com.global.education.util.UserUtils.getUserAdminId;
 
 @Slf4j
 @Service
@@ -33,13 +32,10 @@ public class NotificationService {
     private CourseService courseService;
 
     @Autowired
-    private UserUtils userUtils;
-
-    @Autowired
     private TranslationHolder translationHolder;
 
-    public List<NotificationEntity> getNotifications(UserEntity userEntity) {
-        return notificationRepository.findAllByRecipientIdOrderByCreatedDateDesc(userEntity.getId());
+    public List<NotificationEntity> getNotifications(Long userId) {
+        return notificationRepository.findAllByRecipientIdOrderByCreatedDateDesc(userId);
     }
 
     @Transactional
@@ -49,8 +45,8 @@ public class NotificationService {
         return notification;
     }
 
-    public void getAccessForCourse(Long courseId, Long userId) {
-        Long adminId = userUtils.getUserAdminId();
+    public void sendRequestForCourse(Long courseId, Long userId) {
+        Long adminId = getUserAdminId();
 
         // Create notification to ADMIN and USER (creator is receiver)
         createNotification(userId, adminId, PERMISSION_TO_ADMIN, courseId);
@@ -73,7 +69,7 @@ public class NotificationService {
 
     private void allowOrDeclineCourse(Long courseId, Long recipientId, NotificationType toAdmin,
             NotificationType toUser) {
-        Long adminId = userUtils.getUserAdminId();
+        Long adminId = getUserAdminId();
 
         // Create notification to ADMIN and USER (he would not know about admin)
         createNotification(adminId, adminId, toAdmin, courseId);
@@ -97,8 +93,8 @@ public class NotificationService {
     }
 
     @Transactional
-    public void removeNotification(Long notificationId, UserEntity userEntity) {
-        int count = notificationRepository.deleteByIdAndRecipientId(notificationId, userEntity.getId());
+    public void removeNotification(Long notificationId, Long userId) {
+        int count = notificationRepository.deleteByIdAndRecipientId(notificationId, userId);
         if (count > 0) {
             log.info("NotificationEntity with id: " + notificationId + " has been removed.");
         }

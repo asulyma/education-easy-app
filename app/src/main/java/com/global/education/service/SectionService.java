@@ -27,7 +27,7 @@ public class SectionService {
         return sectionRepository.findAllByCourseTitle(title);
     }
 
-    public SectionEntity getSectionByCourseAndId(String title, Long id) {
+    public SectionEntity getSection(String title, Long id) {
         return sectionRepository.findByCourseTitleAndId(title, id);
     }
 

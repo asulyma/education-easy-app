@@ -1,8 +1,41 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/education_auth?autoReconnect=true&useSSL=false
+    username: postgres
+    password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    properties.hibernate:
+      dialect: org.hibernate.dialect.PostgreSQL95Dialect
+      temp.use_jdbc_metadata_defaults: false
+      #show_sql: true
+      #use_sql_comments: true
+      #format_sql: true
+      #type: trace
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    out-of-order: true
+    url: ${spring.datasource.url}
+    user: postgres
+    password: postgres
+
+kafka-topics:
+  bootstrap-server: localhost:9092
+  user-update-event-consumer:
+    enabled: true
+    topic: education-topic-test
+    consumer-properties:
+      "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
+      "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      "[group.id]": "user-update-group"
+
 server:
   port: 8081
   servlet:
     context-path: /auth
 
-logging.level:
-  org.springframework:
-    security: DEBUG
+#logging.level:
+#  org.springframework:
+#    security: DEBUG

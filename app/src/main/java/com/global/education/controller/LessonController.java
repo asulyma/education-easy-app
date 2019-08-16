@@ -3,7 +3,6 @@ package com.global.education.controller;
 import com.global.education.controller.dto.Lesson;
 import com.global.education.controller.handler.BaseHandler;
 import com.global.education.service.LessonService;
-import com.global.education.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +16,7 @@ import java.util.List;
 
 import static com.global.education.mapper.LessonMapper.INSTANCE;
 import static com.global.education.util.Constants.ID_REGEXP;
+import static com.global.education.util.UserUtils.currentUser;
 
 @RestController
 @RequestMapping(path = "/lesson")
@@ -24,9 +24,6 @@ public class LessonController extends BaseHandler {
 
     @Autowired
     private LessonService lessonService;
-
-    @Autowired
-    private UserUtils userUtils;
 
     @GetMapping
     public List<Lesson> getLessons(@RequestParam(name = "course") String courseTitle,
@@ -40,8 +37,7 @@ public class LessonController extends BaseHandler {
     }
 
     @PutMapping("/{id:" + ID_REGEXP + "}")
-    public void finishLesson(Principal principal, @PathVariable(name = "id") Long lessonId,
-            @RequestParam(name = "course") String courseName) {
-        lessonService.finishLesson(courseName, lessonId, userUtils.getUserInfo(principal));
+    public void finishLesson(Principal principal, @PathVariable(name = "id") Long lessonId) {
+        lessonService.finishLesson(lessonId, currentUser(principal));
     }
 }

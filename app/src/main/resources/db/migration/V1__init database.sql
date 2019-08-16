@@ -1,17 +1,3 @@
-CREATE TABLE user_table
-(
-    id           BIGSERIAL NOT NULL PRIMARY KEY,
-    created_date BIGINT,
-    login        VARCHAR(255),
-    name         VARCHAR(255),
-    age          BIGINT,
-    email        VARCHAR(255),
-    active       BOOLEAN,
-    rank         VARCHAR(255),
-    role         VARCHAR(255),
-    progress     JSONB
-);
-
 CREATE TABLE course
 (
     id           BIGSERIAL NOT NULL PRIMARY KEY,
@@ -21,16 +7,6 @@ CREATE TABLE course
     begin_date   BIGINT,
     end_date     BIGINT,
     cost         BIGINT
-);
-
--- ManyToMany
-CREATE TABLE user_allowed_course
-(
-    user_id   BIGINT NOT NULL,
-    course_id BIGINT NOT NULL,
-    PRIMARY KEY (user_id, course_id),
-    CONSTRAINT user_course_user_id_fkey FOREIGN KEY (user_id) REFERENCES user_table (id),
-    CONSTRAINT user_course_course_id_fkey FOREIGN KEY (course_id) REFERENCES course (id)
 );
 
 CREATE TABLE section
@@ -59,16 +35,6 @@ CREATE TABLE lesson
 -- ManyToOne
 ALTER TABLE lesson
     ADD CONSTRAINT fk_lesson_id FOREIGN KEY (section_id) REFERENCES section (id);
-
--- ManyToMany
-CREATE TABLE user_already_done_lessons
-(
-    user_id   BIGINT NOT NULL,
-    lesson_id BIGINT NOT NULL,
-    PRIMARY KEY (user_id, lesson_id),
-    CONSTRAINT user_lesson_user_id_fkey FOREIGN KEY (user_id) REFERENCES user_table (id),
-    CONSTRAINT user_lesson_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES lesson (id)
-);
 
 CREATE TABLE comment
 (

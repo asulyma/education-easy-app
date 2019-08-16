@@ -9,21 +9,21 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class EducationEventProducer extends KafkaProducer<String, String> {
+public class UserUpdateEventProducer extends KafkaProducer<String, String> {
 
     private static final int TIMEOUT_PERIOD = 30;
     private String topic;
 
-    public EducationEventProducer(Map<String, Object> configs) {
+    public UserUpdateEventProducer(Map<String, Object> configs) {
         super(configs);
     }
 
-    public EducationEventProducer(Map<String, Object> configs, String topic) {
+    public UserUpdateEventProducer(Map<String, Object> configs, String topic) {
         super(configs);
         this.topic = topic;
     }
 
-    public void sendEvent(String message) throws Exception {
+    public void sendEvent(UserUpdateEventDto message) throws Exception {
         String payload = JacksonUtil.toJsonString(message);
         ProducerRecord<String, String> record = new ProducerRecord<>(topic, payload);
         sendMessage(record);

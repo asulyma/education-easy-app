@@ -14,7 +14,8 @@ import java.io.Serializable;
 public class SpecificationCriteria implements Serializable {
 
     public String name;
-    public Long age;
+    public Long costStart;
+    public Long costEnd;
     public Long createdStartDate;
     public Long createdEndDate;
 

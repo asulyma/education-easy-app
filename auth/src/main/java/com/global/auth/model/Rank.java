@@ -1,4 +1,4 @@
-package com.global.education.model.user;
+package com.global.auth.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

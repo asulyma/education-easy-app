@@ -19,10 +19,6 @@ GET:    /{course}/{sectionId}/lesson/{id}              - get single LessonRespon
 PUT:    /{course}/{sectionId}/lesson/{id}              - finish lesson and add progress.
 
 
-GET:    /user                                          - get list of UserResponse.
-GET:    /user/{login}                                  - get single UserResponse by login.
-
-
 GET:    /comment                                       - get list of CommentResponse(need to add lessonId as query param).
 POST:   /comment                                       - create new comment.
 

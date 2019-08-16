@@ -22,20 +22,13 @@ spring:
 
 kafka-topics:
   bootstrap-server: localhost:9092
-  education-event:
+  user-update-event:
     enabled: true
     topic: education-topic-test
     producer-properties:
       "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
       "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer
       "[value.serializer]": org.apache.kafka.common.serialization.StringSerializer
-  education-event-consumer:
-    enabled: true
-    topic: education-topic-test
-    consumer-properties:
-      "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
-      "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
-      "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
 
 server:
   servlet:
@@ -50,6 +43,6 @@ security:
     resource:
       userInfoUri: http://localhost:8081/auth/user/me
 
-logging.level:
-  org.springframework:
-    security: DEBUG
+#logging.level:
+#  org.springframework:
+#    security: DEBUG

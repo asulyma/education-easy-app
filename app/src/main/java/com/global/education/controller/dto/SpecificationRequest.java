@@ -15,7 +15,8 @@ import javax.validation.constraints.Min;
 public class SpecificationRequest implements Serializable {
 
     private String name;
-    private Long age;
+    private Long costStart;
+    private Long costEnd;
 
     @Min(value = 0)
     @Max(value = Long.MAX_VALUE)

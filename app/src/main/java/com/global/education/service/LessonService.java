@@ -1,8 +1,7 @@
 package com.global.education.service;
 
+import com.global.education.controller.dto.User;
 import com.global.education.model.learning.LessonEntity;
-import com.global.education.model.user.Progress;
-import com.global.education.model.user.UserEntity;
 import com.global.education.repository.LessonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.global.education.util.Constants.TOTAL_PROGRESS;
 import static com.global.education.util.ProjectUtils.checkAndGetOptional;
 
 @Slf4j
@@ -30,29 +28,17 @@ public class LessonService {
     }
 
     @Transactional
-    public void finishLesson(String courseName, Long lessonId, UserEntity userEntity) {
+    public void finishLesson(Long lessonId, User user) {
         LessonEntity lesson = getLessonById(lessonId);
 
-        if (userEntity.getAlreadyDoneLessons().contains(lesson)) {
+        if (user.getAlreadyDoneLessons().contains(lesson.getId())) {
             log.info("Lesson already done.");
             return;
         }
-        userEntity.getAlreadyDoneLessons().add(lesson);
+        //todo after add - send event by kafka for saving
+        user.getAlreadyDoneLessons().add(lesson.getId());
 
-        Progress progress = userEntity.getProgress();
-        progress.setCourseName(courseName)
-                .setProgressValue(progress.getProgressValue() + getCoefficient(courseName));
-        userEntity.setProgress(progress);
-
-        log.info("Lesson: " + lessonId + " has been done for user: " + userEntity.getLogin());
-        log.info("Add progress for user " + userEntity.getLogin());
-    }
-
-    /**
-     * Calculate coefficient for progress
-     */
-    private long getCoefficient(String courseTitle) {
-        return TOTAL_PROGRESS / lessonRepository.countAllBySectionCourseTitle(courseTitle);
+        log.info("Lesson: " + lessonId + " has been done for user: " + user.getLogin());
     }
 
 }

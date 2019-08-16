@@ -22,14 +22,14 @@ public class SectionController extends BaseHandler {
     private SectionService sectionService;
 
     @GetMapping
-    public List<Section> getSections(@RequestParam(name = "course") String courseName) {
-        return INSTANCE.buildSections(sectionService.getSections(courseName));
+    public List<Section> getSections(@RequestParam(name = "course") String courseTitle) {
+        return INSTANCE.buildSections(sectionService.getSections(courseTitle));
     }
 
     @GetMapping("/{sectionId}")
     public Section getSection(@RequestParam(name = "course") String courseTitle,
             @PathVariable(name = "sectionId") Long sectionId) {
-        return INSTANCE.buildSection(sectionService.getSectionByCourseAndId(courseTitle, sectionId));
+        return INSTANCE.buildSection(sectionService.getSection(courseTitle, sectionId));
     }
 
 }
