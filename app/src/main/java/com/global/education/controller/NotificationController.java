@@ -30,8 +30,8 @@ public class NotificationController extends BaseHandler {
     private NotificationService notificationService;
 
     @GetMapping
-    public List<Notification> getNotifications(Principal principal) {
-        return INSTANCE.notificationsToListOfWrappers(notificationService.getNotifications(currentUserId(principal)));
+    public List<Notification> getNotifications() {
+        return INSTANCE.notificationsToListOfWrappers(notificationService.getNotifications(currentUserId()));
     }
 
     @GetMapping("/{id:" + ID_REGEXP + "}")
@@ -40,8 +40,8 @@ public class NotificationController extends BaseHandler {
     }
 
     @PostMapping("/{courseId}")
-    public void sendRequestForCourse(Principal principal, @PathVariable(name = "courseId") Long courseId) {
-        notificationService.sendRequestForCourse(courseId, currentUserId(principal));
+    public void sendRequestForCourse(@PathVariable(name = "courseId") Long courseId) {
+        notificationService.sendRequestForCourse(courseId, currentUserId());
     }
 
     @PostMapping("/{id}/approve")
@@ -57,8 +57,8 @@ public class NotificationController extends BaseHandler {
     }
 
     @DeleteMapping("/{id:" + ID_REGEXP + "}")
-    public void removeNotification(Principal principal, @PathVariable("id") Long notificationId) {
-        notificationService.removeNotification(notificationId, currentUserId(principal));
+    public void removeNotification(@PathVariable("id") Long notificationId) {
+        notificationService.removeNotification(notificationId, currentUserId());
     }
 
 

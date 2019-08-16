@@ -29,8 +29,8 @@ public class CommentController {
     }
 
     @PostMapping
-    public Comment createComment(Principal principal, @RequestBody Comment comment) {
-        return INSTANCE.buildComment(commentService.createComment(currentUserId(principal), comment));
+    public Comment createComment(@RequestBody Comment comment) {
+        return INSTANCE.buildComment(commentService.createComment(currentUserId(), comment));
     }
 
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.List;
 
 import static com.global.education.mapper.LessonMapper.INSTANCE;
@@ -37,7 +36,7 @@ public class LessonController extends BaseHandler {
     }
 
     @PutMapping("/{id:" + ID_REGEXP + "}")
-    public void finishLesson(Principal principal, @PathVariable(name = "id") Long lessonId) {
-        lessonService.finishLesson(lessonId, currentUser(principal));
+    public void finishLesson(@PathVariable(name = "id") Long lessonId) {
+        lessonService.finishLesson(lessonId, currentUser());
     }
 }

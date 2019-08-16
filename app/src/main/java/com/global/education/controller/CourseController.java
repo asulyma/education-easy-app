@@ -2,7 +2,6 @@ package com.global.education.controller;
 
 import com.global.education.controller.dto.Course;
 import com.global.education.controller.dto.SpecificationRequest;
-import com.global.education.controller.dto.User;
 import com.global.education.controller.handler.BaseHandler;
 import com.global.education.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -29,9 +27,8 @@ public class CourseController extends BaseHandler {
     private CourseService courseService;
 
     @GetMapping("/{id:" + ID_REGEXP + "}")
-    public Course getCourse(Principal principal, @PathVariable(name = "id") Long id) {
-        User user = currentUser(principal);
-        return INSTANCE.buildCourse(courseService.getCourseById(id, user));
+    public Course getCourse(@PathVariable(name = "id") Long id) {
+        return INSTANCE.buildCourse(courseService.getCourseById(id, currentUser()));
     }
 
     @GetMapping
