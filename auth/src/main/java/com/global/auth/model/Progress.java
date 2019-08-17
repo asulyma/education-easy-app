@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +16,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class Progress {
 
-    private Map<String, Long> courseNameToProgressValue = new HashMap<>();
+    private Long progressValue;
+    private List<Long> alreadyDoneLessons = new ArrayList<>();
 
 }

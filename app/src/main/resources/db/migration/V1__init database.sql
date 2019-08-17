@@ -9,7 +9,7 @@ CREATE TABLE course
     cost         BIGINT
 );
 
-CREATE TABLE section
+CREATE TABLE lesson
 (
     id           BIGSERIAL NOT NULL PRIMARY KEY,
     created_date BIGINT,
@@ -19,22 +19,8 @@ CREATE TABLE section
 );
 
 -- ManyToOne
-ALTER TABLE section
-    ADD CONSTRAINT fk_section_id FOREIGN KEY (course_id) REFERENCES course (id);
-
-
-CREATE TABLE lesson
-(
-    id           BIGSERIAL NOT NULL PRIMARY KEY,
-    created_date BIGINT,
-    title        VARCHAR(255),
-    description  VARCHAR(1024),
-    section_id   BIGINT
-);
-
--- ManyToOne
 ALTER TABLE lesson
-    ADD CONSTRAINT fk_lesson_id FOREIGN KEY (section_id) REFERENCES section (id);
+    ADD CONSTRAINT fk_lesson_id FOREIGN KEY (course_id) REFERENCES course (id);
 
 CREATE TABLE comment
 (
@@ -48,17 +34,3 @@ CREATE TABLE comment
 -- OneToOne
 ALTER TABLE comment
     ADD CONSTRAINT fk_lesson_comment_id FOREIGN KEY (lesson_id) REFERENCES lesson (id);
-
-
-CREATE TABLE notification
-(
-    id                BIGSERIAL NOT NULL PRIMARY KEY,
-    created_date      BIGINT,
-    description       VARCHAR(512),
-    publisher_id      BIGINT,
-    recipient_id      BIGINT,
-    notification_type VARCHAR(255),
-    entity_type       VARCHAR(255),
-    entity_id         BIGINT,
-    is_read           BOOLEAN
-);

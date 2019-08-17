@@ -13,7 +13,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CollectionTable;
@@ -60,11 +59,8 @@ public class UserEntity {
     @Column(name = "rank")
     private Rank rank;
 
-    @Column(name = "user_data", columnDefinition = "jsonb")
-    @Type(type = "jsonb", parameters = {@Parameter(name = "classType", value = "java.util.HashMap")})
-    private Map<DataType, List<Long>> userData = new HashMap<>();
-
+    // CourseId to Progress
     @Column(name = "progress", columnDefinition = "jsonb")
-    @Type(type = "jsonb", parameters = {@Parameter(name = "classType", value = "com.global.auth.model.Progress")})
-    private Progress progress = new Progress();
+    @Type(type = "jsonb", parameters = {@Parameter(name = "classType", value = "java.util.HashMap")})
+    private Map<Long, Progress> progressMap = new HashMap<>();
 }

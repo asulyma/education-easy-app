@@ -12,11 +12,9 @@ import java.util.UUID;
 public class User {
 
     private Long id;
-    private UUID uuid;
     private String login;
     private String name;
     private String email;
     private boolean active;
-    private List<Long> allowedCourses = new ArrayList<>();//todo change on UserData
     private List<Long> alreadyDoneLessons = new ArrayList<>();
 }

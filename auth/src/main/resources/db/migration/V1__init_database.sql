@@ -5,7 +5,6 @@ CREATE TABLE user_table
     password  VARCHAR(256),
     email     VARCHAR(256),
     rank      VARCHAR(32),
-    user_data JSONB,
     progress  JSONB
 );
 CREATE TABLE roles

@@ -9,5 +9,7 @@ public class UserUpdateEventDto {
 
     private Long userId;
     private Long courseId;
+    private Long alreadyDoneLesson;
+    private Long coefficientToProgress;
 
 }

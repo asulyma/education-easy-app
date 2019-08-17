@@ -1,6 +1,7 @@
 package com.global.auth.service;
 
-import com.global.auth.model.DataType;
+import com.global.auth.kafka.consumer.UserUpdateEventDto;
+import com.global.auth.model.Progress;
 import com.global.auth.model.UserEntity;
 import com.global.auth.model.UserProvider;
 import com.global.auth.repository.UserRepository;
@@ -11,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 @Service
 public class UserService implements UserDetailsService {
 
@@ -18,9 +21,19 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Transactional
-    public void addAllowedCourse(Long userId, Long courseId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
-        user.getUserData().get(DataType.ALLOWED_COURSES).add(courseId);
+    public void finishLesson(UserUpdateEventDto dto) {
+        UserEntity user = userRepository.findById(dto.getUserId()).orElseThrow(NullPointerException::new);
+        if (!user.getProgressMap().containsKey(dto.getCourseId())) {
+            return;
+        }
+        Map<Long, Progress> progressMap = user.getProgressMap();
+
+        Progress progress = progressMap.get(dto.getCourseId());
+        progress.getAlreadyDoneLessons().add(dto.getAlreadyDoneLesson());
+        progress.setProgressValue(progress.getProgressValue() + dto.getCoefficientToProgress());
+
+        progressMap.put(dto.getCourseId(), progress);
+        user.setProgressMap(progressMap);
     }
 
     @Override

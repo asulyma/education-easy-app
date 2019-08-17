@@ -12,6 +12,6 @@ public class Lesson {
     private Long id;
     private String title;
     private String description;
-    private Long sectionId;
+    private Long courseId;
     private List<Comment> comments;
 }

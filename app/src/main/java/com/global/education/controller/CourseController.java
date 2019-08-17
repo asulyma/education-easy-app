@@ -17,7 +17,6 @@ import javax.validation.Valid;
 
 import static com.global.education.mapper.CourseMapper.INSTANCE;
 import static com.global.education.util.Constants.ID_REGEXP;
-import static com.global.education.util.UserUtils.currentUser;
 
 @RestController
 @RequestMapping(path = "/course")
@@ -28,7 +27,7 @@ public class CourseController extends BaseHandler {
 
     @GetMapping("/{id:" + ID_REGEXP + "}")
     public Course getCourse(@PathVariable(name = "id") Long id) {
-        return INSTANCE.buildCourse(courseService.getCourseById(id, currentUser()));
+        return INSTANCE.buildCourse(courseService.getCourseById(id));
     }
 
     @GetMapping

@@ -30,8 +30,8 @@ public class LessonEntity extends CreatableEntity {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "section_id")
-    private SectionEntity section;
+    @JoinColumn(name = "course_id")
+    private CourseEntity course;
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
     private List<CommentEntity> comments = new ArrayList<>();
