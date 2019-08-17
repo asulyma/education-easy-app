@@ -20,6 +20,6 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
             .anyRequest()
             .authenticated()
             .and()
-            .httpBasic().disable();
+            .httpBasic().and().csrf().disable();
     }
 }

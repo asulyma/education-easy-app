@@ -1,0 +1,46 @@
+version: '3'
+services:
+  auth-postgres-db:
+    image: mdillon/postgis:10
+    container_name: auth-postgres-db
+    ports:
+      - 5434:5432
+    environment:
+      - POSTGRES_DB=education_auth
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    # Default script execution when container is run
+    #volumes:
+    #  - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  auth-education:
+    build: auth
+    container_name: auth-education
+    ports:
+      - 8081:8081
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-postgres-db:5432/education_auth?autoReconnect=true&useSSL=false
+    depends_on:
+      - auth-postgres-db
+
+  app-postgres-db:
+    image: mdillon/postgis:10
+    container_name: app-postgres-db
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_DB=education_app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  app-education:
+    build: app
+    container_name: app-education
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://app-postgres-db:5432/education_app?autoReconnect=true&useSSL=false
+      - SECURITY_OAUTH2_CLIENT_ACCESSTOKENURI=http://auth-education:8081/auth/oauth/token
+      - SECURITY_OAUTH2_CLIENT_USERAUTHORIZATIONURI=http://auth-education:8081/auth/oauth/authorize
+      - SECURITY_OAUTH2_RESOURCE_USER_INFO_URI=http://auth-education:8081/auth/user/me
+    depends_on:
+      - app-postgres-db
+      - auth-education

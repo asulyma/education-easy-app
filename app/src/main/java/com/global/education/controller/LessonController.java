@@ -16,9 +16,10 @@ import java.util.List;
 import static com.global.education.mapper.LessonMapper.INSTANCE;
 import static com.global.education.util.Constants.ID_REGEXP;
 import static com.global.education.util.UserUtils.currentUser;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/lesson")
+@RequestMapping(path = "/lesson", produces = APPLICATION_JSON_VALUE)
 public class LessonController extends BaseHandler {
 
     @Autowired

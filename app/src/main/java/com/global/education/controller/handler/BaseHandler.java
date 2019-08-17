@@ -30,11 +30,6 @@ public class BaseHandler {
         return BaseResponse.buildErrorResponse(400, e);
     }
 
-    @ExceptionHandler(Exception.class)
-    public BaseResponse handleException(Exception e) {
-        return BaseResponse.buildErrorResponse(400, e);
-    }
-
     @Getter
     @Setter
     public static class BaseResponse {

@@ -1,6 +1,9 @@
 package com.global.education.service;
 
 import com.global.education.controller.dto.User;
+import com.global.education.controller.handler.exception.NotFoundRuntimeException;
+import com.global.education.kafka.producer.UserUpdateEventDto;
+import com.global.education.kafka.service.UserUpdateEventKafkaService;
 import com.global.education.model.learning.LessonEntity;
 import com.global.education.repository.LessonRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.global.education.util.ProjectUtils.checkAndGetOptional;
+import static com.global.education.util.Constants.TOTAL_PROGRESS;
 
 @Slf4j
 @Service
@@ -19,12 +22,16 @@ public class LessonService {
     @Autowired
     private LessonRepository lessonRepository;
 
-    public List<LessonEntity> getLessons(String courseTitle, Long sectionId) {
-        return lessonRepository.findAllBySectionCourseTitleAndSectionId(courseTitle, sectionId);
+    @Autowired
+    private UserUpdateEventKafkaService updateEventService;
+
+    public List<LessonEntity> getLessons(Long courseId) {
+        return lessonRepository.findAllByCourseId(courseId);
     }
 
-    public LessonEntity getLessonById(Long lessonId) {
-        return checkAndGetOptional(lessonRepository.findById(lessonId), lessonId);
+    public LessonEntity getLessonById(Long id) {
+        return lessonRepository.findById(id).orElseThrow(
+                () -> new NotFoundRuntimeException("Lesson with id " + id + " does not exist!"));
     }
 
     @Transactional
@@ -35,10 +42,19 @@ public class LessonService {
             log.info("Lesson already done.");
             return;
         }
-        //todo after add - send event by kafka for saving
-        user.getAlreadyDoneLessons().add(lesson.getId());
 
-        log.info("Lesson: " + lessonId + " has been done for user: " + user.getLogin());
+        updateEventService.sendUpdateEvent(buildDto(lesson, user.getId()));
+        log.info("User update event has been sent. Finish lesson {}", lessonId);
+        user.getAlreadyDoneLessons().add(lesson.getId());
+    }
+
+    private UserUpdateEventDto buildDto(LessonEntity lesson, Long userId) {
+        int count = lessonRepository.countAllByCourseTitle(lesson.getCourse().getTitle());
+        return new UserUpdateEventDto()
+                .setCourseId(lesson.getCourse().getId())
+                .setUserId(userId)
+                .setAlreadyDoneLesson(lesson.getId())
+                .setCoefficientToProgress(TOTAL_PROGRESS / count);
     }
 
 }

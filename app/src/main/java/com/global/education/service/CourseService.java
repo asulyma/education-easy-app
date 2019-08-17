@@ -1,6 +1,7 @@
 package com.global.education.service;
 
 import com.global.education.cache.ListCache;
+import com.global.education.controller.dto.Course;
 import com.global.education.controller.dto.SpecificationRequest;
 import com.global.education.controller.handler.exception.NotFoundRuntimeException;
 import com.global.education.model.learning.CourseEntity;
@@ -49,6 +50,20 @@ public class CourseService {
 
     public List<CourseEntity> getCourses() {
         return courseRepository.findAll();
+    }
+
+    public void createCourse(CourseEntity courseEntity) {
+        courseRepository.save(courseEntity);
+    }
+
+    public void updateCourse(Long courseId, Course courseDto) {
+        CourseEntity entity = courseRepository.findById(courseId).orElseThrow(NotFoundRuntimeException::new);
+        entity.setTitle(courseDto.getTitle());
+        entity.setDescription(courseDto.getDescription());
+        entity.setBeginDate(courseDto.getBeginDate());
+        entity.setEndDate(courseDto.getEndDate());
+        entity.setCost(courseDto.getCost());
+        courseRepository.save(entity);
     }
 
     private List<CourseEntity> findAllBySpec(SpecificationRequest request) {

@@ -21,6 +21,7 @@ public interface LessonMapper {
     List<Lesson> buildLessons(List<LessonEntity> lessonEntities);
 
     @Mappings({
+            @Mapping(expression = "java(lessonEntity.getCourse().getId())", target = "courseId"),
             @Mapping(expression = "java(lessonEntity.getComments().stream().map(e -> new com.global.education.controller.dto.Comment(e.getAuthorId(), e.getLesson().getId(), e.getContent())).collect(java.util.stream.Collectors.toList()))", target = "comments")
     })
     Lesson buildLesson(LessonEntity lessonEntity);

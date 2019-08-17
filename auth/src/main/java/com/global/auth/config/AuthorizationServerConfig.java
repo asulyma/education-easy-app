@@ -29,7 +29,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                .authorizedGrantTypes("authorization_code", "client_credentials")
                .scopes("user_info", "read", "write", "trust")
                .autoApprove(true)
-               .accessTokenValiditySeconds(5000)
+               .accessTokenValiditySeconds(10_000)
                .redirectUris("http://localhost:8080/api/login");
     }
 }

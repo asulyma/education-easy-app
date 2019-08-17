@@ -2,18 +2,6 @@ GET:    /course                                        - get list of CourseRespo
 GET:    /course/{id}                                   - get single course as CourseResponse.
 
 
-GET:    /notification                                  - get list of NotificationResponse.
-GET:    /notification/{id}                             - get single NotificationResponse by id.
-POST:   /notification/{id}                             - get allow for course.
-POST:   /notification/{courseId}/approve               - approve permission by id. Must contains notificationId in body.
-POST:   /notification/{courseId}/decline               - decline permission by id. Must contains notificationId in body.
-DELETE: /notification/{id}                             - remove notification by id.
-
-
-GET:    /{course}/section                              - get list of SectionResponse by courseName.
-GET:    /{course}/section/{id}                         - get single SectionResponse by courseName and sectionId.
-
-
 GET:    /{course}/{sectionId}/lesson                   - get list of LessonResponse by courseName and sectionId.
 GET:    /{course}/{sectionId}/lesson/{id}              - get single LessonResponse by id.
 PUT:    /{course}/{sectionId}/lesson/{id}              - finish lesson and add progress.
@@ -21,5 +9,4 @@ PUT:    /{course}/{sectionId}/lesson/{id}              - finish lesson and add p
 
 GET:    /comment                                       - get list of CommentResponse(need to add lessonId as query param).
 POST:   /comment                                       - create new comment.
-
 
