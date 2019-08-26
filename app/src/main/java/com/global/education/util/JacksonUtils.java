@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class JacksonUtil {
+public class JacksonUtils {
 
     private static final ObjectMapper defaultMapper = new ObjectMapper();
 

@@ -1,5 +1,7 @@
 package com.global.auth.model;
 
+import com.education.common.model.Progress;
+import com.education.common.model.Rank;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

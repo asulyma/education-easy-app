@@ -1,15 +1,13 @@
 package com.global.education.controller.dto;
 
+import com.education.common.model.Progress;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,5 +19,5 @@ public class User {
     private String email;
     private Set<String> roles;
     private String rank;
-    private Map progressMap = new HashMap();
+    private Map<Long, Progress> progressMap = new HashMap<>();
 }

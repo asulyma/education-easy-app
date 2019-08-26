@@ -61,7 +61,7 @@ public class UserUtils {
                 .setEmail((String) userInstance.get(EMAIL))
                 .setRoles(getRoles(userInstance))
                 .setRank((String) userInstance.get(RANK))
-                .setProgressMap(null);      //todo
+                .setProgressMap(new HashMap<>());      //todo
     }
 
     @SuppressWarnings("unchecked")

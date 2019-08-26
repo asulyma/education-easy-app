@@ -1,6 +1,6 @@
 package com.global.education.kafka.producer;
 
-import com.global.education.util.JacksonUtil;
+import com.global.education.util.JacksonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -24,7 +24,7 @@ public class UserUpdateEventProducer extends KafkaProducer<String, String> {
     }
 
     public void sendEvent(UserUpdateEventDto message) throws Exception {
-        String payload = JacksonUtil.toJsonString(message);
+        String payload = JacksonUtils.toJsonString(message);
         ProducerRecord<String, String> record = new ProducerRecord<>(topic, payload);
         sendMessage(record);
     }

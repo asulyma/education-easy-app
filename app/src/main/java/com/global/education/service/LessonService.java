@@ -1,5 +1,6 @@
 package com.global.education.service;
 
+import com.education.common.model.Progress;
 import com.global.education.controller.dto.Lesson;
 import com.global.education.controller.dto.User;
 import com.global.education.controller.handler.exception.NotFoundRuntimeException;
@@ -63,15 +64,15 @@ public class LessonService {
     @Transactional
     public void finishLesson(Long lessonId, User user) {
         LessonEntity lesson = getLessonById(lessonId);
+        Progress progress = user.getProgressMap().get(lesson.getCourse().getId());
 
-        if (user.getAlreadyDoneLessons().contains(lesson.getId())) {
+        if (progress != null && progress.getAlreadyDoneLessons().contains(lesson.getId())) {
             log.info("Lesson already done.");
             return;
         }
 
         updateEventService.sendUpdateEvent(buildDto(lesson, user.getId()));
         log.info("User update event has been sent. Finish lesson {}", lessonId);
-        user.getAlreadyDoneLessons().add(lesson.getId());
     }
 
     private UserUpdateEventDto buildDto(LessonEntity lesson, Long userId) {

@@ -1,8 +1,8 @@
 package com.global.auth.service;
 
+import com.education.common.model.Progress;
 import com.global.auth.kafka.consumer.UserUpdateEventDto;
-import com.global.auth.model.Progress;
-import com.global.auth.model.Rank;
+import com.education.common.model.Rank;
 import com.global.auth.model.UserEntity;
 import com.global.auth.model.UserProvider;
 import com.global.auth.repository.UserRepository;
