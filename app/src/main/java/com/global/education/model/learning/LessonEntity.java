@@ -4,6 +4,7 @@ import com.global.education.model.CreatableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,9 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "lesson")
 @NoArgsConstructor
+@Table(name = "lesson")
+@Accessors(chain = true)
 public class LessonEntity extends CreatableEntity {
 
     @Column(name = "title")

@@ -1,10 +1,28 @@
-GET:    /course                                        - get list of CourseResponse.
-GET:    /course/{id}                                   - get single course as CourseResponse.
+GET:    /course                                        - get list of courses.
+GET:    /course/{id}                                   - get single course by id.
+GET:    /course/search                                 - get list of courses by criteria.
+POST:   /course                                        - create a course. FOR ADMIN
+{
+	"title": "title",
+	"cost": 100,
+	"beginDate": 1564617600000,
+	"endDate": 1565617600000
+}
+PUT:    /course/{id}                                   - update existing course by id. FOR ADMIN
+DELETE: /course/{id}                                   - delete course by id. FOR ADMIN
 
 
-GET:    /{course}/{sectionId}/lesson                   - get list of LessonResponse by courseName and sectionId.
-GET:    /{course}/{sectionId}/lesson/{id}              - get single LessonResponse by id.
-PUT:    /{course}/{sectionId}/lesson/{id}              - finish lesson and add progress.
+GET:    /lesson?courseId={id}                          - get list of lessons by course.
+GET:    /lesson/{id}                                   - get lessons.
+POST:   /lesson                                        - create a lesson. FOR ADMIN
+{
+	"title": "LessonTest",
+	"description": "optional",
+	"courseId": 1
+}
+PUT:    /lesson/{id}                                   - update existing lesson by id. FOR ADMIN
+DELETE: /lesson/{id}                                   - delete lesson by id. FOR ADMIN
+PUT:    /lesson/finish/{id}                            - finish lesson and add progress.
 
 
 GET:    /comment                                       - get list of CommentResponse(need to add lessonId as query param).

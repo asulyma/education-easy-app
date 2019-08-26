@@ -1,5 +1,6 @@
 package com.global.education.service;
 
+import com.global.education.controller.dto.Lesson;
 import com.global.education.controller.dto.User;
 import com.global.education.controller.handler.exception.NotFoundRuntimeException;
 import com.global.education.kafka.producer.UserUpdateEventDto;
@@ -23,6 +24,9 @@ public class LessonService {
     private LessonRepository lessonRepository;
 
     @Autowired
+    private CourseService courseService;
+
+    @Autowired
     private UserUpdateEventKafkaService updateEventService;
 
     public List<LessonEntity> getLessons(Long courseId) {
@@ -32,6 +36,28 @@ public class LessonService {
     public LessonEntity getLessonById(Long id) {
         return lessonRepository.findById(id).orElseThrow(
                 () -> new NotFoundRuntimeException("Lesson with id " + id + " does not exist!"));
+    }
+
+    @Transactional
+    public void createLesson(Lesson lesson) {
+        LessonEntity entity = new LessonEntity()
+                .setTitle(lesson.getTitle())
+                .setDescription(lesson.getDescription())
+                .setCourse(courseService.getCourseById(lesson.getCourseId()));
+        lessonRepository.save(entity);
+    }
+
+    @Transactional
+    public void updateLesson(Long id, Lesson lesson) {
+        LessonEntity entity = getLessonById(id);
+        entity.setTitle(lesson.getTitle());
+        entity.setDescription(lesson.getDescription());
+        lessonRepository.save(entity);
+    }
+
+    @Transactional
+    public void removeLesson(Long id) {
+        lessonRepository.deleteById(id);
     }
 
     @Transactional

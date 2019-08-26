@@ -66,6 +66,10 @@ public class CourseService {
         courseRepository.save(entity);
     }
 
+    public void removeCourse(Long courseId) {
+        courseRepository.deleteById(courseId);
+    }
+
     private List<CourseEntity> findAllBySpec(SpecificationRequest request) {
         SpecificationCriteria criteria = INSTANCE.buildSpecificationCriteria(request);
         Specification<CourseEntity> specification = specificationFactory.build(criteria);

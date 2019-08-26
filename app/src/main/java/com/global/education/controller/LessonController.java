@@ -4,9 +4,15 @@ import com.global.education.controller.dto.Lesson;
 import com.global.education.controller.handler.BaseHandler;
 import com.global.education.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +41,28 @@ public class LessonController extends BaseHandler {
         return INSTANCE.buildLesson(lessonService.getLessonById(lessonId));
     }
 
+    @PostMapping
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<HttpStatus> createLesson(@RequestBody Lesson lesson) {
+        lessonService.createLesson(lesson);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @PutMapping("/{id:" + ID_REGEXP + "}")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<HttpStatus> updateLesson(@PathVariable(name = "id") Long id, @RequestBody Lesson lesson) {
+        lessonService.updateLesson(id, lesson);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{id:" + ID_REGEXP + "}")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<HttpStatus> removeLesson(@PathVariable(name = "id") Long id) {
+        lessonService.removeLesson(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/finish/{id:" + ID_REGEXP + "}")
     public void finishLesson(@PathVariable(name = "id") Long lessonId) {
         lessonService.finishLesson(lessonId, currentUser());
     }

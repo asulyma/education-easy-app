@@ -19,7 +19,7 @@ public interface CourseMapper {
     List<Course> buildCourses(List<CourseEntity> courseEntities);
 
     Course buildCourse(CourseEntity courseEntity);
-    
+
     CourseEntity buildEntity(Course course);
 
 }

@@ -2,16 +2,21 @@ package com.global.auth.service;
 
 import com.global.auth.kafka.consumer.UserUpdateEventDto;
 import com.global.auth.model.Progress;
+import com.global.auth.model.Rank;
 import com.global.auth.model.UserEntity;
 import com.global.auth.model.UserProvider;
 import com.global.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 @Service
@@ -45,6 +50,22 @@ public class UserService implements UserDetailsService {
         UserProvider userProvider = new UserProvider(user.getUsername(), user.getPassword(), user.getRoles());
         userProvider.setUserEntity(user);
         return userProvider;
+    }
+
+    @Transactional
+    public UserEntity createUser() {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername("john");
+        userEntity.setPassword(new BCryptPasswordEncoder().encode("john"));
+        userEntity.setRank(Rank.TRAINEE);
+        userEntity.setEmail("john@email.com");
+        userEntity.setRoles(getRoles());
+        userRepository.save(userEntity);
+        return userEntity;
+    }
+
+    private Collection<SimpleGrantedAuthority> getRoles() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
 }
