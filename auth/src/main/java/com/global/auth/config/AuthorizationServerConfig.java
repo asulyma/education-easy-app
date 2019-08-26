@@ -16,7 +16,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
         oauthServer.tokenKeyAccess("permitAll()")
                    .checkTokenAccess("isAuthenticated()");
     }
@@ -30,6 +30,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                .scopes("user_info", "read", "write", "trust")
                .autoApprove(true)
                .accessTokenValiditySeconds(10_000)
-               .redirectUris("http://localhost:8080/api/login");
+               .redirectUris("http://localhost:8080/app/login");
     }
 }

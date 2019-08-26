@@ -1,13 +1,15 @@
-package com.global.education.kafka.producer;
+package com.education.common.kafka.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Getter
 @Setter
 @Accessors(chain = true)
-public class UserUpdateEventDto {
+@NoArgsConstructor
+public class UserFinishLessonEvent {
 
     private Long userId;
     private Long courseId;

@@ -1,6 +1,7 @@
 package com.global.education.util;
 
 import com.education.common.model.Progress;
+import com.education.common.utils.JacksonUtils;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,6 +69,17 @@ public class JacksonUtilsTest {
         // TESTS
         assertNotNull(result);
         assertEquals("{\"progressValue\":1,\"alreadyDoneLessons\":[1,2,3]}", result);
+    }
+
+    @Test
+    public void shouldTransformJsonToObject() {
+        // FUNCTIONALITY
+        Progress actual = JacksonUtils.toObject("{\"progressValue\":1,\"alreadyDoneLessons\":[1,2,3]}", Progress.class);
+
+        // TESTS
+        assertNotNull(actual);
+        assertEquals(3, actual.getAlreadyDoneLessons().size());
+        assertEquals(1, actual.getProgressValue());
     }
 
 }

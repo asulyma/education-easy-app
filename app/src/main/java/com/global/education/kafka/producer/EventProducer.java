@@ -1,29 +1,23 @@
 package com.global.education.kafka.producer;
 
-import com.global.education.util.JacksonUtils;
-import lombok.extern.slf4j.Slf4j;
+import com.education.common.utils.JacksonUtils;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
-public class UserUpdateEventProducer extends KafkaProducer<String, String> {
+public abstract class EventProducer extends KafkaProducer<String, String> {
 
     private static final int TIMEOUT_PERIOD = 30;
-    private String topic;
+    private final String topic;
 
-    public UserUpdateEventProducer(Map<String, Object> configs) {
-        super(configs);
-    }
-
-    public UserUpdateEventProducer(Map<String, Object> configs, String topic) {
+    public EventProducer(Map<String, Object> configs, String topic) {
         super(configs);
         this.topic = topic;
     }
 
-    public void sendEvent(UserUpdateEventDto message) throws Exception {
+    public <T> void sendMessage(T message) throws Exception {
         String payload = JacksonUtils.toJsonString(message);
         ProducerRecord<String, String> record = new ProducerRecord<>(topic, payload);
         sendMessage(record);

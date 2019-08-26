@@ -1,11 +1,13 @@
 package com.global.auth.service;
 
+import com.education.common.kafka.dto.UserFinishLessonEvent;
+import com.education.common.kafka.dto.UserStartCourseEvent;
 import com.education.common.model.Progress;
-import com.global.auth.kafka.consumer.UserUpdateEventDto;
 import com.education.common.model.Rank;
 import com.global.auth.model.UserEntity;
 import com.global.auth.model.UserProvider;
 import com.global.auth.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class UserService implements UserDetailsService {
 
@@ -26,11 +29,8 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Transactional
-    public void finishLesson(UserUpdateEventDto dto) {
-        UserEntity user = userRepository.findById(dto.getUserId()).orElseThrow(NullPointerException::new);
-        if (!user.getProgressMap().containsKey(dto.getCourseId())) {
-            return;
-        }
+    public void finishLesson(UserFinishLessonEvent dto) {
+        UserEntity user = findUser(dto.getUserId());
         Map<Long, Progress> progressMap = user.getProgressMap();
 
         Progress progress = progressMap.get(dto.getCourseId());
@@ -39,6 +39,15 @@ public class UserService implements UserDetailsService {
 
         progressMap.put(dto.getCourseId(), progress);
         user.setProgressMap(progressMap);
+        log.info("Successfully add {} coefficient to {} course id", dto.getCoefficientToProgress(), dto.getCourseId());
+    }
+
+    @Transactional
+    public void startCourse(UserStartCourseEvent dto) {
+        UserEntity user = findUser(dto.getUserId());
+        Map<Long, Progress> progressMap = user.getProgressMap();
+        progressMap.put(dto.getCourseId(), new Progress());
+        log.info("Successfully start course {}", dto.getCourseId());
     }
 
     @Override
@@ -62,6 +71,10 @@ public class UserService implements UserDetailsService {
         userEntity.setRoles(getRoles());
         userRepository.save(userEntity);
         return userEntity;
+    }
+
+    private UserEntity findUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     }
 
     private Collection<SimpleGrantedAuthority> getRoles() {

@@ -1,5 +1,7 @@
 package com.global.education.util;
 
+import com.education.common.model.Progress;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.global.education.controller.dto.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.education.common.utils.JacksonUtils.toObject;
 
 /**
  * The class for the use of frequent logic, which will work in several classes.
@@ -61,7 +65,7 @@ public class UserUtils {
                 .setEmail((String) userInstance.get(EMAIL))
                 .setRoles(getRoles(userInstance))
                 .setRank((String) userInstance.get(RANK))
-                .setProgressMap(new HashMap<>());      //todo
+                .setProgressMap(getProgressMap(userInstance));
     }
 
     @SuppressWarnings("unchecked")
@@ -71,6 +75,12 @@ public class UserUtils {
                     .map(e -> e.get("authority"))
                     .collect(Collectors.toSet());
 
+    }
+
+    private static Map<Long, Progress> getProgressMap(Map<String, Object> userInstance) {
+        Object map = userInstance.get(PROGRESS_MAP);
+        return toObject(String.valueOf(map), new TypeReference<Map<Long, Progress>>() {
+        });
     }
 
     @Deprecated

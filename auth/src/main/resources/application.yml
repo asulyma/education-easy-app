@@ -21,14 +21,22 @@ spring:
 
 kafka-topics:
   bootstrap-server: localhost:9092
-  user-update-event-consumer:
+  user-finish-lesson-event:
     enabled: true
-    topic: education-topic-test
+    topic: education-finish-lesson-event
     consumer-properties:
       "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
       "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
       "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
-      "[group.id]": "user-update-group"
+      "[group.id]": "user-finish-lesson-event-group"
+  user-start-course-event:
+    enabled: true
+    topic: education-start-course-event
+    consumer-properties:
+      "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
+      "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      "[group.id]": "user-start-course-event-group"
 
 server:
   port: 8081

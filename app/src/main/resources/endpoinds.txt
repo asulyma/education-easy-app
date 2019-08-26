@@ -1,13 +1,7 @@
-GET:    /course                                        - get list of courses.
+GET:    /course                                        - get list of courses (by criteria too).
 GET:    /course/{id}                                   - get single course by id.
-GET:    /course/search                                 - get list of courses by criteria.
 POST:   /course                                        - create a course. FOR ADMIN
-{
-	"title": "title",
-	"cost": 100,
-	"beginDate": 1564617600000,
-	"endDate": 1565617600000
-}
+POST:   /course/{id}                                   - start course by id (send kafka event to user).
 PUT:    /course/{id}                                   - update existing course by id. FOR ADMIN
 DELETE: /course/{id}                                   - delete course by id. FOR ADMIN
 
@@ -15,16 +9,16 @@ DELETE: /course/{id}                                   - delete course by id. FO
 GET:    /lesson?courseId={id}                          - get list of lessons by course.
 GET:    /lesson/{id}                                   - get lessons.
 POST:   /lesson                                        - create a lesson. FOR ADMIN
-{
-	"title": "LessonTest",
-	"description": "optional",
-	"courseId": 1
-}
 PUT:    /lesson/{id}                                   - update existing lesson by id. FOR ADMIN
 DELETE: /lesson/{id}                                   - delete lesson by id. FOR ADMIN
-PUT:    /lesson/finish/{id}                            - finish lesson and add progress.
+PUT:    /lesson/finish/{id}                            - finish lesson and add progress (send kafka event to user).
 
 
 GET:    /comment                                       - get list of CommentResponse(need to add lessonId as query param).
 POST:   /comment                                       - create new comment.
 
+
+
+Body templates:
+/course: { "title": "title", "cost": 100, "beginDate": 1564617600000, "endDate": 1565617600000 }
+/lesson: { "title": "LessonTest", "description": "optional", "courseId": 1 }

@@ -24,7 +24,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import static com.global.education.mapper.CourseMapper.INSTANCE;
-import static com.global.education.util.Constants.ID_REGEXP;
+import static com.global.education.util.ProjectUtils.ID_REGEXP;
+import static com.global.education.util.UserUtils.currentUser;
 
 @CrossOrigin
 @RestController
@@ -36,16 +37,10 @@ public class CourseController extends BaseHandler {
 
     @GetMapping("/{id:" + ID_REGEXP + "}")
     public Course getCourse(@PathVariable(name = "id") Long id) {
-
-        return INSTANCE.buildCourse(courseService.getCourseById(id));
+        return INSTANCE.buildCourse(courseService.getCourseById(id, currentUser()));
     }
 
     @GetMapping
-    public List<Course> getCourses() {
-        return INSTANCE.buildCourses(courseService.getCourses());
-    }
-
-    @GetMapping("/search")
     public List<Course> getCourses(@Valid @ModelAttribute SpecificationRequest request) {
         return INSTANCE.buildCourses(courseService.findCourses(request));
     }
@@ -54,6 +49,12 @@ public class CourseController extends BaseHandler {
     @Secured("ROLE_ADMIN")
     public ResponseEntity<HttpStatus> createCourse(@Valid @RequestBody Course course) {
         courseService.createCourse(INSTANCE.buildEntity(course));
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id:" + ID_REGEXP + "}")
+    public ResponseEntity<HttpStatus> startCourse(@PathVariable("id") Long courseId) {
+        courseService.startCourse(courseId, currentUser());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

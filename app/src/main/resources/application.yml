@@ -22,9 +22,16 @@ spring:
 
 kafka-topics:
   bootstrap-server: localhost:9092
-  user-update-event:
+  user-finish-lesson-event:
     enabled: true
-    topic: education-topic-test
+    topic: education-finish-lesson-event
+    producer-properties:
+      "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
+      "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer
+      "[value.serializer]": org.apache.kafka.common.serialization.StringSerializer
+  user-start-course-event:
+    enabled: true
+    topic: education-start-course-event
     producer-properties:
       "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
       "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer

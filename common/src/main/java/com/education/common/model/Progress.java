@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 @Accessors(chain = true)
 @NoArgsConstructor
-public class Progress {
+public class Progress implements Serializable {
 
-    private Long progressValue;
+    private long progressValue;
     private List<Long> alreadyDoneLessons = new ArrayList<>();
 
 }

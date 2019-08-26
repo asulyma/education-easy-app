@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static com.global.education.mapper.LessonMapper.INSTANCE;
-import static com.global.education.util.Constants.ID_REGEXP;
+import static com.global.education.util.ProjectUtils.ID_REGEXP;
 import static com.global.education.util.UserUtils.currentUser;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -33,12 +33,12 @@ public class LessonController extends BaseHandler {
 
     @GetMapping
     public List<Lesson> getLessons(@RequestParam(name = "courseId") Long courseId) {
-        return INSTANCE.buildLessons(lessonService.getLessons(courseId));
+        return INSTANCE.buildLessons(lessonService.getLessons(courseId, currentUser()));
     }
 
     @GetMapping("/{id:" + ID_REGEXP + "}")
     public Lesson getLessonById(@PathVariable(name = "id") Long lessonId) {
-        return INSTANCE.buildLesson(lessonService.getLessonById(lessonId));
+        return INSTANCE.buildLesson(lessonService.getLessonById(lessonId, currentUser()));
     }
 
     @PostMapping
@@ -63,7 +63,8 @@ public class LessonController extends BaseHandler {
     }
 
     @PutMapping("/finish/{id:" + ID_REGEXP + "}")
-    public void finishLesson(@PathVariable(name = "id") Long lessonId) {
+    public ResponseEntity<HttpStatus> finishLesson(@PathVariable(name = "id") Long lessonId) {
         lessonService.finishLesson(lessonId, currentUser());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
