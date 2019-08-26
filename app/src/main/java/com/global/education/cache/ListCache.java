@@ -29,10 +29,12 @@ public class ListCache<E extends BaseEntity, SR extends SpecificationRequest> {
     public List<E> getCache(SR request) {
         List<Long> ids = cache.get(request);
         if (Objects.isNull(ids)) {
+            log.info("First request without cache");
             List<E> entities = findBySpecification.apply(request);
             putToCache(entities, request);
             return entities;
         }
+        log.info("Second request, using cache");
         return findByIds.apply(ids);
 
     }

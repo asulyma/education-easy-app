@@ -1,27 +1,23 @@
 package com.global.education.controller.dto;
 
-import com.global.education.model.user.Progress;
-import com.global.education.model.user.Rank;
-import com.global.education.model.user.Role;
+import com.education.common.model.Progress;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 public class User {
 
     private Long id;
-    private String login;
-    private String name;
-    private Integer age;
+    private String username;
     private String email;
-    private boolean active;
-    private Rank rank;
-    private Role role;
-    private String gender;
-    private List<Long> allowedCourses;
-    private List<Long> alreadyDoneLessons;
-    private Progress progress;
+    private Set<String> roles;
+    private String rank;
+    private Map<Long, Progress> progressMap = new HashMap<>();
 }

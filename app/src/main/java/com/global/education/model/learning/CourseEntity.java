@@ -37,6 +37,6 @@ public class CourseEntity extends CreatableEntity {
     private Long cost;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<SectionEntity> sections = new ArrayList<>();
+    private List<LessonEntity> lessons = new ArrayList<>();
 
 }

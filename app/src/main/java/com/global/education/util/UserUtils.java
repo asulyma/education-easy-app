@@ -1,67 +1,95 @@
 package com.global.education.util;
 
-import com.global.education.controller.handler.exception.NotFoundRuntimeException;
-import com.global.education.model.user.Role;
-import com.global.education.model.user.UserEntity;
-import com.global.education.service.UserService;
+import com.education.common.model.Progress;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.global.education.controller.dto.User;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
-import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.education.common.utils.JacksonUtils.toObject;
 
 /**
  * The class for the use of frequent logic, which will work in several classes.
  */
 @Slf4j
-@Component
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserUtils {
 
-    @Autowired
-    private UserService userService;
+    private static final String ID = "id";
+    private static final String USERNAME = "username";
+    private static final String ROLES = "roles";
+    private static final String EMAIL = "email";
+    private static final String RANK = "rank";
+    private static final String PROGRESS_MAP = "progressMap";
 
-    /**
-     * The method for mapping the KeyCloak of the user and entity that is in the database. If user is exist in DB - only
-     * returns instance. If not - create and persist to DB new UserEntity.
-     * @param principal - the object to check security.
-     * @return the instance of UserEntity.
-     */
-    public UserEntity getUserInfo(Principal principal) {
-        Object tokenObject = ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        User securityUser = (User) tokenObject;
+    @Getter
+    private static User currentUser;
 
-        UserEntity loginUser = userService.getUserByLogin(securityUser.getUsername());
-        if (loginUser != null) {
-            return loginUser;
+    @SuppressWarnings("unchecked")
+    public static User currentUser() {
+
+        if (currentUser == null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            OAuth2Authentication oAuth2Authentication = (OAuth2Authentication) authentication;
+            UsernamePasswordAuthenticationToken token =
+                    (UsernamePasswordAuthenticationToken) oAuth2Authentication.getUserAuthentication();
+            HashMap<String, Object> details = (HashMap<String, Object>) token.getDetails();
+            HashMap<String, Object> principal = (HashMap<String, Object>) details.get("principal");
+            HashMap<String, Object> userInstance = (HashMap<String, Object>) principal.get("userEntity");
+
+            currentUser = buildCurrentUser(userInstance);
         }
-
-        UserEntity newUser = new UserEntity();
-        newUser.setLogin(securityUser.getUsername())
-               .setActive(securityUser.isEnabled());
-
-        String role = securityUser.getAuthorities()
-                                  .stream()
-                                  .map(GrantedAuthority::getAuthority)
-                                  .findFirst()
-                                  .orElse(StringUtils.EMPTY);
-        newUser.setRole(Role.valueOf(role));
-
-        UserEntity user = userService.createUser(newUser);
-        log.info("UserEntity has been created: " + user.getLogin());
-        return user;
+        return currentUser;
     }
 
-    public Long getUserAdminId() {
-        UserEntity admin = userService.getUserByRole(Role.ROLE_ADMIN)
-                                      .stream()
-                                      .findFirst()
-                                      .orElseThrow(NotFoundRuntimeException::new);
+    public static Long currentUserId() {
+        return currentUser().getId();
+    }
 
-        return admin.getId();
+    private static User buildCurrentUser(Map<String, Object> userInstance) {
+        return new User()
+                .setId(Long.parseLong(String.valueOf(userInstance.get(ID))))
+                .setUsername((String) userInstance.get(USERNAME))
+                .setEmail((String) userInstance.get(EMAIL))
+                .setRoles(getRoles(userInstance))
+                .setRank((String) userInstance.get(RANK))
+                .setProgressMap(getProgressMap(userInstance));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Set<String> getRoles(Map<String, Object> userInstance) {
+        List<Map<String, String>> roles = (List<Map<String, String>>) userInstance.get(ROLES);
+        return roles.stream()
+                    .map(e -> e.get("authority"))
+                    .collect(Collectors.toSet());
+
+    }
+
+    private static Map<Long, Progress> getProgressMap(Map<String, Object> userInstance) {
+        Object map = userInstance.get(PROGRESS_MAP);
+        return toObject(String.valueOf(map), new TypeReference<Map<Long, Progress>>() {
+        });
+    }
+
+    @Deprecated
+    //change to isCurrentUserAdmin  Add name, UUID, login...
+    public static Long getUserAdminId() {
+
+        //todo find user where role = admin
+
+        return null;
     }
 
 }

@@ -9,8 +9,7 @@ import java.util.List;
 @Repository
 public interface LessonRepository extends JpaRepository<LessonEntity, Long> {
 
-    List<LessonEntity> findAllBySectionCourseTitleAndSectionId(String title, Long sectionId);
+    List<LessonEntity> findAllByCourseId(Long courseId);
 
-    Long countAllBySectionCourseTitle(String title);
-
+    int countAllByCourseTitle(String string);
 }

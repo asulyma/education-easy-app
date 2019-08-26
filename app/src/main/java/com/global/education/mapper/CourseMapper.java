@@ -20,4 +20,6 @@ public interface CourseMapper {
 
     Course buildCourse(CourseEntity courseEntity);
 
+    CourseEntity buildEntity(Course course);
+
 }

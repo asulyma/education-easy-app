@@ -19,6 +19,10 @@ public class CommentService {
     @Autowired
     private CommentRepository repository;
 
+    public List<CommentEntity> getComments(Long lessonId) {
+        return repository.findAllByLessonId(lessonId);
+    }
+
     public CommentEntity createComment(Long authorId, Comment comment) {
         CommentEntity entity = new CommentEntity()
                 .setAuthorId(authorId)
@@ -29,7 +33,4 @@ public class CommentService {
         return repository.save(entity);
     }
 
-    public List<CommentEntity> getComments(Long lessonId) {
-        return repository.findAllByLessonId(lessonId);
-    }
 }

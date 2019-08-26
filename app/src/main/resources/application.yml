@@ -22,19 +22,34 @@ spring:
 
 kafka-topics:
   bootstrap-server: localhost:9092
-  education-event:
+  user-finish-lesson-event:
     enabled: true
-    topic: education-topic-test
+    topic: education-finish-lesson-event
     producer-properties:
       "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
       "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer
       "[value.serializer]": org.apache.kafka.common.serialization.StringSerializer
-  education-event-consumer:
+  user-start-course-event:
     enabled: true
-    topic: education-topic-test
-    consumer-properties:
+    topic: education-start-course-event
+    producer-properties:
       "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
-      "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
-      "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
-      #"[group.id]": jvlesson-aleksandr
+      "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer
+      "[value.serializer]": org.apache.kafka.common.serialization.StringSerializer
 
+server:
+  servlet:
+    context-path: /app
+security:
+  oauth2:
+    client:
+      clientId: my-client
+      clientSecret: secret
+      accessTokenUri: http://localhost:8081/auth/oauth/token
+      userAuthorizationUri: http://localhost:8081/auth/oauth/authorize
+    resource:
+      userInfoUri: http://localhost:8081/auth/user/me
+
+#logging.level:
+#  org.springframework:
+#    security: DEBUG

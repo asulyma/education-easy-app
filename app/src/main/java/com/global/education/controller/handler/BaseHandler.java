@@ -5,14 +5,14 @@ import com.global.education.controller.handler.exception.NotAllowedRuntimeExcept
 import com.global.education.controller.handler.exception.NotFoundRuntimeException;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
  * This class using as parent for all controller classes. Each class, which marks as 'Controller' - extends this class.
  * The main logic - catching exceptions (in more time - customs runtime exceptions).
  */
-@Component
+@ControllerAdvice
 public class BaseHandler {
 
     @ExceptionHandler(NotFoundRuntimeException.class)
@@ -32,16 +32,16 @@ public class BaseHandler {
 
     @Getter
     @Setter
-    private static class BaseResponse {
+    public static class BaseResponse {
 
-        private int responseCode = 200;
-        private String errorMessage;
+        private int code = 200;
+        private String message;
         private boolean success = true;
 
         static BaseResponse buildErrorResponse(int responseCode, Exception e) {
             BaseResponse response = new BaseResponse();
-            response.setResponseCode(responseCode);
-            response.setErrorMessage(e.getMessage());
+            response.setCode(responseCode);
+            response.setMessage(e.getMessage());
             response.setSuccess(false);
             return response;
         }
