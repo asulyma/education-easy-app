@@ -45,16 +45,16 @@ public class CourseController extends BaseHandler {
         return INSTANCE.buildCourses(courseService.findCourses(request));
     }
 
+    @PostMapping("/{id:" + ID_REGEXP + "}")
+    public ResponseEntity<HttpStatus> startCourse(@PathVariable("id") Long courseId) {
+        courseService.startCourse(courseId, currentUser());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @PostMapping
     @Secured("ROLE_ADMIN")
     public ResponseEntity<HttpStatus> createCourse(@Valid @RequestBody Course course) {
         courseService.createCourse(INSTANCE.buildEntity(course));
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @PostMapping("/{id:" + ID_REGEXP + "}")
-    public ResponseEntity<HttpStatus> startCourse(@PathVariable("id") Long courseId) {
-        courseService.startCourse(courseId, currentUser());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

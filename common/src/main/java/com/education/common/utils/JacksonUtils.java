@@ -29,9 +29,10 @@ public class JacksonUtils {
         }
     }
 
-    public static <T> T toObject(String value, TypeReference<?> typeReference) {
+    public static <T> T toObject(Object value, TypeReference<?> typeReference) {
         try {
-            return defaultMapper.readValue(value, typeReference);
+            String map = defaultMapper.writeValueAsString(value);
+            return defaultMapper.readValue(map, typeReference);
         } catch (IOException e) {
             throw new IllegalArgumentException("Cannot convert to Object: " + value, e);
         }

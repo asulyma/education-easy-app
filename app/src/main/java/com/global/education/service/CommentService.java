@@ -6,6 +6,7 @@ import com.global.education.repository.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,14 +24,20 @@ public class CommentService {
         return repository.findAllByLessonId(lessonId);
     }
 
-    public CommentEntity createComment(Long authorId, Comment comment) {
+    @Transactional
+    public void createComment(Long authorId, Comment comment) {
         CommentEntity entity = new CommentEntity()
                 .setAuthorId(authorId)
                 .setContent(comment.getContent())
                 .setLesson(lessonService.getLessonById(comment.getLessonId()));
 
+        repository.save(entity);
         log.info("User with id: " + authorId + " created comment.");
-        return repository.save(entity);
+    }
+
+    public void removeComment(Long id) {
+        repository.deleteById(id);
+        log.info("Comment with id {} has been removed", id);
     }
 
 }

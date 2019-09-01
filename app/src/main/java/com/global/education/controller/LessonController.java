@@ -41,6 +41,12 @@ public class LessonController extends BaseHandler {
         return INSTANCE.buildLesson(lessonService.getLessonById(lessonId, currentUser()));
     }
 
+    @PutMapping("/finish/{id:" + ID_REGEXP + "}")
+    public ResponseEntity<HttpStatus> finishLesson(@PathVariable(name = "id") Long lessonId) {
+        lessonService.finishLesson(lessonId, currentUser());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping
     @Secured("ROLE_ADMIN")
     public ResponseEntity<HttpStatus> createLesson(@RequestBody Lesson lesson) {
@@ -62,9 +68,4 @@ public class LessonController extends BaseHandler {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/finish/{id:" + ID_REGEXP + "}")
-    public ResponseEntity<HttpStatus> finishLesson(@PathVariable(name = "id") Long lessonId) {
-        lessonService.finishLesson(lessonId, currentUser());
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }

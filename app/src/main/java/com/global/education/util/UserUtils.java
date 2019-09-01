@@ -78,8 +78,7 @@ public class UserUtils {
     }
 
     private static Map<Long, Progress> getProgressMap(Map<String, Object> userInstance) {
-        Object map = userInstance.get(PROGRESS_MAP);
-        return toObject(String.valueOf(map), new TypeReference<Map<Long, Progress>>() {
+        return toObject(userInstance.get(PROGRESS_MAP), new TypeReference<Map<Long, Progress>>() {
         });
     }
 
