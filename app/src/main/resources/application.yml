@@ -40,6 +40,8 @@ kafka-topics:
 server:
   servlet:
     context-path: /app
+
+# Can working without the next block
 security:
   oauth2:
     client:
@@ -48,8 +50,7 @@ security:
       accessTokenUri: http://localhost:8081/auth/oauth/token
       userAuthorizationUri: http://localhost:8081/auth/oauth/authorize
     resource:
-      userInfoUri: http://localhost:8081/auth/user/me
-
-#logging.level:
-#  org.springframework:
-#    security: DEBUG
+      id: ${spring.application.name}
+      jwt:
+        keyValue:
+          d2ViLWNsaWVudDp3ZWItY2xpZW50LXNlY3JldA==

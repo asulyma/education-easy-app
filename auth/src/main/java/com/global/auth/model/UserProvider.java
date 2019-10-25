@@ -2,6 +2,7 @@ package com.global.auth.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -9,6 +10,7 @@ import java.util.Collection;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 public class UserProvider extends User {
 
     //instead this field you can just add a lot of new fields with support info

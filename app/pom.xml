@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.global</groupId>
         <artifactId>education</artifactId>
-        <version>19.8-SNAPSHOT</version>
+        <version>19.9-SNAPSHOT</version>
     </parent>
 
     <artifactId>app</artifactId>
@@ -44,13 +44,16 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-            <version>2.1.7.RELEASE</version>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
         </dependency>
 
         <dependency>

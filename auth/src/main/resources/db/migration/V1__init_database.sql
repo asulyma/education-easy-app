@@ -7,12 +7,12 @@ CREATE TABLE user_table
     rank     VARCHAR(32),
     progress JSONB
 );
-CREATE TABLE roles
+CREATE TABLE user_roles
 (
     user_id BIGINT NOT NULL
         CONSTRAINT roles_user_fk REFERENCES user_table,
-    roles   bytea
+    roles   VARCHAR(256)
 );
 
-ALTER TABLE roles
-    OWNER TO postgres;
+ALTER TABLE user_table OWNER TO postgres;
+ALTER TABLE user_roles OWNER TO postgres;

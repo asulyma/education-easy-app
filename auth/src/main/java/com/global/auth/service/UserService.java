@@ -9,7 +9,8 @@ import com.global.auth.model.UserProvider;
 import com.global.auth.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,8 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -56,9 +57,11 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        UserProvider userProvider = new UserProvider(user.getUsername(), user.getPassword(), user.getRoles());
-        userProvider.setUserEntity(user);
-        return userProvider;
+
+        String[] rolesSize = new String[user.getRoles().size()];
+        List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(user.getRoles().toArray(rolesSize));
+        return new UserProvider(user.getUsername(), user.getPassword(), authorityList)
+                .setUserEntity(user);
     }
 
     @Transactional
@@ -68,17 +71,13 @@ public class UserService implements UserDetailsService {
         userEntity.setPassword(new BCryptPasswordEncoder().encode("john"));
         userEntity.setRank(Rank.TRAINEE);
         userEntity.setEmail("john@email.com");
-        userEntity.setRoles(getRoles());
+        userEntity.setRoles(Collections.singleton("ROLE_USER"));
         userRepository.save(userEntity);
         return userEntity;
     }
 
     private UserEntity findUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
-    }
-
-    private Collection<SimpleGrantedAuthority> getRoles() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
 }

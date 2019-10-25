@@ -27,7 +27,6 @@ import static com.global.education.mapper.CourseMapper.INSTANCE;
 import static com.global.education.util.ProjectUtils.ID_REGEXP;
 import static com.global.education.util.UserUtils.currentUser;
 
-@CrossOrigin
 @RestController
 @RequestMapping(path = "/course")
 public class CourseController extends BaseHandler {

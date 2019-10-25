@@ -10,7 +10,6 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -51,8 +50,8 @@ public class UserEntity {
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
-    private Collection<SimpleGrantedAuthority> roles = new HashSet<>();
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    private Collection<String> roles = new HashSet<>();
 
     @Column(name = "email")
     private String email;
