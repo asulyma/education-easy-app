@@ -44,7 +44,6 @@ In OAuth2 service by default, there are next information:
 2. Run `docker-compose up -d`
 
 ### TODO list:
-1. Remove working with user from OAuth module.
 2. Add to token UUID of user
 3. Find user by UUID inside App module.
 4. Working with user data only inside App module.

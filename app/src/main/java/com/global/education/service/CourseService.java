@@ -1,13 +1,12 @@
 package com.global.education.service;
 
 import com.education.common.kafka.dto.UserStartCourseEvent;
-import com.education.common.model.Progress;
 import com.global.education.cache.ListCache;
 import com.global.education.controller.dto.Course;
 import com.global.education.controller.dto.SpecificationRequest;
-import com.global.education.controller.dto.User;
 import com.global.education.controller.handler.exception.NotFoundRuntimeException;
 import com.global.education.kafka.service.UserUpdateEventKafkaService;
+import com.global.education.model.UserDataEntity;
 import com.global.education.model.learning.CourseEntity;
 import com.global.education.repository.CourseRepository;
 import com.global.education.service.specification.CourseSpecificationFactory;
@@ -22,7 +21,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import static com.global.education.mapper.SpecificationMapper.INSTANCE;
-import static com.global.education.util.ProjectUtils.checkOnStartCourse;
+import static com.global.education.util.UserUtils.currentUserUuid;
 
 /**
  * Service for working with CourseEntity. Actually, there are CRUD operations for this class.
@@ -42,6 +41,9 @@ public class CourseService {
     @Autowired
     private UserUpdateEventKafkaService kafkaService;
 
+    @Autowired
+    private UserDataService userDataService;
+
     @PostConstruct
     public void init() {
         CACHE.initCache(this::findAllBySpec, courseRepository::findAllByIdIn);
@@ -51,11 +53,8 @@ public class CourseService {
         return CACHE.getCache(request);
     }
 
-    public CourseEntity getCourseById(Long id, User user) {
-        CourseEntity course = courseRepository.findById(id).orElseThrow(
-                () -> new NotFoundRuntimeException("Course with id " + id + " does not exist!"));
-        checkOnStartCourse(course.getId(), user);
-        return course;
+    public CourseEntity getCourseById(Long id) {
+        return courseRepository.findById(id).orElseThrow(NotFoundRuntimeException::new);
     }
 
     public void createCourse(CourseEntity courseEntity) {
@@ -76,20 +75,14 @@ public class CourseService {
         courseRepository.deleteById(courseId);
     }
 
-    public void startCourse(Long courseId, User user) {
+    public void startCourse(Long courseId) {
+        UserDataEntity user = userDataService.findUser(currentUserUuid());
         if (user.getProgressMap().containsKey(courseId)) {
-            log.info("Course {} is already started for user {}", courseId, user.getId());
+            log.info("Course {} is already started for user {}", courseId, user.getUsername());
             return;
         }
-        kafkaService.sendStartCourseEvent(new UserStartCourseEvent(user.getId(), courseId));
+        kafkaService.sendStartCourseEvent(new UserStartCourseEvent(user.getUuid(), courseId));
         log.info("User update event has been sent. Start course {}", courseId);
-
-        // TODO In further change on event from Kafka, but this way is not good (if on kafka side smth was wrong)
-        user.getProgressMap().put(courseId, new Progress());
-    }
-
-    CourseEntity getCourseById(Long id) {
-        return courseRepository.getOne(id);
     }
 
     private List<CourseEntity> findAllBySpec(SpecificationRequest request) {

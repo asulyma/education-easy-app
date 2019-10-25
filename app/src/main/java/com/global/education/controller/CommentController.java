@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static com.global.education.mapper.CommentMapper.INSTANCE;
-import static com.global.education.util.UserUtils.currentUserId;
+import static com.global.education.util.UserUtils.currentUserUuid;
 
 @RestController
 @RequestMapping(path = "/comment")
@@ -33,7 +33,7 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<HttpStatus> createComment(@RequestBody Comment comment) {
-        commentService.createComment(currentUserId(), comment);
+        commentService.createComment(currentUserUuid(), comment);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

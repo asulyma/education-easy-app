@@ -1,4 +1,4 @@
-package com.global.auth.kafka.consumer;
+package com.global.education.kafka.consumer;
 
 import com.education.common.kafka.dto.UserFinishLessonEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ public class UserFinishLessonEventConsumer extends EventConsumer {
     }
 
     @SuppressWarnings("unchecked")
-    @KafkaListener(topics = "education-finish-lesson-event", groupId = "user-finish-lesson-event-group")
+    @KafkaListener(topics = "education-finish-lesson-event-consumer", groupId = "user-finish-lesson-event-group")
     public void listen(Object message) {
         if (validate(message)) {
             log.warn("Empty message for user-finish-lesson-event-group");

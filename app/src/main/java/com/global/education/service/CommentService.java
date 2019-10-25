@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -25,14 +26,14 @@ public class CommentService {
     }
 
     @Transactional
-    public void createComment(Long authorId, Comment comment) {
+    public void createComment(UUID authorUuid, Comment comment) {
         CommentEntity entity = new CommentEntity()
-                .setAuthorId(authorId)
+                .setAuthorUuid(authorUuid)
                 .setContent(comment.getContent())
                 .setLesson(lessonService.getLessonById(comment.getLessonId()));
 
         repository.save(entity);
-        log.info("User with id: " + authorId + " created comment.");
+        log.info("User with id: " + authorUuid + " created comment.");
     }
 
     public void removeComment(Long id) {

@@ -1,6 +1,6 @@
-package com.global.auth.kafka.consumer;
+package com.global.education.kafka.consumer;
 
-import com.global.auth.service.UserService;
+import com.global.education.service.UserDataService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import java.util.Objects;
 public abstract class EventConsumer extends KafkaConsumer<String, String> {
 
     @Autowired
-    protected UserService userService;
+    protected UserDataService userService;
 
     protected final String topic;
 

@@ -1,4 +1,4 @@
-package com.global.auth.kafka.consumer;
+package com.global.education.kafka.consumer;
 
 import com.education.common.kafka.dto.UserStartCourseEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ public class UserStartCourseEventConsumer extends EventConsumer {
     }
 
     @SuppressWarnings("unchecked")
-    @KafkaListener(topics = "education-start-course-event", groupId = "user-start-course-event-group")
+    @KafkaListener(topics = "education-start-course-event-consumer", groupId = "user-start-course-event-group")
     public void listen(Object message) {
         if (validate(message)) {
             log.warn("Empty message for user-start-course-event-group");

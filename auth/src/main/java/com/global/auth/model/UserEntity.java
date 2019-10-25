@@ -1,27 +1,15 @@
 package com.global.auth.model;
 
-import com.education.common.model.Progress;
-import com.education.common.model.Rank;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,9 +21,6 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "user_table")
-@Accessors(chain = true)
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-@NoArgsConstructor
 public class UserEntity {
 
     @Id
@@ -53,15 +38,4 @@ public class UserEntity {
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     private Collection<String> roles = new HashSet<>();
 
-    @Column(name = "email")
-    private String email;
-
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "rank")
-    private Rank rank;
-
-    // CourseId to Progress
-    @Column(name = "progress", columnDefinition = "jsonb")
-    @Type(type = "jsonb", parameters = {@Parameter(name = "classType", value = "java.util.HashMap")})
-    private Map<Long, Progress> progressMap = new HashMap<>();
 }

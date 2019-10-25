@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -13,7 +15,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class UserStartCourseEvent {
 
-    private Long userId;
+    private UUID userUuid;
     private Long courseId;
 
 }
