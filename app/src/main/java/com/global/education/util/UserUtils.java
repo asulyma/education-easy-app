@@ -1,94 +1,58 @@
 package com.global.education.util;
 
-import com.education.common.model.Progress;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.global.education.controller.dto.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static com.education.common.utils.JacksonUtils.toObject;
+import java.util.UUID;
 
 /**
- * The class for the use of frequent logic, which will work in several classes.
+ * TODO need to refactor
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserUtils {
+public final class UserUtils {
 
-    private static final String ID = "id";
-    private static final String USERNAME = "username";
-    private static final String ROLES = "roles";
-    private static final String EMAIL = "email";
-    private static final String RANK = "rank";
-    private static final String PROGRESS_MAP = "progressMap";
+    public static final Long TOTAL_PROGRESS = 1000L;
 
-    @Getter
-    private static User currentUser;
-
-    @SuppressWarnings("unchecked")
-    public static User currentUser() {
-
-        if (currentUser == null) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            OAuth2Authentication oAuth2Authentication = (OAuth2Authentication) authentication;
-            UsernamePasswordAuthenticationToken token =
-                    (UsernamePasswordAuthenticationToken) oAuth2Authentication.getUserAuthentication();
-            HashMap<String, Object> details = (HashMap<String, Object>) token.getDetails();
-            HashMap<String, Object> principal = (HashMap<String, Object>) details.get("principal");
-            HashMap<String, Object> userInstance = (HashMap<String, Object>) principal.get("userEntity");
-
-            currentUser = buildCurrentUser(userInstance);
-        }
-        return currentUser;
+    public static UUID currentUserUuid() {
+        String base64EncodedBody = getBase64EncodedBody(getToken());
+        Map<String, Object> encodedUserData = getEncodedUserData(base64EncodedBody);
+        Object userUuid = encodedUserData.get("userUuid");
+        return UUID.fromString(String.valueOf(userUuid));
     }
 
-    public static Long currentUserId() {
-        return currentUser().getId();
+    private static String getToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        OAuth2Authentication oAuth2Authentication = (OAuth2Authentication) authentication;
+        OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) oAuth2Authentication.getDetails();
+        return String.valueOf(details.getTokenValue());
     }
 
-    private static User buildCurrentUser(Map<String, Object> userInstance) {
-        return new User()
-                .setId(Long.parseLong(String.valueOf(userInstance.get(ID))))
-                .setUsername((String) userInstance.get(USERNAME))
-                .setEmail((String) userInstance.get(EMAIL))
-                .setRoles(getRoles(userInstance))
-                .setRank((String) userInstance.get(RANK))
-                .setProgressMap(getProgressMap(userInstance));
+    private static String getBase64EncodedBody(String token) {
+        String[] split_string = token.split("\\.");
+        String base64EncodedHeader = split_string[0];
+        String base64EncodedBody = split_string[1];
+        String base64EncodedSignature = split_string[2];
+        return base64EncodedBody;
     }
 
-    @SuppressWarnings("unchecked")
-    private static Set<String> getRoles(Map<String, Object> userInstance) {
-        List<Map<String, String>> roles = (List<Map<String, String>>) userInstance.get(ROLES);
-        return roles.stream()
-                    .map(e -> e.get("authority"))
-                    .collect(Collectors.toSet());
-
-    }
-
-    private static Map<Long, Progress> getProgressMap(Map<String, Object> userInstance) {
-        return toObject(userInstance.get(PROGRESS_MAP), new TypeReference<Map<Long, Progress>>() {
-        });
-    }
-
-    @Deprecated
-    //change to isCurrentUserAdmin  Add name, UUID, login...
-    public static Long getUserAdminId() {
-
-        //todo find user where role = admin
-
-        return null;
+    @SneakyThrows(IOException.class)
+    private static Map<String, Object> getEncodedUserData(String base64EncodedBody) {
+        String body = new String(new Base64(true).decode(base64EncodedBody));
+        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {
+        };
+        return new ObjectMapper().readValue(body, typeReference);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.global.auth.kafka.consumer.config.finishlesson;
+package com.global.education.kafka.consumer.config.startcourse;
 
 import com.education.common.kafka.KafkaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Component
 @Validated
-@ConfigurationProperties(prefix = "kafka-topics.user-finish-lesson-event")
-public class UserFinishLessonEventConsumerProperties extends KafkaProperties {
+@ConfigurationProperties(prefix = "kafka-topics.user-start-course-event-consumer")
+public class UserStartCourseEventConsumerProperties extends KafkaProperties {
 
 }

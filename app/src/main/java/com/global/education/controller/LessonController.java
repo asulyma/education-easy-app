@@ -1,8 +1,10 @@
 package com.global.education.controller;
 
 import com.global.education.controller.dto.Lesson;
+import com.global.education.controller.dto.SharedLesson;
 import com.global.education.controller.handler.BaseHandler;
 import com.global.education.service.LessonService;
+import com.global.education.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static com.global.education.mapper.LessonMapper.INSTANCE;
-import static com.global.education.util.ProjectUtils.ID_REGEXP;
-import static com.global.education.util.UserUtils.currentUser;
+import static com.global.education.service.ValidationService.ID_REGEXP;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -31,32 +32,40 @@ public class LessonController extends BaseHandler {
     @Autowired
     private LessonService lessonService;
 
+    @Autowired
+    private ValidationService validationService;
+
     @GetMapping
-    public List<Lesson> getLessons(@RequestParam(name = "courseId") Long courseId) {
-        return INSTANCE.buildLessons(lessonService.getLessons(courseId, currentUser()));
+    public List<Lesson> getLessonsByCourse(@RequestParam(name = "courseId") Long courseId) {
+        validationService.checkUserOnAllowGetCourse(courseId);
+        return INSTANCE.buildLessons(lessonService.getLessons(courseId));
     }
 
     @GetMapping("/{id:" + ID_REGEXP + "}")
-    public Lesson getLessonById(@PathVariable(name = "id") Long lessonId) {
-        return INSTANCE.buildLesson(lessonService.getLessonById(lessonId, currentUser()));
+    public SharedLesson getLessonById(@PathVariable(name = "id") Long lessonId,
+            @RequestParam(name = "courseId") Long courseId) {
+        validationService.checkUserOnAllowGetCourse(courseId);
+        return INSTANCE.buildSharedLesson(lessonService.getLessonById(lessonId, courseId));
     }
 
-    @PutMapping("/finish/{id:" + ID_REGEXP + "}")
-    public ResponseEntity<HttpStatus> finishLesson(@PathVariable(name = "id") Long lessonId) {
-        lessonService.finishLesson(lessonId, currentUser());
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PostMapping("/finish/{id:" + ID_REGEXP + "}")
+    public ResponseEntity<String> finishLesson(@PathVariable(name = "id") Long lessonId,
+            @RequestParam(name = "courseId") Long courseId) {
+        validationService.checkUserOnFinishLesson(courseId, lessonId);
+        return lessonService.finishLesson(lessonId, courseId);
     }
 
     @PostMapping
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<HttpStatus> createLesson(@RequestBody Lesson lesson) {
+    public ResponseEntity<HttpStatus> createLesson(@RequestBody SharedLesson lesson) {
         lessonService.createLesson(lesson);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id:" + ID_REGEXP + "}")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<HttpStatus> updateLesson(@PathVariable(name = "id") Long id, @RequestBody Lesson lesson) {
+    public ResponseEntity<HttpStatus> updateLesson(@PathVariable(name = "id") Long id,
+            @RequestBody SharedLesson lesson) {
         lessonService.updateLesson(id, lesson);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

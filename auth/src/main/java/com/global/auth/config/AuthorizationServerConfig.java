@@ -1,35 +1,50 @@
 package com.global.auth.config;
 
+import com.global.auth.service.CustomClientDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private CustomClientDetailsService customClientDetailsService;
+
+    @Autowired
+    private AuthorizationCodeServices customAuthorizationCodeService;
+
+    @Autowired
+    private JwtTokenConfig jwtTokenConfig;
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.withClientDetails(customClientDetailsService);
+    }
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        endpoints
+                .authorizationCodeServices(customAuthorizationCodeService)
+                .tokenServices(jwtTokenConfig.tokenServices())
+                .authenticationManager(authenticationManager);
+    }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
         oauthServer.tokenKeyAccess("permitAll()")
                    .checkTokenAccess("isAuthenticated()");
+        oauthServer.allowFormAuthenticationForClients();
     }
 
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-               .withClient("my-client")
-               .secret(passwordEncoder.encode("secret"))
-               .authorizedGrantTypes("authorization_code", "client_credentials")
-               .scopes("user_info", "read", "write", "trust")
-               .autoApprove(true)
-               .accessTokenValiditySeconds(10_000)
-               .redirectUris("http://localhost:8080/app/login");
-    }
 }

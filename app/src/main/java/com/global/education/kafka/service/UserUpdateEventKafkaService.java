@@ -17,17 +17,17 @@ public class UserUpdateEventKafkaService {
     @Autowired
     private UserStartCourseEventProducer userStartCourseEventProducer;
 
-    public void sendFinishLessonEvent(UserFinishLessonEvent dto) {
+    public void sendStartCourseEvent(UserStartCourseEvent dto) {
         try {
-            userFinishLessonEventProducer.sendMessage(dto);
+            userStartCourseEventProducer.sendMessage(dto);
         } catch (Exception e) {
             throw new BadRequestParametersRuntimeException();
         }
     }
 
-    public void sendStartCourseEvent(UserStartCourseEvent dto) {
+    public void sendFinishLessonEvent(UserFinishLessonEvent dto) {
         try {
-            userStartCourseEventProducer.sendMessage(dto);
+            userFinishLessonEventProducer.sendMessage(dto);
         } catch (Exception e) {
             throw new BadRequestParametersRuntimeException();
         }

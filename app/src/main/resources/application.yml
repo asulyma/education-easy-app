@@ -19,6 +19,9 @@ spring:
     url: ${spring.datasource.url}
     user: postgres
     password: postgres
+  kafka:
+    admin:
+      fail-fast: true
 
 kafka-topics:
   bootstrap-server: localhost:9092
@@ -36,10 +39,29 @@ kafka-topics:
       "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
       "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer
       "[value.serializer]": org.apache.kafka.common.serialization.StringSerializer
+  user-start-course-event-consumer:
+    enabled: true
+    topic: education-start-course-event
+    consumer-properties:
+      "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
+      "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      "[group.id]": "user-start-course-event-group"
+  user-finish-lesson-event-consumer:
+    enabled: true
+    topic: education-finish-lesson-event
+    consumer-properties:
+      "[bootstrap.servers]": ${kafka-topics.bootstrap-server}
+      "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      "[group.id]": "user-finish-lesson-event-group"
+
 
 server:
   servlet:
     context-path: /app
+
+# Can working without the next block
 security:
   oauth2:
     client:
@@ -48,8 +70,7 @@ security:
       accessTokenUri: http://localhost:8081/auth/oauth/token
       userAuthorizationUri: http://localhost:8081/auth/oauth/authorize
     resource:
-      userInfoUri: http://localhost:8081/auth/user/me
-
-#logging.level:
-#  org.springframework:
-#    security: DEBUG
+      id: ${spring.application.name}
+      jwt:
+        keyValue:
+          d2ViLWNsaWVudDp3ZWItY2xpZW50LXNlY3JldA==
