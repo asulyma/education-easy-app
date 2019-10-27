@@ -1,6 +1,7 @@
 package com.global.education.controller;
 
 import com.global.education.controller.dto.Course;
+import com.global.education.controller.dto.SharedCourse;
 import com.global.education.controller.dto.SpecificationRequest;
 import com.global.education.controller.handler.BaseHandler;
 import com.global.education.service.CourseService;
@@ -42,15 +43,14 @@ public class CourseController extends BaseHandler {
     }
 
     @GetMapping("/{id:" + ID_REGEXP + "}")
-    public Course getCourse(@PathVariable(name = "id") Long id) {
+    public SharedCourse getSharedCourse(@PathVariable(name = "id") Long id) {
         validationService.checkUserOnAllowGetCourse(id);
-        return INSTANCE.buildCourse(courseService.getCourseById(id));
+        return INSTANCE.buildSharedCourse(courseService.getCourseById(id));
     }
 
-    @PostMapping("/{id:" + ID_REGEXP + "}")
-    public ResponseEntity<HttpStatus> startCourse(@PathVariable("id") Long courseId) {
-        courseService.startCourse(courseId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PostMapping("/start/{id:" + ID_REGEXP + "}")
+    public ResponseEntity<String> startCourse(@PathVariable("id") Long courseId) {
+        return courseService.startCourse(courseId);
     }
 
     @PostMapping
@@ -62,7 +62,8 @@ public class CourseController extends BaseHandler {
 
     @PutMapping("/{id:" + ID_REGEXP + "}")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<HttpStatus> updateCourse(@PathVariable("id") Long id, @Valid @RequestBody Course course) {
+    public ResponseEntity<HttpStatus> updateCourse(@PathVariable("id") Long id,
+            @Valid @RequestBody SharedCourse course) {
         courseService.updateCourse(id, course);
         return new ResponseEntity<>(HttpStatus.OK);
     }

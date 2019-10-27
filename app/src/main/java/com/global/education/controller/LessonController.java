@@ -1,6 +1,7 @@
 package com.global.education.controller;
 
 import com.global.education.controller.dto.Lesson;
+import com.global.education.controller.dto.SharedLesson;
 import com.global.education.controller.handler.BaseHandler;
 import com.global.education.service.LessonService;
 import com.global.education.service.ValidationService;
@@ -41,30 +42,30 @@ public class LessonController extends BaseHandler {
     }
 
     @GetMapping("/{id:" + ID_REGEXP + "}")
-    public Lesson getLessonById(@PathVariable(name = "id") Long lessonId,
+    public SharedLesson getLessonById(@PathVariable(name = "id") Long lessonId,
             @RequestParam(name = "courseId") Long courseId) {
         validationService.checkUserOnAllowGetCourse(courseId);
-        return INSTANCE.buildLesson(lessonService.getLessonById(lessonId));
+        return INSTANCE.buildSharedLesson(lessonService.getLessonById(lessonId, courseId));
     }
 
-    @PutMapping("/finish/{id:" + ID_REGEXP + "}")
-    public ResponseEntity<HttpStatus> finishLesson(@PathVariable(name = "id") Long lessonId,
+    @PostMapping("/finish/{id:" + ID_REGEXP + "}")
+    public ResponseEntity<String> finishLesson(@PathVariable(name = "id") Long lessonId,
             @RequestParam(name = "courseId") Long courseId) {
-        validationService.checkUserOnAllowGetCourse(courseId);
-        lessonService.finishLesson(lessonId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        validationService.checkUserOnFinishLesson(courseId, lessonId);
+        return lessonService.finishLesson(lessonId, courseId);
     }
 
     @PostMapping
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<HttpStatus> createLesson(@RequestBody Lesson lesson) {
+    public ResponseEntity<HttpStatus> createLesson(@RequestBody SharedLesson lesson) {
         lessonService.createLesson(lesson);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id:" + ID_REGEXP + "}")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<HttpStatus> updateLesson(@PathVariable(name = "id") Long id, @RequestBody Lesson lesson) {
+    public ResponseEntity<HttpStatus> updateLesson(@PathVariable(name = "id") Long id,
+            @RequestBody SharedLesson lesson) {
         lessonService.updateLesson(id, lesson);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

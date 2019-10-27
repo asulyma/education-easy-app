@@ -10,13 +10,14 @@ CREATE TABLE user_data
 
 CREATE TABLE course
 (
-    id           BIGSERIAL NOT NULL PRIMARY KEY,
-    created_date BIGINT,
-    title        VARCHAR(256),
-    description  VARCHAR(1024),
-    begin_date   BIGINT,
-    end_date     BIGINT,
-    cost         BIGINT
+    id              BIGSERIAL NOT NULL PRIMARY KEY,
+    created_date    BIGINT,
+    title           VARCHAR(256),
+    description     VARCHAR(1024),
+    begin_date      BIGINT,
+    end_date        BIGINT,
+    cost            BIGINT,
+    additional_info VARCHAR(512)
 );
 
 CREATE TABLE lesson

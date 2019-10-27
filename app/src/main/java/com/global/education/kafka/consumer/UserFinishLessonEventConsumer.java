@@ -17,16 +17,14 @@ public class UserFinishLessonEventConsumer extends EventConsumer {
     }
 
     @SuppressWarnings("unchecked")
-    @KafkaListener(topics = "education-finish-lesson-event-consumer", groupId = "user-finish-lesson-event-group")
+    @KafkaListener(topics = "education-finish-lesson-event", groupId = "user-finish-lesson-event-group")
     public void listen(Object message) {
         if (validate(message)) {
-            log.warn("Empty message for user-finish-lesson-event-group");
+            log.warn("Empty message from {}", topic);
             return;
         }
-
         ConsumerRecord<String, String> record = (ConsumerRecord<String, String>) message;
         userService.finishLesson(toObject(record.value(), UserFinishLessonEvent.class));
-        log.info("Got event from {} topic with finish lesson event", topic);
     }
 
 }

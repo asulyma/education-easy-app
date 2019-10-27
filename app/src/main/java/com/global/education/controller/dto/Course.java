@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 public class Course {
 
     private Long id;
-    private Long createdDate;
 
     @NotNull
     private String title;
@@ -24,4 +23,5 @@ public class Course {
 
     @NotNull
     private Long cost;
+
 }

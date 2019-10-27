@@ -36,6 +36,9 @@ public class CourseEntity extends CreatableEntity {
     @Column(name = "cost")
     private Long cost;
 
+    @Column(name = "additional_info")
+    private String additionalInfo;
+
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<LessonEntity> lessons = new ArrayList<>();
 

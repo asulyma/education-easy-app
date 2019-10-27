@@ -45,10 +45,6 @@ In OAuth2 service by default, there are next information:
 
 ### TODO list:
 2. Add to token UUID of user
-3. Find user by UUID inside App module.
-4. Working with user data only inside App module.
-
-
 1. Build Docker image from maven plugin
 2. Fix for Docker compose to start correctly
 
@@ -57,22 +53,24 @@ In OAuth2 service by default, there are next information:
 Method | URI | Description
 ------------ | ------------- | -------------
 GET | /course | Get list of courses (by criteria too)
-GET | /course/{id} | Get single course by id
-POST | /course/{id} | Start course by id (send kafka event to OAuth2 service)
+GET | /course/{id} | Get shared course by id
+POST | /course/start/{id} | Start course by id (send kafka event to OAuth2 service)
 POST | /course | Create a course **FAO**
 PUT | /course/{id} | Update existing course by id **FAO**
 DELETE | /course/{id} | Delete course by id **FAO**
   |   |  
 GET | /lesson?courseId={id} | Get list of lessons by course
-GET | /lesson/{id} | Get single lesson by id
-PUT | /lesson/finish/{id} | Finish lesson and add progress (send kafka event to OAuth2 service)
+GET | /lesson/{id}?courseId={id} | Get shared lesson by id
+POST | /lesson/finish/{id}?courseId={id} | Finish lesson and add progress (send kafka event to OAuth2 service)
 POST | /lesson | Create a lesson **FAO**
 PUT | /lesson{id} | Update existing lesson by id **FAO**
 DELETE | /lesson{id} | Delete lesson by id **FAO**
   |   |  
-GET | /comment?{lessonId} | Get list of comments
+GET | /comment?lessonId={id} | Get list of comments
 POST | /comment | Create a new comment
 DELETE | /comment/{id} | Delete comment by id
+  |   |  
+POST | /system/second-step-register | Register user after successful authentication from OAuth2 module
 
 * FAO - For Admin Only
 
@@ -80,7 +78,7 @@ DELETE | /comment/{id} | Delete comment by id
 #### Body templates
 ```json5
 {
-  "title": "Course Name",
+  "title": "Body for course creation",
   "cost": 100,
   "beginDate": 1564617600000,
   "endDate": 1565617600000
@@ -89,8 +87,16 @@ DELETE | /comment/{id} | Delete comment by id
 
 ```json5
 {
-  "title": "Lesson Name",
+  "title": "Body for lesson creation",
   "description": "optional",
   "courseId": 1
+}
+```
+
+```json5
+{
+  "lessonId": 1,
+  "courseId": 1,
+  "content": "Body for comment creation"
 }
 ```
