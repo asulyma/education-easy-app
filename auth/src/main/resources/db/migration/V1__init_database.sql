@@ -1,8 +1,8 @@
 CREATE TABLE user_table
 (
     id       BIGSERIAL NOT NULL PRIMARY KEY,
-    uuid     UUID,
-    username VARCHAR(256),
+    uuid     UUID      NOT NULL,
+    username VARCHAR(256) UNIQUE,
     password VARCHAR(512)
 );
 CREATE TABLE user_roles

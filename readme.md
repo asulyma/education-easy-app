@@ -29,8 +29,8 @@ Headers - Authorization: Basic d2ViLWNsaWVudDp3ZWItY2xpZW50LXNlY3JldA==
 ```
 8. Once the token is obtained you can access the resource using:
 ```
-CRUD    - 
-Headers -
+CRUD    - http://localhost:8080/app/course
+Headers - Authorization: Bearer 
 ```
 
 #### Technical Note:
@@ -44,7 +44,6 @@ In OAuth2 service by default, there are next information:
 2. Run `docker-compose up -d`
 
 ### TODO list:
-2. Add to token UUID of user
 1. Build Docker image from maven plugin
 2. Fix for Docker compose to start correctly
 
