@@ -1,8 +1,8 @@
 # Education Application
 
-Application based on microservice architecture.
+Application based on micro-service architecture.
 Project Benefits:
-- uninterrupted communication between microservices using Apache Kafka;
+- uninterrupted communication between micro-services using Apache Kafka;
 - improved project security using OAuth2 from a separate service;
 - Support Docker containers;
 
@@ -44,8 +44,7 @@ In OAuth2 service by default, there are next information:
 2. Run `docker-compose up -d`
 
 ### TODO list:
-1. Build Docker image from maven plugin
-2. Fix for Docker compose to start correctly
+1. Fix docker-compose to start correctly and add plugin to maven to start automatically
 
 ## Education endpoints:
 

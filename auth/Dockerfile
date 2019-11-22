@@ -1,4 +1,4 @@
 FROM openjdk:8
-ADD target/auth-module.jar auth-module.jar
+ADD target/auth-module.jar /opt/auth-module.jar
 EXPOSE 8081
-ENTRYPOINT ["java", "-jar", "auth-module.jar"]
+ENTRYPOINT ["java", "-jar", "/opt/auth-module.jar"]
