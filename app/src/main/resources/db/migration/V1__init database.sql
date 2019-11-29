@@ -45,3 +45,12 @@ CREATE TABLE comment
 -- OneToOne
 ALTER TABLE comment
     ADD CONSTRAINT fk_lesson_comment_id FOREIGN KEY (lesson_id) REFERENCES lesson (id);
+
+ALTER TABLE user_data
+    OWNER TO "education-app";
+ALTER TABLE course
+    OWNER TO "education-app";
+ALTER TABLE lesson
+    OWNER TO "education-app";
+ALTER TABLE comment
+    OWNER TO "education-app";

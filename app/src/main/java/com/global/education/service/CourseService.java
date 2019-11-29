@@ -18,9 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 import static com.global.education.mapper.SpecificationMapper.INSTANCE;
 import static com.global.education.util.UserUtils.currentUserUuid;
@@ -82,7 +81,7 @@ public class CourseService {
         UserDataEntity user = userDataService.findUser(currentUserUuid());
         if (user.getProgressMap().containsKey(courseId)) {
             return new ResponseEntity<>("Course " + courseId + " is already started for user " + user.getUuid(),
-                    HttpStatus.NO_CONTENT);
+                    HttpStatus.OK);
         }
         kafkaService.sendStartCourseEvent(new UserStartCourseEvent(user.getUuid(), courseId));
         return new ResponseEntity<>("Kafka event about start course " + courseId + " has been sent", HttpStatus.OK);

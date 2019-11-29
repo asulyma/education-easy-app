@@ -53,10 +53,17 @@ CREATE TABLE client_resource
     resource          VARCHAR(255)
 );
 
-ALTER TABLE auth_code OWNER TO postgres;
-ALTER TABLE client_details OWNER TO postgres;
-ALTER TABLE client_resource OWNER TO postgres;
-ALTER TABLE client_scope OWNER TO postgres;
-ALTER TABLE client_grant_type OWNER TO postgres;
-ALTER TABLE client_authorities OWNER TO postgres;
-ALTER TABLE client_registered_redirect_uri OWNER TO postgres;
+ALTER TABLE auth_code
+    OWNER TO "education-auth";
+ALTER TABLE client_details
+    OWNER TO "education-auth";
+ALTER TABLE client_resource
+    OWNER TO "education-auth";
+ALTER TABLE client_scope
+    OWNER TO "education-auth";
+ALTER TABLE client_grant_type
+    OWNER TO "education-auth";
+ALTER TABLE client_authorities
+    OWNER TO "education-auth";
+ALTER TABLE client_registered_redirect_uri
+    OWNER TO "education-auth";

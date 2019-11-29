@@ -4,6 +4,7 @@ import com.education.common.kafka.dto.UserFinishLessonEvent;
 import com.education.common.kafka.dto.UserStartCourseEvent;
 import com.education.common.model.Progress;
 import com.education.common.model.Rank;
+import com.global.education.controller.dto.User;
 import com.global.education.model.UserDataEntity;
 import com.global.education.repository.UserDataRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -45,15 +46,19 @@ public class UserDataService {
     }
 
     /**
-     * Temporary solution, need to use Token data
+     * TODO add to Token username
      */
     @Transactional
-    public void createUserData() {
-        UserDataEntity entity = new UserDataEntity();
-        entity.setUuid(currentUserUuid());
-        entity.setUsername("username");
-        entity.setEmail("username@email");
-        entity.setRank(Rank.JUNIOR);
+    public void createOrUpdateUserData(User user) {
+        UUID userUuid = currentUserUuid();
+        UserDataEntity entity = userDataRepository.findByUuid(userUuid);
+        if (entity == null) {
+            entity = new UserDataEntity();
+            entity.setUuid(userUuid);
+        }
+        entity.setUsername("from token");
+        entity.setEmail(user.getEmail());
+        entity.setRank(Rank.valueOf(user.getRank()));
         userDataRepository.save(entity);
     }
 

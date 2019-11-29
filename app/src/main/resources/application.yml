@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/education_app?autoReconnect=true&useSSL=false
-    username: postgres
-    password: postgres
+    username: education-app
+    password: education-app
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
     properties.hibernate:
@@ -17,11 +17,28 @@ spring:
     baseline-on-migrate: true
     out-of-order: true
     url: ${spring.datasource.url}
-    user: postgres
-    password: postgres
+    user: flyway
+    password: flyway
   kafka:
     admin:
       fail-fast: true
+
+  # To enable mail functionality, you need to do the next steps:
+  # - enabled -> true
+  # - uncomment and put your username and password from real account of google
+  # - auth -> true
+  mail:
+    enabled: false
+    #username: your@gmail.com
+    #password: password
+    host: smtp.gmail.com
+    port: 587
+    properties.mail.smtp:
+      auth: false
+      connectiontimeout: 5000
+      timeout: 5000
+      writetimeout: 5000
+      starttls.enable: true
 
 kafka-topics:
   bootstrap-server: localhost:9092
@@ -56,21 +73,19 @@ kafka-topics:
       "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
       "[group.id]": "user-finish-lesson-event-group"
 
-
 server:
   servlet:
     context-path: /app
 
-# Can working without the next block
 security:
   oauth2:
     client:
-      clientId: my-client
-      clientSecret: secret
+      clientId: education-web-client
+      clientSecret: education-web-client-secret
       accessTokenUri: http://localhost:8081/auth/oauth/token
       userAuthorizationUri: http://localhost:8081/auth/oauth/authorize
     resource:
       id: ${spring.application.name}
       jwt:
         keyValue:
-          d2ViLWNsaWVudDp3ZWItY2xpZW50LXNlY3JldA==
+          ZWR1Y2F0aW9uLXdlYi1jbGllbnQ6ZWR1Y2F0aW9uLXdlYi1jbGllbnQtc2VjcmV0

@@ -1,9 +1,0 @@
-# Only for knowledge.
-# Travis CI is unused for this project at 01.09.2019
-# For Travis CI need to make public repository on GitHub instead of private.
-language: java
-jdk:
-  - openjdk8
-script: ./mvnw clean install
-notifications:
-  email: nages@ukr.net

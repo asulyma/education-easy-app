@@ -9,7 +9,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "course")
 public class TranslationHolder {
 
-    private String infoToUser;
+    private String startCourseMessage;
+    private String finishLessonMessage;
     private String permissionToAdmin;
     private String approvePermissionToUser;
     private String approvePermissionToAdmin;

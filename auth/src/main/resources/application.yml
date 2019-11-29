@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/education_auth?autoReconnect=true&useSSL=false
-    username: postgres
-    password: postgres
+    username: education-auth
+    password: education-auth
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
     properties.hibernate:
@@ -16,8 +16,8 @@ spring:
     enabled: true
     baseline-on-migrate: true
     url: ${spring.datasource.url}
-    user: postgres
-    password: postgres
+    user: flyway
+    password: flyway
 
 server:
   port: 8081

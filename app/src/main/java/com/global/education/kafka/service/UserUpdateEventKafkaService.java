@@ -2,6 +2,8 @@ package com.global.education.kafka.service;
 
 import com.education.common.kafka.dto.UserFinishLessonEvent;
 import com.education.common.kafka.dto.UserStartCourseEvent;
+import com.education.common.model.EmailType;
+import com.global.education.aspect.TriggerSendEmail;
 import com.global.education.controller.handler.exception.BadRequestParametersRuntimeException;
 import com.global.education.kafka.producer.UserFinishLessonEventProducer;
 import com.global.education.kafka.producer.UserStartCourseEventProducer;
@@ -17,6 +19,7 @@ public class UserUpdateEventKafkaService {
     @Autowired
     private UserStartCourseEventProducer userStartCourseEventProducer;
 
+    @TriggerSendEmail(target = EmailType.START_COURSE)
     public void sendStartCourseEvent(UserStartCourseEvent dto) {
         try {
             userStartCourseEventProducer.sendMessage(dto);
@@ -25,6 +28,7 @@ public class UserUpdateEventKafkaService {
         }
     }
 
+    @TriggerSendEmail(target = EmailType.FINISH_LESSON)
     public void sendFinishLessonEvent(UserFinishLessonEvent dto) {
         try {
             userFinishLessonEventProducer.sendMessage(dto);

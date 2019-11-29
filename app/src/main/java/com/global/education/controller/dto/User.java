@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -16,9 +16,12 @@ import java.util.UUID;
 public class User {
 
     private UUID uuid;
+
+    @NotNull
     private String username;
+    @NotNull
     private String email;
-    private Set<String> roles;
+    @NotNull
     private String rank;
     private Map<Long, Progress> progressMap = new HashMap<>();
 }

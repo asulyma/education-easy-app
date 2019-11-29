@@ -13,6 +13,6 @@ CREATE TABLE user_roles
 );
 
 ALTER TABLE user_table
-    OWNER TO postgres;
+    OWNER TO "education-auth";
 ALTER TABLE user_roles
-    OWNER TO postgres;
+    OWNER TO "education-auth";

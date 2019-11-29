@@ -4,6 +4,7 @@ import com.global.education.config.TranslationHolder;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import java.util.TimeZone;
 
@@ -11,6 +12,7 @@ import static org.springframework.boot.context.config.ConfigFileApplicationListe
 
 @EnableConfigurationProperties({TranslationHolder.class})
 @SpringBootApplication
+@EnableAspectJAutoProxy
 public class EducationApplication {
 
     static {
