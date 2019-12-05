@@ -24,10 +24,11 @@ public class OAuthConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            //.antMatchers(HttpMethod.GET, "/**").access("#oauth2.clientHasRole('ROLE_USER')") //very interesting line
-            .antMatchers("/**").access("#oauth2.hasScope('read-foo')")
-            .and()
-            .headers().addHeaderWriter(writeHeaders());
+                //.antMatchers(HttpMethod.GET, "/**").access("#oauth2.clientHasRole('ROLE_USER')") //very interesting line
+                .antMatchers("/actuator/**").permitAll()
+                .antMatchers("/**").access("#oauth2.hasScope('read-foo')")
+                .and()
+                .headers().addHeaderWriter(writeHeaders());
     }
 
     private HeaderWriter writeHeaders() {
