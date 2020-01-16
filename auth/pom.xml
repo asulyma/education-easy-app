@@ -7,13 +7,14 @@
     <parent>
         <groupId>com.global</groupId>
         <artifactId>education</artifactId>
-        <version>19.9-SNAPSHOT</version>
+        <version>20.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>auth</artifactId>
 
     <properties>
         <java.version>1.8</java.version>
+        <docker.image.prefix>education</docker.image.prefix>
     </properties>
 
     <dependencies>
@@ -78,7 +79,7 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.12</version>
                 <configuration>
-                    <repository>${project.artifactId}</repository>
+                    <repository>${docker.image.prefix}_${project.artifactId}</repository>
                     <tag>${project.version}</tag>
                     <dockerfile>Dockerfile</dockerfile>
                 </configuration>

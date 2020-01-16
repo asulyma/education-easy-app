@@ -66,6 +66,7 @@ When OAuth2 server rises for the first time, a default client and users will be 
 ### TODO list:
 1. Fix docker-compose to start correctly and add plugin to maven to start automatically when site lifecycle
 2. Add Swagger support
+3. Add ElasticSearch support
 
 ## Education endpoints:
 
