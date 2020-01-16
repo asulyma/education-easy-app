@@ -16,8 +16,8 @@ spring:
     enabled: true
     baseline-on-migrate: true
     url: ${spring.datasource.url}
-    user: flyway
-    password: flyway
+    user: education-auth
+    password: education-auth
 
 server:
   port: 8081
