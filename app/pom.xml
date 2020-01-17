@@ -164,6 +164,28 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Docker compose plugin will not shut down automatically, you need to execute `docker-compose down` -->
+            <!-- https://github.com/dkanejs/docker-compose-maven-plugin-->
+            <plugin>
+                <groupId>com.dkanejs.maven.plugins</groupId>
+                <artifactId>docker-compose-maven-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <composeFiles>
+                        <composeFile>docker-compose.yml</composeFile>
+                    </composeFiles>
+                    <detachedMode>true</detachedMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>docker-compose-up</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>up</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <finalName>app-module</finalName>
     </build>

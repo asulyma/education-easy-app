@@ -28,8 +28,10 @@
         <lombok.version>1.18.8</lombok.version>
     </properties>
 
+    <!-- Dependency definitions for modules, need to define inside of the module for using -->
     <dependencyManagement>
         <dependencies>
+            <!-- Spring Framework -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-oauth2</artifactId>
@@ -40,6 +42,7 @@
                 <artifactId>spring-security-jwt</artifactId>
                 <version>1.0.11.RELEASE</version>
             </dependency>
+            <!-- SQL Database -->
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
@@ -50,11 +53,13 @@
                 <artifactId>hibernate-types-52</artifactId>
                 <version>2.1.1</version>
             </dependency>
+            <!-- Flyway -->
             <dependency>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
                 <version>5.2.4</version>
             </dependency>
+            <!-- Useful Libs -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -79,6 +84,7 @@
         </dependencies>
     </dependencyManagement>
 
+    <!-- Global dependencies (for each modules) -->
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -91,6 +97,17 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- Swagger -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -101,40 +118,5 @@
             </plugin>
         </plugins>
     </build>
-
-
-    <!-- Docker compose plugin will not shut down automatically, you need to execute `docker-compose down` -->
-    <!-- https://github.com/dkanejs/docker-compose-maven-plugin-->
-
-    <!-- TODO uncomment and test after fix docker-compose file -->
-<!--    <profiles>-->
-<!--        <profile>-->
-<!--            <id>docker</id>-->
-<!--            <build>-->
-<!--                <plugins>-->
-<!--                    <plugin>-->
-<!--                        <groupId>com.dkanejs.maven.plugins</groupId>-->
-<!--                        <artifactId>docker-compose-maven-plugin</artifactId>-->
-<!--                        <version>2.5.1</version>-->
-<!--                        <configuration>-->
-<!--                            <composeFiles>-->
-<!--                                <composeFile>docker-compose.yml</composeFile>-->
-<!--                            </composeFiles>-->
-<!--                            <detachedMode>true</detachedMode>-->
-<!--                        </configuration>-->
-<!--                        <executions>-->
-<!--                            <execution>-->
-<!--                                <id>docker-compose-up</id>-->
-<!--                                <phase>site</phase>-->
-<!--                                <goals>-->
-<!--                                    <goal>up</goal>-->
-<!--                                </goals>-->
-<!--                            </execution>-->
-<!--                        </executions>-->
-<!--                    </plugin>-->
-<!--                </plugins>-->
-<!--            </build>-->
-<!--        </profile>-->
-<!--    </profiles>-->
 
 </project>

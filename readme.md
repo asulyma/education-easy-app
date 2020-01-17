@@ -5,6 +5,9 @@ Project Benefits:
 - uninterrupted communication between micro-services using Apache Kafka;
 - improved project security using OAuth2 from a separate service;
 - Support Docker containers;
+- Running with docker-compose via `mvn clean install`
+- Swagger documentation (public accessible)
+- Actuator support (public accessible)
 
 ### How to run application for local debugging:
 
@@ -60,13 +63,16 @@ When OAuth2 server rises for the first time, a default client and users will be 
 ### How to run application with docker:
 1. Download, install and start Docker (with Docker Compose)
 2. Go to `education` folder and run `mvn clean install`
-  - Maven plugin is automatically created Docker images
-3. Run `docker-compose up -d`
+  - Maven plugins will automatically created Docker images and executed `docker-compose up -d` command
+  - To **stop** all application, need to execute `docker-compose down`
 
 ### TODO list:
-1. Fix docker-compose to start correctly and add plugin to maven to start automatically when site lifecycle
-2. Add Swagger support
-3. Add ElasticSearch support
+0. Move versions from pom.xml to properties
+1. Add ElasticSearch support
+2. Update endpoints descriptions for swagger and remove `Education endpoints` block below
+
+http://localhost:8080/app/v2/api-docs
+http://localhost:8080/app/swagger-ui.html
 
 ## Education endpoints:
 

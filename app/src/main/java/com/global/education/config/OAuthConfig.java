@@ -26,6 +26,12 @@ public class OAuthConfig extends ResourceServerConfigurerAdapter {
         http.authorizeRequests()
                 //.antMatchers(HttpMethod.GET, "/**").access("#oauth2.clientHasRole('ROLE_USER')") //very interesting line
                 .antMatchers("/actuator/**").permitAll()
+
+                .antMatchers("/swagger-ui.html/**").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/webjars/springfox-swagger-ui/**").permitAll()
+                .antMatchers("/v2/api-docs/**").permitAll()
+
                 .antMatchers("/**").access("#oauth2.hasScope('read-foo')")
                 .and()
                 .headers().addHeaderWriter(writeHeaders());
