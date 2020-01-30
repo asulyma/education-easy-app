@@ -4,13 +4,12 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.Objects;
-
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
+import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SpecificationBuilderUtils {
+public final class SpecificationBuilderUtils {
 
     public static <R> Specification<R> buildRange(Long start, Long end, RootCriteriaFunction<R> rootFunc) {
         Specification<R> result = Specification.where(null);

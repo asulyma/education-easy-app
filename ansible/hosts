@@ -1,0 +1,9 @@
+[dev]
+host0 ansible_host=192.168.33.10 
+
+[stage]
+host1 ansible_host=192.168.33.11
+
+[prod]
+host_aws ansible_host=18.185.23.60
+

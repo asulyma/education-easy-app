@@ -27,7 +27,9 @@ public final class UserUtils {
         String base64EncodedBody = getBase64EncodedBody(getToken());
         Map<String, Object> encodedUserData = getEncodedUserData(base64EncodedBody);
         Object userUuid = encodedUserData.get("userUuid");
-        return UUID.fromString(String.valueOf(userUuid));
+        return userUuid != null
+                ? UUID.fromString(String.valueOf(userUuid))
+                : null;
     }
 
     private static String getToken() {

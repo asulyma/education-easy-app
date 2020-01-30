@@ -1,0 +1,7 @@
+---
+- name: Install default Apache Web Server
+  hosts: prod
+  become: yes
+
+  roles:
+    - deploy_apache_web

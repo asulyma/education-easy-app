@@ -67,9 +67,9 @@ When OAuth2 server rises for the first time, a default client and users will be 
   - To **stop** all application, need to execute `docker-compose down`
 
 ### TODO list:
-0. Move versions from pom.xml to properties
 1. Add ElasticSearch support
 2. Update endpoints descriptions for swagger and remove `Education endpoints` block below
+3. Create Ansible role to install java, docker to run docker-compose as result
 
 http://localhost:8080/app/v2/api-docs
 http://localhost:8080/app/swagger-ui.html
