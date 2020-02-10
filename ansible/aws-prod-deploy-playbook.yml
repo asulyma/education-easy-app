@@ -1,6 +1,6 @@
 ---
 - name: Install default Apache Web Server
-  hosts: prod
+  hosts: all
   become: yes
 
   roles:
