@@ -11,24 +11,33 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class EventDrivenConfiguration {
 
     @Autowired
-    private EventDrivenWorker eventDrivenWorker;
+    private InMemoryQueueEventProcessor inMemoryQueueEventProcessor;
+
+    @Bean
+    public EventDrivenWorker eventDrivenWorker() {
+        BlockingQueue<QueueEvent> queue = new LinkedBlockingQueue<>();
+        return new EventDrivenWorker(queue, inMemoryQueueEventProcessor);
+    }
 
     @Bean
     public EventProcessor eventOneProcessor() {
-        return new EventDrivenEventProcessor(EventType.EVENT_ONE, eventDrivenWorker);
+        return new EventDrivenEventProcessor(EventType.EVENT_ONE, eventDrivenWorker());
     }
 
     @Bean
     public EventProcessor eventTwoProcessor() {
-        return new EventDrivenEventProcessor(EventType.EVENT_TWO, eventDrivenWorker);
+        return new EventDrivenEventProcessor(EventType.EVENT_TWO, eventDrivenWorker());
     }
-
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     @Bean
-    public EventDrivenWorker eventDrivenWorker(InMemoryQueueEventProcessor inMemoryQueueEventProcessor) {
-        BlockingQueue<QueueEvent> queue = new LinkedBlockingQueue<>();
-        return new EventDrivenWorker(queue, inMemoryQueueEventProcessor);
+    public KafkaEventOneHandler eventOneHandler() {
+        return new KafkaEventOneHandler(eventOneProcessor());
     }
+
+    @Bean
+    public KafkaEventTwoHandler eventTwoHandler() {
+        return new KafkaEventTwoHandler(eventTwoProcessor());
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
 }

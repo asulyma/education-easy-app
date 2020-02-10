@@ -1,11 +1,9 @@
 package com.global.education.eventdriven;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
-public class EventOneHandler {
+public class KafkaEventOneHandler {
 
     private final EventProcessor processor;
 
