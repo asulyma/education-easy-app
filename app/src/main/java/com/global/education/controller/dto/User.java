@@ -17,7 +17,6 @@ public class User {
 
     private UUID uuid;
 
-    @NotNull
     private String username;
     @NotNull
     private String email;

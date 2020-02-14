@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -30,6 +31,19 @@ public final class UserUtils {
         return userUuid != null
                 ? UUID.fromString(String.valueOf(userUuid))
                 : null;
+    }
+
+    public static String currentUserName() {
+        String base64EncodedBody = getBase64EncodedBody(getToken());
+        Map<String, Object> encodedUserData = getEncodedUserData(base64EncodedBody);
+        return String.valueOf(encodedUserData.get("user_name"));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<String> currentUserRoles() {
+        String base64EncodedBody = getBase64EncodedBody(getToken());
+        Map<String, Object> encodedUserData = getEncodedUserData(base64EncodedBody);
+        return (List<String>) encodedUserData.get("authorities");
     }
 
     private static String getToken() {

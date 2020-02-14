@@ -2,6 +2,7 @@ package com.global.auth.service;
 
 import com.global.auth.model.UserEntity;
 import com.global.auth.repository.UserRepository;
+import com.global.auth.repository.projection.UserUuid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.UUID;
 
 import static org.springframework.security.core.authority.AuthorityUtils.createAuthorityList;
 
@@ -34,12 +36,12 @@ public class UserService implements UserDetailsService {
         return new User(user.getUsername(), user.getPassword(), createAuthorityList(user.getRoles().toArray(roles)));
     }
 
-    public UserEntity loadUserInformation(String username) {
-        UserEntity user = userRepository.findByUsername(username);
-        if (user == null) {
+    public UUID loadUserUuid(String username) {
+        UserUuid uuid = userRepository.findUuidByUsername(username);
+        if (uuid == null) {
             throw new UsernameNotFoundException(username);
         }
-        return user;
+        return uuid.getUuid();
     }
 
     @Transactional

@@ -24,15 +24,13 @@ public class OAuthConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                //.antMatchers(HttpMethod.GET, "/**").access("#oauth2.clientHasRole('ROLE_USER')") //very interesting line
                 .antMatchers("/actuator/**").permitAll()
-
                 .antMatchers("/swagger-ui.html/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/webjars/springfox-swagger-ui/**").permitAll()
                 .antMatchers("/v2/api-docs/**").permitAll()
 
-                .antMatchers("/**").access("#oauth2.hasScope('read-foo')")
+                .antMatchers("/app/**").access("#oauth2.hasScope('standard-scope')")
                 .and()
                 .headers().addHeaderWriter(writeHeaders());
     }

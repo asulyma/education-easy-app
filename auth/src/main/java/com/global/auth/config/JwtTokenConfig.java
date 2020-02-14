@@ -1,6 +1,5 @@
 package com.global.auth.config;
 
-import com.global.auth.model.UserEntity;
 import com.global.auth.service.UserService;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +51,8 @@ public class JwtTokenConfig {
             final DefaultOAuth2AccessToken defaultOAuth2AccessToken = (DefaultOAuth2AccessToken) accessToken;
             Set<String> existingScopes = new HashSet<>(defaultOAuth2AccessToken.getScope());
             if (userAuthentication != null) {
-                //User has logged into system
-                existingScopes.add("read-foo");
-            } else {
-                //service is trying to access system
-                existingScopes.add("another-scope");
+                //User (not client) has logged into system, but if you want to add scope to token too - use enhance method below
+                existingScopes.add("user-scope");
             }
 
             defaultOAuth2AccessToken.setScope(existingScopes);
@@ -88,8 +84,7 @@ public class JwtTokenConfig {
         public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
             if (authentication.getOAuth2Request().getGrantType().equalsIgnoreCase("password")) {
                 String username = String.valueOf(((User) authentication.getPrincipal()).getUsername());
-                UserEntity user = userService.loadUserInformation(username);
-                Map<String, Object> additionalInfo = ImmutableMap.of("userUuid", user.getUuid());
+                Map<String, Object> additionalInfo = ImmutableMap.of("userUuid", userService.loadUserUuid(username));
                 ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
             }
             accessToken = super.enhance(accessToken, authentication);

@@ -5,6 +5,8 @@ import com.education.common.kafka.dto.UserStartCourseEvent;
 import com.education.common.model.Progress;
 import com.education.common.model.Rank;
 import com.global.education.controller.dto.User;
+import com.global.education.controller.handler.exception.NotAllowedRuntimeException;
+import com.global.education.controller.handler.exception.NotRegisteredRuntimeException;
 import com.global.education.model.UserDataEntity;
 import com.global.education.repository.UserDataRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.global.education.util.UserUtils.currentUserName;
 import static com.global.education.util.UserUtils.currentUserUuid;
 
 @Slf4j
@@ -45,9 +48,6 @@ public class UserDataService {
         log.info("Successfully add {} coefficient to {} course id", dto.getCoefficientToProgress(), dto.getCourseId());
     }
 
-    /**
-     * TODO add to Token username
-     */
     @Transactional
     public void createOrUpdateUserData(User user) {
         UUID userUuid = currentUserUuid();
@@ -56,14 +56,21 @@ public class UserDataService {
             entity = new UserDataEntity();
             entity.setUuid(userUuid);
         }
-        entity.setUsername("from token");
+        entity.setUsername(currentUserName());
         entity.setEmail(user.getEmail());
         entity.setRank(Rank.valueOf(user.getRank()));
         userDataRepository.save(entity);
     }
 
     public UserDataEntity findUser(UUID userUuid) {
-        return userDataRepository.findByUuid(userUuid);
+        if (userUuid == null) {
+            throw new NotAllowedRuntimeException("Current user can't make such operations");
+        }
+        UserDataEntity userData = userDataRepository.findByUuid(userUuid);
+        if (userData == null) {
+            throw new NotRegisteredRuntimeException("User with UUID: " + userUuid + " is not registered!");
+        }
+        return userData;
     }
 
 }
