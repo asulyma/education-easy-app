@@ -92,5 +92,10 @@ Also, for working with users, you need to pass `/second-step-register` endpoint.
 ***
 ### TODO list:
 1. Add ElasticSearch support
-2. Create Ansible role to install java, docker to run docker-compose as result
+2. Implement a Jenkins integration with the next steps:
+   - MVN Test
+   - MVN Build
+   - Build Docker Image
+   - Push Image to DockerHub
+   - Deploy to AWS via Ansible: connect, install java, docker, pull images and run docker-compose as result
 3. Make a flexible solution for public endpoints (swagger/actuator WITH RoleSecurityFilter)
