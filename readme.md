@@ -7,12 +7,12 @@ Project Benefits:
 - Improved project security using OAuth2 from a separate service;
 - Support Docker containers;
 - Running with docker-compose via single command;
-- Swagger documentation (public accessible);
-- Actuator support (public accessible);
-- Ansible playbooks.
+- Swagger documentation;
+- Actuator support;
+- Ansible's playbooks to deploy application to cloud.
 
 ***
-### How to run application with docker:
+### How to run application with the Docker:
 1. Download, install and start Docker (with Docker Compose)
 2. Clone this repository and run the following command inside: `mvn clean install -Pdocker`
 
@@ -27,7 +27,7 @@ Project Benefits:
 ### How to run application for local debugging:
 
 #### Zookeeper and Kafka
-1. Download, install and start Zookeper
+1. Download, install and start Zookeeper
 2. Download, install and start Kafka
 3. Create the next topics:
    - education-finish-lesson-event
@@ -48,7 +48,7 @@ ALTER USER "flyway" WITH SUPERUSER;
 ALTER USER "education-app" WITH SUPERUSER;
 ALTER USER "education-auth" WITH SUPERUSER;
 ```
-- Make sure that references in application.yml set up correctly.
+- Make sure references in application.yml set up correctly.
 
 #### Last steps
 1. Go to `education` folder and run `mvn clean install`
@@ -87,15 +87,24 @@ When OAuth2 server rises for the first time, a default client and users will be 
    - role: _ROLE_ADMIN_
    - scope: standard-scope user-scope
    
-Also, for working with users, you need to pass `/second-step-register` endpoint.
+Currently, there is no possibility to create new users or clients.
 
 ***
 ### TODO list:
 1. Add ElasticSearch support
-2. Implement a Jenkins integration with the next steps:
-   - MVN Test
-   - MVN Build
-   - Build Docker Image
-   - Push Image to DockerHub
-   - Deploy to AWS via Ansible: connect, install java, docker, pull images and run docker-compose as result
-3. Make a flexible solution for public endpoints (swagger/actuator WITH RoleSecurityFilter)
+2. Implement a Jenkins integration with the following pipelines:
+   - 2.1. Build
+        - Git clone + checkout + merge
+        - mvn clean test
+        - mvn package
+        - build docker image
+        - push image to dockerhub
+   - 2.2. Deploy to AWS 
+        - Call ansible role
+        - install java, docker
+        - docker purge
+        - login and pull images
+        - maybe pull standard images
+        - copy compose file to env
+        - docker-compose up
+3. Make a flexible solution for change tag version for the docker and for mvn
