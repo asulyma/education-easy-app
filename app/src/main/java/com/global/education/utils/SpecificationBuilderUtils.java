@@ -1,4 +1,4 @@
-package com.global.education.util;
+package com.global.education.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

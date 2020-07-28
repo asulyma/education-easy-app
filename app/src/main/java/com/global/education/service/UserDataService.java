@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.global.education.util.UserUtils.currentUserName;
-import static com.global.education.util.UserUtils.currentUserUuid;
+import static com.global.education.utils.UserUtils.currentUserName;
+import static com.global.education.utils.UserUtils.currentUserUuid;
 
 @Slf4j
 @Service

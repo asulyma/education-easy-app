@@ -1,6 +1,6 @@
 package com.global.education.controller;
 
-import com.global.education.util.UserUtils;
+import com.global.education.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.global.education.util.UserUtils.currentUserRoles;
+import static com.global.education.utils.UserUtils.currentUserRoles;
 
 @Slf4j
 @Order

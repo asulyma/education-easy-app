@@ -22,7 +22,7 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 import static com.global.education.mapper.SpecificationMapper.INSTANCE;
-import static com.global.education.util.UserUtils.currentUserUuid;
+import static com.global.education.utils.UserUtils.currentUserUuid;
 
 /**
  * Service for working with CourseEntity. Actually, there are CRUD operations for this class.

@@ -1,4 +1,4 @@
-package com.global.education.util;
+package com.global.education.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
