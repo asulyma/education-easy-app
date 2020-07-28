@@ -1,8 +1,5 @@
-[dev]
-aws1 ansible_host=18.184.219.84
-
 [stage]
-aws2 ansible_host=3.120.244.70
+aws1  ansible_host=54.93.104.145
 
-[prod]
-aws3 ansible_host=18.196.164.156
+[dev]
+aws2  ansible_host=54.93.87.177
