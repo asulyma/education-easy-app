@@ -4,7 +4,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Objects;
 
-import static com.global.education.util.SpecificationBuilderUtils.buildRange;
+import static com.global.education.utils.SpecificationBuilderUtils.buildRange;
 
 public abstract class CommonSpecificationBuilder<R> {
 

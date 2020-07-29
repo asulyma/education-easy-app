@@ -1,5 +1,17 @@
 package com.global.education.service;
 
+import static com.global.education.mapper.SpecificationMapper.INSTANCE;
+
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
 import com.education.common.kafka.dto.UserStartCourseEvent;
 import com.global.education.cache.ListCache;
 import com.global.education.controller.dto.SharedCourse;
@@ -11,18 +23,8 @@ import com.global.education.model.learning.CourseEntity;
 import com.global.education.repository.CourseRepository;
 import com.global.education.service.specification.CourseSpecificationFactory;
 import com.global.education.service.specification.SpecificationCriteria;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import java.util.List;
-
-import static com.global.education.mapper.SpecificationMapper.INSTANCE;
-import static com.global.education.util.UserUtils.currentUserUuid;
 
 /**
  * Service for working with CourseEntity. Actually, there are CRUD operations for this class.
@@ -78,7 +80,7 @@ public class CourseService {
     }
 
     public ResponseEntity<String> startCourse(Long courseId) {
-        UserDataEntity user = userDataService.findUser(currentUserUuid());
+        UserDataEntity user = userDataService.findCurrentUser();
         if (user.getProgressMap().containsKey(courseId)) {
             return new ResponseEntity<>("Course " + courseId + " is already started for user " + user.getUuid(),
                     HttpStatus.OK);

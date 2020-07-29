@@ -24,13 +24,7 @@ public class OAuthConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/actuator/**").permitAll()
-                .antMatchers("/swagger-ui.html/**").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/webjars/springfox-swagger-ui/**").permitAll()
-                .antMatchers("/v2/api-docs/**").permitAll()
-
-                .antMatchers("/app/**").access("#oauth2.hasScope('standard-scope')")
+                .antMatchers("/**").access("#oauth2.hasScope('standard-scope')")
                 .and()
                 .headers().addHeaderWriter(writeHeaders());
     }

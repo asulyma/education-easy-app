@@ -1,19 +1,19 @@
-package com.global.education;
+package com.global.education.cache;
 
-import com.global.education.cache.ListCache;
-import com.global.education.controller.dto.SpecificationRequest;
-import com.global.education.model.BaseEntity;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.global.education.controller.dto.SpecificationRequest;
+import com.global.education.model.BaseEntity;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ListCacheTest {

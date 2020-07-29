@@ -39,7 +39,7 @@ services:
     #volumes:
     #  - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   auth-education:
-    image: education_auth:20.1-SNAPSHOT
+    image: education_auth:20.7-SNAPSHOT
     container_name: auth-education
     ports:
       - 8081:8081
@@ -58,7 +58,7 @@ services:
       - POSTGRES_USER=education-app
       - POSTGRES_PASSWORD=education-app
   app-education:
-    image: education_app:20.1-SNAPSHOT
+    image: education_app:20.7-SNAPSHOT
     container_name: app-education
     ports:
       - 8080:8080

@@ -1,4 +1,4 @@
-package com.global.education.util;
+package com.global.education.utils;
 
 import com.education.common.model.Progress;
 import com.education.common.utils.JacksonUtils;
