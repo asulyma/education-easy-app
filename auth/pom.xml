@@ -83,7 +83,7 @@
             <id>docker</id>
             <build>
                 <plugins>
-                    <!-- Be careful, the next plugin don't remove unused images, if you want, you can use docker prune -->
+                    <!-- Be careful, the next plugin don't remove unused images, if you want, you can use docker image prune -->
                     <plugin>
                         <groupId>com.spotify</groupId>
                         <artifactId>dockerfile-maven-plugin</artifactId>

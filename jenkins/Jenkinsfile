@@ -1,0 +1,57 @@
+pipeline {
+   agent any
+
+    parameters {
+        gitParameter defaultValue: 'origin/master', name: 'BRANCH', type: 'PT_BRANCH'
+        string(defaultValue: 'empty', description: 'TAG', name: 'TAG')
+      }
+
+   stages {
+
+    stage('SCM Checkout') {
+        steps {
+            checkout scm
+        }
+    }
+
+   stage('JUNIT Tests') {
+      steps {
+          withMaven(maven : 'jenkins_maven') {
+              sh 'mvn clean test'
+          }
+      }
+    }
+
+    stage('Build Jar') {
+       steps {
+           withMaven(maven : 'jenkins_maven') {
+               sh 'mvn -DskipTests package'
+           }
+        }
+     }
+
+    stage('Prune Untagged Docker Images') {
+        steps {
+           sh 'docker image prune -f'
+        }
+     }
+
+    stage('Build Docker Image') {
+       steps {
+           withMaven(maven : 'jenkins_maven') {
+               sh 'mvn -DskipTests package -Pdocker'
+           }
+       }
+    }
+
+    stage('Push to DockerHub') {
+       steps {
+          withCredentials([usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'D_PASS', usernameVariable: 'D_USER')]) {
+                sh 'chmod +x $WORKSPACE/jenkins/push-image.sh'
+                sh '$WORKSPACE/jenkins/push-image.sh $D_USER $D_PASS $TAG'
+          }
+       }
+     }
+
+   }
+}

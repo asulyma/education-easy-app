@@ -9,7 +9,8 @@ Project Benefits:
 - Running with docker-compose via single command;
 - Swagger documentation;
 - Actuator support;
-- Ansible's playbooks to deploy application to cloud.
+- Ansible's playbooks to deploy application to cloud;
+- Jenkins' integration with Build, Local and Remote Deploy pipelines.
 
 ***
 ### How to run application with the Docker:
@@ -22,6 +23,12 @@ Project Benefits:
   + [Swagger UI local](http://localhost:8080/app/swagger-ui.html)
   + [Swagger Docs local](http://localhost:8080/app/v2/api-docs)
   + [Actuator local](http://localhost:8080/app/actuator)
+
+***
+### How to run application via the Jenkins:
+1. Download, install and start Docker (with Docker Compose)
+2. Go to jenkins/start_jenkins folder and run `docker-compose up -b -d`
+3. TODO run local pipeline
 
 ***
 ### How to run application for local debugging:
@@ -95,12 +102,7 @@ When OAuth2 server rises for the first time, a default client and users will be 
 ### TODO list:
 1. Add ElasticSearch support
 2. Implement a Jenkins integration with the following pipelines:
-   - 2.1. Build
-        - Git clone + checkout + merge
-        - mvn clean test
-        - mvn package
-        - build docker image
-        - push image to dockerhub
+   - 2.1. ~~Build and push image pipeline~~
    - 2.2. Deploy to AWS 
         - Call ansible role
         - install java, docker
@@ -109,4 +111,5 @@ When OAuth2 server rises for the first time, a default client and users will be 
         - maybe pull standard images
         - copy compose file to env
         - docker-compose up
+    - 2.3. Deploy to local env
 3. Make a flexible solution for change tag version for the docker and for mvn
