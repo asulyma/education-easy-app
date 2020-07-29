@@ -87,7 +87,9 @@ When OAuth2 server rises for the first time, a default client and users will be 
    - role: _ROLE_ADMIN_
    - scope: standard-scope user-scope
    
-Currently, there is no possibility to create new users or clients.
+* After the first start of the application, in order to be able to use the main functionality of the application, you need to complete the user registration. To do this, you need to execute a POST request for `http://localhost:8080/app/system/second-step-register`
+   
+* Currently, there is no possibility to create new users or clients.
 
 ***
 ### TODO list:

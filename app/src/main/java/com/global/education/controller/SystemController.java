@@ -1,5 +1,9 @@
 package com.global.education.controller;
 
+import static com.global.education.mapper.UserMapper.INSTANCE;
+
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,11 @@ public class SystemController {
 	public ResponseEntity<HttpStatus> register(@RequestBody @Valid User user) {
 		userDataService.createOrUpdateUserData(user);
 		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+
+	@GetMapping("/user/{userUuid}")
+	public User getUserInfo(@PathVariable UUID userUuid) {
+		return INSTANCE.buildUser(userDataService.findUser(userUuid));
 	}
 
 }
