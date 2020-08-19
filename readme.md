@@ -112,4 +112,4 @@ When OAuth2 server rises for the first time, a default client and users will be 
         - copy compose file to env
         - docker-compose up
     - 2.3. Deploy to local env
-3. Make a flexible solution for change tag version for the docker and for mvn
+3. Make a flexible solution for select tag version for Deploy to AWS pipeline

@@ -1,0 +1,82 @@
+pipeline {
+    agent any
+
+    parameters {
+        gitParameter defaultValue: 'origin/master', name: 'BRANCH', type: 'PT_BRANCH'
+    }
+
+    stages {
+
+//  Example to clone additional repository
+//       stage('SCM Checkout') {
+//           steps {
+//               script {
+//                   GIT_BRANCH = sh (
+//                           script: "echo $BRANCH | sed -e 's|origin/||g'",
+//                           returnStdout: true
+//                   ).trim()
+//                   git branch: "{$GIT_BRANCH}", credentialsId: "git_user", url: "https://github.com/Aleksandr04/configs.git"
+//               }
+//           }
+//       }
+
+      stage('JUNIT Tests') {
+         steps {
+             script {
+                 sh 'mvn clean test'
+             }
+         }
+      }
+
+      stage('Build Jar') {
+         steps {
+             script {
+                 sh 'mvn -DskipTests package'
+             }
+         }
+      }
+
+      stage('Prune Untagged Docker Images') {
+         steps {
+            sh 'docker image prune -f'
+         }
+      }
+
+      stage('Build Docker Image') {
+         steps {
+             script {
+                 sh 'mvn -DskipTests package -Pdocker -Dtag.build.number=$BUILD_NUMBER'
+             }
+         }
+      }
+
+      stage('Build TAG Number') {
+         steps {
+            script {
+                sh '''echo ${BUILD_NUMBER}. > version.log \
+                      && truncate -s -1 version.log \
+                      && mvn help:evaluate -Dexpression=project.version -q -DforceStdout >> version.log'''
+            }
+         }
+      }
+
+      stage('Push to DockerHub') {
+         steps {
+            withCredentials([usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'D_PASS', usernameVariable: 'D_USER')]) {
+               sh 'chmod +x $WORKSPACE/jenkins/build_pipeline/push-image.sh'
+               sh '$WORKSPACE/jenkins/build_pipeline/push-image.sh $D_USER $D_PASS'
+            }
+         }
+      }
+
+    } // end of stages block
+
+    post {
+      always {
+         println '****** Started CLEAN POST ACTION stage ******'
+         cleanWs()
+         println '****** Finished CLEAN POST ACTION stage ******'
+      }
+    }
+
+}
