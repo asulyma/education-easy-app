@@ -28,7 +28,7 @@ Project Benefits:
 ### How to run application via the Jenkins:
 1. Download, install and start Docker (with Docker Compose)
 2. Go to jenkins/start_jenkins folder and run `docker-compose up -b -d`
-3. TODO run local pipeline
+3. Open [This tutorial](jenkins/start_jenkins/readme.md)
 
 ***
 ### How to run application for local debugging:
@@ -103,13 +103,8 @@ When OAuth2 server rises for the first time, a default client and users will be 
 1. Add ElasticSearch support
 2. Implement a Jenkins integration with the following pipelines:
    - 2.1. ~~Build and push image pipeline~~
-   - 2.2. Deploy to AWS 
-        - Call ansible role
-        - install java, docker
-        - docker purge
-        - login and pull images
-        - maybe pull standard images
-        - copy compose file to env
-        - docker-compose up
-    - 2.3. Deploy to local env
-3. Make a flexible solution for select tag version for Deploy to AWS pipeline
+   - 2.2. Deploy to AWS pipeline
+   - 2.3. Deploy to local env pipeline
+   - 2.4. Remove all remote images except the last.
+3. Make a flexible solution for select tag version for Deploy pipelines
+4. Add a feature to send email about jobs

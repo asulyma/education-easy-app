@@ -5,9 +5,9 @@ services:
     build: .
     user: root 
     ports:
-      - "8080:8080"
+      - "8090:8080"
     volumes:
-      - "/home/aleksandr/jenkins_volume:/var/jenkins_home"
+      - "/home/aleksandr/jenkins_mount:/var/jenkins_home"
       - //var/run/docker.sock:/var/run/docker.sock
     networks:
       - net
