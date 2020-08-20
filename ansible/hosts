@@ -1,5 +1,9 @@
 [stage]
-aws1  ansible_host=54.93.104.145
+aws1  ansible_ssh_host=3.120.34.86  ansible_ssh_user=ubuntu  ansible_python_interpreter=/usr/bin/python3
 
-[dev]
-aws2  ansible_host=54.93.87.177
+
+
+
+# Depends on AWS instances, there are some differences:
+#   - ubuntu need 'ubuntu' user; amazon need 'ec2-user' user.
+#   - Amazon instances used RedHat distributive

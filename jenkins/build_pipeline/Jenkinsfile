@@ -7,19 +7,6 @@ pipeline {
 
     stages {
 
-//  Example to clone additional repository
-//       stage('SCM Checkout') {
-//           steps {
-//               script {
-//                   GIT_BRANCH = sh (
-//                           script: "echo $BRANCH | sed -e 's|origin/||g'",
-//                           returnStdout: true
-//                   ).trim()
-//                   git branch: "{$GIT_BRANCH}", credentialsId: "git_user", url: "https://github.com/Aleksandr04/configs.git"
-//               }
-//           }
-//       }
-
       stage('JUNIT Tests') {
          steps {
              script {

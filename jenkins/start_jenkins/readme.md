@@ -53,3 +53,10 @@
   
 * Languages
   - Locale
+  
+  
+// todo testing:
+Image Tag Parameter
+Email Extension
+Ansible
+AnsiColor
