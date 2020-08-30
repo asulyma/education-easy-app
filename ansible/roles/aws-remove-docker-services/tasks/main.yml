@@ -1,0 +1,4 @@
+---
+- include: 01-remove-services.yml
+
+- include: 02-remove-compose-file.yml

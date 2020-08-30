@@ -1,0 +1,19 @@
+---
+- name: Create docker group
+  group:
+    name: "docker"
+    state: present
+
+- name: Adding user {{ amazon_user }} to docker group
+  user:
+    name: "{{ amazon_user }}"
+    groups: "docker"
+    append: "yes"
+  when: ansible_os_family == "RedHat"
+
+- name: Adding user {{ ubuntu_user }} to docker group
+  user:
+    name: "{{ ubuntu_user }}"
+    groups: "docker"
+    append: "yes"
+  when: ansible_os_family == "Debian"

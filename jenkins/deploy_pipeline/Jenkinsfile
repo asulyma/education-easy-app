@@ -17,7 +17,9 @@ pipeline {
             script {
                // To use this functionality - need to configure EMail settings from Jenkins
                sh 'echo SENDING EMAIL ABOUT ${ENVIRONMENT} DEPLOYMENT STARTED'
+
                sh 'chmod 400 $WORKSPACE/ansible/aws-linux-1.pem'
+               sh 'chmod 400 $WORKSPACE/ansible/aws-linux-2.pem'
             }
          }
       }
@@ -39,11 +41,19 @@ pipeline {
          }
       }
 
-      stage('REMOVE COMPOSE FILE') {
+      stage('REMOVE DOCKER SERVICES') {
          steps {
-            script {
-               // call ansible role
-               sh 'echo remove'
+            ansiColor('xterm') {
+                ansiblePlaybook(
+                    playbook: "ansible/aws-remove-docker-services.yml",
+                    inventory: "ansible/hosts",
+                    colorized: true,
+                    disableHostKeyChecking: true,
+                    extras: '-v',
+                    extraVars: [
+                        ENV: "${ENVIRONMENT}"
+                    ]
+                )
             }
          }
       }

@@ -27,7 +27,7 @@ Project Benefits:
 ***
 ### How to run application via the Jenkins:
 1. Download, install and start Docker (with Docker Compose)
-2. Go to jenkins/start_jenkins folder and run `docker-compose up -b -d`
+2. Go to jenkins/start_jenkins folder and run `docker-compose up --build -d`
 3. Open [This tutorial](jenkins/start_jenkins/readme.md)
 
 ***

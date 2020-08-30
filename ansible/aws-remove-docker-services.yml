@@ -1,0 +1,7 @@
+---
+- name: Remove existing docker-compose services and remove docker-compose file
+  hosts: "{{ ENV }}"
+  become: yes
+
+  roles:
+    - aws-remove-docker-services

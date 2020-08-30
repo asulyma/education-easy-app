@@ -1,0 +1,8 @@
+---
+- name: Test Docker with hello world example
+  shell: "docker run hello-world"
+  register: hello_world_output
+
+- name: Show output of hello world example
+  debug:
+    msg: "Container Output: {{hello_world_output.stdout}}"
