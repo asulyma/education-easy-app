@@ -1,12 +1,13 @@
 [prod]
-aws-redhat  ansible_ssh_host=18.196.127.193  ansible_ssh_user=ec2-user
+aws-redhat  ansible_ssh_host=3.122.101.115  ansible_ssh_user=ec2-user
 
 [stage]
-aws-debian  ansible_ssh_host=35.157.90.44  ansible_ssh_user=ubuntu  ansible_python_interpreter=/usr/bin/python3
+aws-debian  ansible_ssh_host=18.157.76.245  ansible_ssh_user=ubuntu
 
 
 
 
 # Depends on AWS instances, there are some differences:
-#   - ubuntu need 'ubuntu' user; amazon need 'ec2-user' user.
+#   - Ubuntu need 'ubuntu' user; Amazon need 'ec2-user' user.
 #   - Amazon instances used RedHat distributive
+#   - Ubuntu works with Python 2.7

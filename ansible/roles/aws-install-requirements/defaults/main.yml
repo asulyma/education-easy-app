@@ -1,5 +1,2 @@
 ---
-amazon_user: ec2-user
-ubuntu_user: ubuntu
-
 docker_compose_version: 1.26.2
