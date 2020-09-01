@@ -1,0 +1,14 @@
+---
+- block:
+    - include: 01-install-redhat.yml
+  when: ansible_os_family == "RedHat"
+
+- block:
+    - include: 01-install-debian.yml
+  when: ansible_os_family == "Debian"
+
+- include: 02-test-docker.yml
+
+- include: 03-docker-group.yml
+
+- include: 04-install-docker-compose.yml

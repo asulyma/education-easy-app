@@ -1,0 +1,11 @@
+---
+- name: Create docker group
+  group:
+    name: "docker"
+    state: present
+
+- name: Adding user {{ ansible_ssh_user }} to docker group
+  user:
+    name: "{{ ansible_ssh_user }}"
+    groups: "docker"
+    append: "yes"

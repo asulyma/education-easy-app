@@ -1,0 +1,13 @@
+- block:
+    - name: Install Web Server
+      yum: name=httpd state=latest
+    - name: Start and Enable Web Server
+      service: name=httpd state=started enabled=yes
+  when: ansible_os_family == "RedHat"
+
+- block:
+    - name: Install Web Server
+      apt: name=apache2 update_cache=yes state=latest
+    - name: Start and Enable Web Server
+      service: name=apache2 state=started enabled=yes
+  when: ansible_os_family == "Debian"

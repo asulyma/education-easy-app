@@ -1,6 +1,6 @@
 ---
 - name: Install default Apache Web Server
-  hosts: all
+  hosts: "{{ ENV }}"
   become: yes
 
   roles:

@@ -1,3 +1,3 @@
 ---
 environment_name: prod
-# ansible_ssh_private_key_file variable can be added to ssh-agent or write here
+ansible_ssh_private_key_file: /var/jenkins_home/workspace/deploy-pipeline/ansible/aws-linux-1.pem

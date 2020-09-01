@@ -1,0 +1,7 @@
+---
+- name: Install Requirements
+  hosts: "{{ ENV }}"
+  become: yes
+
+  roles:
+    - aws-install-requirements
