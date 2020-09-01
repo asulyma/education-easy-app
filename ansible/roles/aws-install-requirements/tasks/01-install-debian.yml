@@ -1,4 +1,12 @@
 ---
+- name: Update all packages
+  apt:
+    update_cache: yes
+
+- name: Upgrade all packages
+  apt:
+    upgrade: dist
+
 - name: Install required packages
   apt:
     name: [ 'apt-transport-https',
@@ -19,14 +27,6 @@
 - name: Save the current Ubuntu release version into a variable
   shell: lsb_release -cs
   register: ubuntu_version
-
-- name: Update all packages
-  apt:
-    update_cache: yes
-
-- name: Upgrade all packages
-  apt:
-    upgrade: dist
 
 - name: Add Docker Repository
   apt_repository:

@@ -1,0 +1,15 @@
+- name: Retrieve container id
+  command: "docker ps -q"
+  register: container_id
+  until: container_id.stdout|length > 0
+  retries: 10
+  delay: 5
+
+- name: Check Containers Status
+  command: "docker inspect {{ item }} --format='{% raw %}{{.State.Status}}{% endraw %}'"
+  with_items: "{{ container_id.stdout_lines }}"
+  register: status
+  until: status.stdout == "running"
+  failed_when: status.stdout == "exited"
+  retries: 5
+  delay: 30

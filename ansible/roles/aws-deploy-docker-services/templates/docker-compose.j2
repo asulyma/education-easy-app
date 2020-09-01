@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.3.0
+    container_name: zookeeper
+    ports:
+      - 54132:54132
+    command: /etc/confluent/docker/run
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=54132

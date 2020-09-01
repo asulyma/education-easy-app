@@ -6,7 +6,7 @@
 
 - name: Install Docker
   yum:
-    name: [ 'docker', 'python-pip' ]
+    name: [ 'docker', 'python-pip', 'python-devel', 'gcc' ]
     state: latest
   become: yes
 

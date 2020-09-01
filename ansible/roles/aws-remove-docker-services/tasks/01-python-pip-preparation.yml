@@ -1,0 +1,9 @@
+- name: Upgrade Python Pip
+  pip:
+    name: pip
+    state: latest
+
+- name: Install Docker Libs for Python via Pip
+  pip:
+    name: [ 'docker', 'docker-compose' ]
+    extra_args: --ignore-installed

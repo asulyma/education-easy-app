@@ -1,0 +1,16 @@
+- name: Generate and copy docker-compose file to server
+  template:
+    src: docker-compose.j2
+    dest: /home/{{ ansible_ssh_user }}/education/docker-compose.yml
+    mode: 0555
+
+- name: Pull all services
+  docker_compose:
+    project_src: /home/{{ ansible_ssh_user }}/education
+    pull: yes
+
+- name: Start all services
+  docker_compose:
+    project_src: /home/{{ ansible_ssh_user }}/education
+    state: present
+    timeout: 10

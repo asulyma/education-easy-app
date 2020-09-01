@@ -5,42 +5,45 @@ Project Benefits:
 - Java Web Application based on Spring Boot (using MVC, Data, AOP, Security);
 - Uninterrupted communication between micro-services using Apache Kafka;
 - Improved project security using OAuth2 from a separate service;
+- Local Deploying via single Docker command;
 - Support Docker containers;
-- Running with docker-compose via single command;
 - Swagger documentation;
 - Actuator support;
-- Ansible's playbooks to deploy application to cloud;
-- Jenkins' integration with Build, Local and Remote Deploy pipelines.
+- Ansible's playbooks to building and deploying application;
+- Docker image deploy application to cloud;
+- Jenkins' job for build and push docker image to DockerHub;
+- Jenkins' job for deploy application to AWS (Support RedHat and Debian OS).
 
 ***
-### How to run application with the Docker:
-1. Download, install and start Docker (with Docker Compose)
-2. Clone this repository and run the following command inside: `mvn clean install -Pdocker`
+### How to run application locally via the Docker:
+1. Download and install Docker (with Docker Compose)
+2. Clone this repository and run : `mvn clean install -Pdocker`
 
 ##### Notes
-  + Maven plugins will automatically created Docker images and executed `docker-compose up -d` command
-  + To **stop** all application, need to execute `docker-compose down` manually
-  + [Swagger UI local](http://localhost:8080/app/swagger-ui.html)
-  + [Swagger Docs local](http://localhost:8080/app/v2/api-docs)
-  + [Actuator local](http://localhost:8080/app/actuator)
+  + Maven plugins will automatically created Docker images and executed `docker-compose up -d` command;
+  + To **stop** all application, need to execute `docker-compose down` manually.
+  
+***
+### How to run application remotely via the Jenkins:
+1. Download and install Docker (with Docker Compose)
+2. Download **jenkins/start_jenkins** and run  `docker-compose up --build -d`
+3. Open [this tutorial](jenkins/start_jenkins/readme.md)
 
 ***
-### How to run application via the Jenkins:
-1. Download, install and start Docker (with Docker Compose)
-2. Go to jenkins/start_jenkins folder and run `docker-compose up --build -d`
-3. Open [This tutorial](jenkins/start_jenkins/readme.md)
+### How to run application locally with detailed debugging:
 
-***
-### How to run application for local debugging:
+<details><summary><b>Zookeeper and Kafka</b></summary>
 
-#### Zookeeper and Kafka
 1. Download, install and start Zookeeper
 2. Download, install and start Kafka
 3. Create the next topics:
    - education-finish-lesson-event
    - education-start-course-event
-   
-#### PostgreSQL
+
+</details>
+
+<details><summary><b>PostgreSQL</b></summary>
+
 1. Download, install, start Postgres 10+
 2. Create the next databases and roles:
 ```sql
@@ -57,7 +60,10 @@ ALTER USER "education-auth" WITH SUPERUSER;
 ```
 - Make sure references in application.yml set up correctly.
 
-#### Last steps
+</details>
+
+<details><summary><b>Last steps</b></summary>
+
 1. Go to `education` folder and run `mvn clean install`
 2. Start **AuthApplication** firstly, and the second one - **EducationApplication**
 3. Try accessing to AuthApplication for generating token with _client_credentials_ or _password_ as grant type:
@@ -74,6 +80,8 @@ Headers - Authorization: Basic ZWR1Y2F0aW9uLXdlYi1jbGllbnQ6ZWR1Y2F0aW9uLXdlYi1jb
 CRUD    - http://localhost:8080/app/course
 Headers - Authorization: Bearer *your_token*
 ```
+
+</details>
 
 ***
 #### Technical Note:
@@ -99,12 +107,16 @@ When OAuth2 server rises for the first time, a default client and users will be 
 * Currently, there is no possibility to create new users or clients.
 
 ***
+##### Helpful links
+  + [Swagger UI local](http://localhost:8080/app/swagger-ui.html)
+  + [Swagger Docs local](http://localhost:8080/app/v2/api-docs)
+  + [Actuator local](http://localhost:8080/app/actuator)
+
+***
 ### TODO list:
 1. Add ElasticSearch support
 2. Implement a Jenkins integration with the following pipelines:
    - 2.1. ~~Build and push image pipeline~~
-   - 2.2. Deploy to AWS pipeline
-   - 2.3. Deploy to local env pipeline
-   - 2.4. Remove all remote images except the last.
-3. Make a flexible solution for select tag version for Deploy pipelines
-4. Add a feature to send email about jobs
+   - 2.2. ~~Deploy to AWS pipeline~~
+   - 2.3. Remove all remote images except the last.
+4. Update Jenkins readme file for deploy pipeline

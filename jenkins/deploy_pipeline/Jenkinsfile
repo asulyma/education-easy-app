@@ -5,21 +5,18 @@ pipeline {
         choice name: 'ENVIRONMENT', choices: ['all', 'prod', 'stage']
         gitParameter defaultValue: 'origin/master', name: 'BRANCH', type: 'PT_BRANCH'
         imageTag(name: 'APP_DOCKER_IMAGE', image: 'allsul/education_app',
-                 registry: 'https://registry-1.docker.io', credentialId: 'docker_hub')
+                 registry: 'https://registry-1.docker.io', credentialId: 'dockerhub_user')
         imageTag(name: 'AUTH_DOCKER_IMAGE', image: 'allsul/education_auth',
-                 registry: 'https://registry-1.docker.io', credentialId: 'docker_hub')
+                 registry: 'https://registry-1.docker.io', credentialId: 'dockerhub_user')
     }
 
     stages {
 
-      stage('PREPARE') {
+      stage('PREPARE KEYS') {
          steps {
             script {
-               // To use this functionality - need to configure EMail settings from Jenkins
-               sh 'echo SENDING EMAIL ABOUT ${ENVIRONMENT} DEPLOYMENT STARTED'
-
-               sh 'chmod 400 $WORKSPACE/ansible/aws-linux-1.pem'
-               sh 'chmod 400 $WORKSPACE/ansible/aws-linux-2.pem'
+               sh 'chmod 400 "$WORKSPACE/ansible/keys/aws-linux-1.pem"'
+               sh 'chmod 400 "$WORKSPACE/ansible/keys/aws-linux-2.pem"'
             }
          }
       }
@@ -58,18 +55,34 @@ pipeline {
          }
       }
 
-      stage('DEPLOY COMPOSE FILE') {
+      stage('DEPLOY DOCKER SERVICES') {
          steps {
-            script {
-                 sh 'echo $APP_DOCKER_IMAGE'
-                 sh 'echo $APP_DOCKER_IMAGE_TAG'
-
-                 sh 'echo $AUTH_DOCKER_IMAGE'
-                 sh 'echo $AUTH_DOCKER_IMAGE_TAG'
+            ansiColor('xterm') {
+                ansiblePlaybook(
+                    playbook: "ansible/aws-deploy-docker-services.yml",
+                    inventory: "ansible/hosts",
+                    colorized: true,
+                    disableHostKeyChecking: true,
+                    extras: '-v',
+                    extraVars: [
+                        ENV: "${ENVIRONMENT}",
+                        BUILD_TAG: "${BUILD_TAG}",
+                        APP_DOCKER_IMAGE: "${APP_DOCKER_IMAGE}",
+                        AUTH_DOCKER_IMAGE: "${AUTH_DOCKER_IMAGE}"
+                    ]
+                )
             }
          }
       }
 
     } // end of stages block
+
+    post {
+      always {
+         println '****** Started CLEAN POST ACTION stage ******'
+         cleanWs()
+         println '****** Finished CLEAN POST ACTION stage ******'
+      }
+    }
 
 }

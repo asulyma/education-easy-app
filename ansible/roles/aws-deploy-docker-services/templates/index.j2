@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>{{ environment_name }} ENV</title>
+    <style>
+       .date {
+        color: #ff0000;
+       }
+    </style>
+</head>
+<body>
+<div style="text-align: center;">
+
+    <br><br><br><br>
+    <br><br><br><br>
+
+    <h1>Hello World with Ansible & Docker & Jenkins</h1>
+    <h3>It's {{ environment_name }} environment </h3>
+
+    <h3>APP image: <span class="date">{{ APP_DOCKER_IMAGE }}</span> </h3>
+    <h3>AUTH image: <span class="date">{{ AUTH_DOCKER_IMAGE }}</span> </h3>
+    <h3>Build Tag: <span class="date">{{ BUILD_TAG }}</span> </h3>
+
+</div>
+</body>
+</html>
+

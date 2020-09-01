@@ -1,4 +1,0 @@
-- name: Generate and copy html file to WEV Server
-  template: src=index.j2 dest={{ destination_folder }}/index.html mode=0555
-  notify:
-    - Restart Apache
