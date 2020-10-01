@@ -3,14 +3,19 @@
 Application based on micro-service architecture.
 Project Benefits:
 - Java Web Application based on Spring Boot (using MVC, Data, AOP, Security);
+- Systematized storage and access to teaching materials of academic disciplines. Under the materials should be considered concepts
+  "course". Each course, in turn, is divided into "lectures";
+- Improved search engine for various criteria;
+- Caching engine for faster course search;
+- AOP functionality to send email notification;
+- Interactive creation of comments by users to each lecture;
 - Uninterrupted communication between micro-services using Apache Kafka;
 - Improved project security using OAuth2 from a separate service;
 - Local Deploying via single Docker command;
 - Support Docker containers;
 - Swagger documentation;
 - Actuator support;
-- Ansible's playbooks to building and deploying application;
-- Docker image deploy application to cloud;
+- Ansible's playbooks to build and deploy application;
 - Jenkins' job for build and push docker image to DockerHub;
 - Jenkins' job for deploy application to AWS (Support RedHat and Debian OS).
 
@@ -119,4 +124,8 @@ When OAuth2 server rises for the first time, a default client and users will be 
    - 2.1. ~~Build and push image pipeline~~
    - 2.2. ~~Deploy to AWS pipeline~~
    - 2.3. Remove all remote images except the last.
-4. Update Jenkins readme file for deploy pipeline
+3. Update Jenkins readme file for deploy pipeline
+4. Add monitoring functionality for teacher
+5. Add feedback form for student after each lection
+6. Check comments functionality
+7. Check Kafka functionality

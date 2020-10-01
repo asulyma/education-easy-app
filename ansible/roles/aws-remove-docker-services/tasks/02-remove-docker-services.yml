@@ -9,12 +9,16 @@
     path: /home/{{ ansible_ssh_user }}/education/docker-compose.yml
   register: docker_compose_result
 
+- name: Retrieve container ids
+  command: "docker ps -q"
+  register: container_id
+
 - name: Docker Compose Down
   docker_compose:
     project_src: /home/{{ ansible_ssh_user }}/education
     state: absent
     timeout: 10
-  when: docker_compose_result.stat.exists
+  when: docker_compose_result.stat.exists and container_id.stdout|length > 0
 
 - name: Remove Compose File
   file:

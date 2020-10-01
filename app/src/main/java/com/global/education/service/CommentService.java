@@ -22,7 +22,6 @@ public class CommentService {
 
     @Autowired
     private LessonService lessonService;
-
     @Autowired
     private CommentRepository repository;
 

@@ -1,6 +1,7 @@
 package com.global.education.service;
 
 import static com.global.education.mapper.SpecificationMapper.INSTANCE;
+import static java.lang.String.format;
 
 import java.util.List;
 
@@ -8,12 +9,11 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.education.common.kafka.dto.UserStartCourseEvent;
-import com.global.education.cache.ListCache;
+import com.global.education.service.cache.ListCache;
 import com.global.education.controller.dto.SharedCourse;
 import com.global.education.controller.dto.SpecificationRequest;
 import com.global.education.controller.handler.exception.NotFoundRuntimeException;
@@ -34,16 +34,15 @@ import lombok.extern.slf4j.Slf4j;
 public class CourseService {
 
     private static final ListCache<CourseEntity, SpecificationRequest> CACHE = new ListCache<>();
+    private static final String COURSE_ALREADY_STARTED = "Course %s is already started for user %s";
+    private static final String KAFKA_START_COURSE = "Kafka event about start course %s has been sent";
 
     @Autowired
     private CourseRepository courseRepository;
-
     @Autowired
     private CourseSpecificationFactory specificationFactory;
-
     @Autowired
     private UserUpdateEventKafkaService kafkaService;
-
     @Autowired
     private UserDataService userDataService;
 
@@ -69,7 +68,7 @@ public class CourseService {
         entity.setTitle(courseDto.getTitle());
         entity.setDescription(courseDto.getDescription());
         entity.setBeginDate(courseDto.getBeginDate());
-        entity.setEndDate(courseDto.getEndDate());
+        entity.setFinishDate(courseDto.getFinishDate());
         entity.setCost(courseDto.getCost());
         entity.setAdditionalInfo(courseDto.getAdditionalInfo());
         courseRepository.save(entity);
@@ -82,11 +81,11 @@ public class CourseService {
     public ResponseEntity<String> startCourse(Long courseId) {
         UserDataEntity user = userDataService.findCurrentUser();
         if (user.getProgressMap().containsKey(courseId)) {
-            return new ResponseEntity<>("Course " + courseId + " is already started for user " + user.getUuid(),
-                    HttpStatus.OK);
+            return ResponseEntity.ok(format(COURSE_ALREADY_STARTED, courseId, user.getUuid()));
         }
+
         kafkaService.sendStartCourseEvent(new UserStartCourseEvent(user.getUuid(), courseId));
-        return new ResponseEntity<>("Kafka event about start course " + courseId + " has been sent", HttpStatus.OK);
+        return ResponseEntity.ok(format(KAFKA_START_COURSE, courseId));
     }
 
     private List<CourseEntity> findAllBySpec(SpecificationRequest request) {

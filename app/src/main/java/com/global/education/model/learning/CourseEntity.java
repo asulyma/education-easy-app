@@ -30,8 +30,8 @@ public class CourseEntity extends CreatableEntity {
     @Column(name = "begin_date")
     private Long beginDate;
 
-    @Column(name = "end_date")
-    private Long endDate;
+    @Column(name = "finish_date")
+    private Long finishDate;
 
     @Column(name = "cost")
     private Long cost;

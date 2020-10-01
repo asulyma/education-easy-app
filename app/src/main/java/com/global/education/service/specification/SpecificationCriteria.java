@@ -13,10 +13,16 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class SpecificationCriteria implements Serializable {
 
-    public String name;
+    public String title;
     public Long costStart;
     public Long costEnd;
     public Long createdStartDate;
     public Long createdEndDate;
+
+    public Long beginStartDate;
+    public Long beginEndDate;
+
+    public Long finishStartDate;
+    public Long finishEndDate;
 
 }

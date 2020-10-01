@@ -63,6 +63,8 @@ public class UserDataService {
 		entity.setEmail(user.getEmail());
 		entity.setRank(Rank.valueOf(user.getRank()));
 		userDataRepository.save(entity);
+
+		log.info("User {} has been updated", userUuid);
 	}
 
 	public UserDataEntity findUser(UUID userUuid) {

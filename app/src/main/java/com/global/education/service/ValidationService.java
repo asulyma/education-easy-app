@@ -1,5 +1,7 @@
 package com.global.education.service;
 
+import static java.lang.String.format;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,8 @@ import com.global.education.model.UserDataEntity;
 public class ValidationService {
 
 	public static final String ID_REGEXP = "^[0-9]{1,9}";
+	private static final String USER_START_COURSE = "User %s did not start the course %s";
+	private static final String USER_FINISHED_LESSON = "User %s already finished the lesson %s";
 
 	@Autowired
 	private UserDataService userDataService;
@@ -23,7 +27,7 @@ public class ValidationService {
 		if (user.getProgressMap().containsKey(courseId)) {
 			return;
 		}
-		throw new NotAllowedRuntimeException("User " + user.getUsername() + " did not start course " + courseId);
+		throw new NotAllowedRuntimeException(format(USER_START_COURSE, user.getUsername(), courseId));
 	}
 
 	public void checkUserOnFinishLesson(Long courseId, Long lessonId) {
@@ -31,11 +35,11 @@ public class ValidationService {
 		Progress progress = user.getProgressMap().get(courseId);
 
 		if (progress == null) {
-			throw new NotAllowedRuntimeException("User " + user.getUuid() + " didn't start the course " + courseId);
+			throw new NotAllowedRuntimeException(format(USER_START_COURSE, user.getUsername(), courseId));
 		}
 
 		if (progress.getAlreadyDoneLessons().contains(lessonId)) {
-			throw new BadRequestParametersRuntimeException("User " + user.getUuid() + " already finished the lesson " + lessonId);
+			throw new BadRequestParametersRuntimeException(format(USER_FINISHED_LESSON, user.getUuid(), lessonId));
 		}
 	}
 

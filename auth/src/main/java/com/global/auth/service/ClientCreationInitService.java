@@ -41,7 +41,7 @@ public class ClientCreationInitService {
         clientDetails.setAuthorizedGrantTypes(Sets.newHashSet("authorization_code", "refresh_token",
                 "password", "client_credentials"));
         clientDetails.setRegisteredRedirectUri(Sets.newHashSet("http://localhost:8082/resource-service"));
-        clientDetails.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_CLIENT"));
+        clientDetails.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_CLIENT"));
         clientDetails.setAccessTokenValiditySeconds(60);
         clientDetails.setRefreshTokenValiditySeconds(14400);
         clientDetails.setAutoApprove(false);
