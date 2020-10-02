@@ -1,4 +1,4 @@
-package com.global.education.controller;
+package com.global.education.controller.filter;
 
 import static com.global.education.utils.UserUtils.currentUserRoles;
 

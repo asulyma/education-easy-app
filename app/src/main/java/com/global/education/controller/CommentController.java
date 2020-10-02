@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.global.education.controller.dto.Comment;
+import com.global.education.controller.dto.SharedComment;
 import com.global.education.service.CommentService;
 import com.global.education.service.ValidationService;
 
@@ -26,14 +27,14 @@ public class CommentController {
 	private ValidationService validationService;
 
 	@GetMapping
-	public List<Comment> getComments(@RequestParam Long lessonId) {
+	public List<SharedComment> getComments(@RequestParam Long lessonId) {
 		return INSTANCE.buildComments(commentService.getComments(lessonId));
 	}
 
 	@PostMapping
 	public ResponseEntity<String> createComment(@RequestBody @Valid Comment comment) {
 		validationService.checkUserOnAllowGetCourse(comment.getCourseId());
-		return commentService.createComment(currentUserUuid(), comment);
+		return commentService.createComment(comment);
 	}
 
 	@DeleteMapping("/{id}")

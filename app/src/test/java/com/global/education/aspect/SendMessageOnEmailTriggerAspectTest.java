@@ -23,6 +23,8 @@ import com.education.common.kafka.dto.UserStartCourseEvent;
 import com.education.common.model.EmailType;
 import com.global.education.config.TranslationHolder;
 import com.global.education.model.UserDataEntity;
+import com.global.education.model.learning.CourseEntity;
+import com.global.education.service.CourseService;
 import com.global.education.service.UserDataService;
 
 
@@ -31,6 +33,8 @@ public class SendMessageOnEmailTriggerAspectTest {
 
 	private static final UUID USER_UUID = UUID.randomUUID();
 	private static final String EMAIL = "qqq@dot.net";
+	private static final String TEST_VALUE = "0000000";
+	private static final long COURSE_ID = 1;
 
 	@InjectMocks
 	private SendMessageOnEmailTriggerAspect testInstance;
@@ -44,8 +48,11 @@ public class SendMessageOnEmailTriggerAspectTest {
 	private ProceedingJoinPoint proceedingJoinPoint;
 	@Mock
 	private MimeMessage message;
+	@Mock
+	private CourseService courseService;
 
 	private final UserDataEntity user = new UserDataEntity();
+	private final CourseEntity course = new CourseEntity();
 
 	@Before
 	public void setUp() throws Throwable {
@@ -53,12 +60,14 @@ public class SendMessageOnEmailTriggerAspectTest {
 		testInstance.init();
 
 		user.setEmail(EMAIL);
+		course.setTitle(TEST_VALUE);
 
 		when(proceedingJoinPoint.proceed()).thenReturn(new Object());
 		when(javaMailSender.createMimeMessage()).thenReturn(message);
 		when(userDataService.findUser(USER_UUID)).thenReturn(user);
 		when(translationHolder.getStartCourseMessage()).thenReturn(StringUtils.EMPTY);
 		when(translationHolder.getFinishLessonMessage()).thenReturn(StringUtils.EMPTY);
+		when(courseService.getCourseById(COURSE_ID)).thenReturn(course);
 	}
 
 	@Test
@@ -66,6 +75,7 @@ public class SendMessageOnEmailTriggerAspectTest {
 		TriggerSendEmail annotation = buildAnnotation(EmailType.START_COURSE);
 		UserStartCourseEvent startEvent = new UserStartCourseEvent();
 		startEvent.setUserUuid(USER_UUID);
+		startEvent.setCourseId(COURSE_ID);
 
 		testInstance.processingAspect(proceedingJoinPoint, annotation, startEvent);
 
@@ -79,6 +89,7 @@ public class SendMessageOnEmailTriggerAspectTest {
 		TriggerSendEmail annotation = buildAnnotation(EmailType.FINISH_LESSON);
 		UserFinishLessonEvent finishEvent = new UserFinishLessonEvent();
 		finishEvent.setUserUuid(USER_UUID);
+		finishEvent.setCourseId(COURSE_ID);
 
 		testInstance.processingAspect(proceedingJoinPoint, annotation, finishEvent);
 

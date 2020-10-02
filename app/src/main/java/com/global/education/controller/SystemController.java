@@ -2,13 +2,14 @@ package com.global.education.controller;
 
 import static com.global.education.mapper.UserMapper.INSTANCE;
 
-import java.util.UUID;
+import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import com.global.education.controller.dto.User;
@@ -31,9 +32,15 @@ public class SystemController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@GetMapping("/user/{userUuid}")
-	public User getUserInfo(@PathVariable UUID userUuid) {
-		return INSTANCE.buildUser(userDataService.findUser(userUuid));
+	@GetMapping("/user")
+	public User getCurrentUser() {
+		return INSTANCE.buildUser(userDataService.findCurrentUser());
+	}
+
+	@GetMapping("/users")
+	@Secured("ROLE_ADMIN")
+	public List<User> getAllUsers() {
+		return INSTANCE.buildUsers(userDataService.findAllUsers());
 	}
 
 }

@@ -49,7 +49,8 @@ public class LessonService {
 	public void createLesson(SharedLesson lesson) {
 		LessonEntity entity = new LessonEntity().setTitle(lesson.getTitle())
 				.setDescription(lesson.getDescription())
-				.setCourse(courseService.getCourseById(lesson.getCourseId()));
+				.setCourse(courseService.getCourseById(lesson.getCourseId()))
+				.setExecutionTime(lesson.getExecutionTime());
 		lessonRepository.save(entity);
 	}
 
@@ -58,6 +59,7 @@ public class LessonService {
 		LessonEntity entity = lessonRepository.getOne(id);
 		entity.setTitle(lesson.getTitle());
 		entity.setDescription(lesson.getDescription());
+		entity.setExecutionTime(lesson.getExecutionTime());
 		lessonRepository.save(entity);
 	}
 

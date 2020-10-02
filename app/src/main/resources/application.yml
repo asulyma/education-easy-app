@@ -25,7 +25,7 @@ spring:
 
   # To enable mail functionality, you need to do the next steps:
   # - enabled -> true
-  # - uncomment and put your username and password from real account of google
+  # - uncomment and put your username (account of google) and password from the trust application
   # - auth -> true
   mail:
     enabled: false

@@ -123,9 +123,9 @@ When OAuth2 server rises for the first time, a default client and users will be 
 2. Implement a Jenkins integration with the following pipelines:
    - 2.1. ~~Build and push image pipeline~~
    - 2.2. ~~Deploy to AWS pipeline~~
-   - 2.3. Remove all remote images except the last.
-3. Update Jenkins readme file for deploy pipeline
+   - 2.3. Redeploy to AWS only AUTH container;
+   - 2.4. Redeploy to AWS only APP container;
 4. Add monitoring functionality for teacher
 5. Add feedback form for student after each lection
-6. Check comments functionality
-7. Check Kafka functionality
+8. Test client role and access
+9. Add integration testing

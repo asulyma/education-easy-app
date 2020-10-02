@@ -24,6 +24,8 @@ import com.education.common.kafka.dto.UserStartCourseEvent;
 import com.education.common.model.EmailType;
 import com.global.education.config.TranslationHolder;
 import com.global.education.model.UserDataEntity;
+import com.global.education.model.learning.CourseEntity;
+import com.global.education.service.CourseService;
 import com.global.education.service.UserDataService;
 
 import lombok.SneakyThrows;
@@ -42,6 +44,8 @@ public class SendMessageOnEmailTriggerAspect {
 	@Autowired
 	private UserDataService userDataService;
 	@Autowired
+	private CourseService courseService;
+	@Autowired
 	private TranslationHolder translationHolder;
 
 	@Value("${spring.mail.enabled}")
@@ -59,6 +63,7 @@ public class SendMessageOnEmailTriggerAspect {
 		Object proceed = point.proceed();
 		if (isEnable) {
 			sendEmailNotification(annotation, event);
+			log.info("Message with type {} has been sent", annotation.target());
 		}
 		return proceed;
 	}
@@ -89,22 +94,28 @@ public class SendMessageOnEmailTriggerAspect {
 	private void buildStartCourseEmail(MimeMessageHelper helper, Object objEvent) {
 		UserStartCourseEvent event = (UserStartCourseEvent) objEvent;
 		UserDataEntity user = userDataService.findUser(event.getUserUuid());
+		CourseEntity course = courseService.getCourseById(event.getCourseId());
 		String text = translationHolder.getStartCourseMessage();
 
 		helper.setTo(user.getEmail());
 		helper.setSubject("Education Application: Start Course");
-		helper.setText(format(text, event.getCourseId()));
+		helper.setText(format(text, course.getTitle()));
+
+		log.info("Sending email to {}", user.getEmail());
 	}
 
 	@SneakyThrows
 	private void buildFinishLessonEmail(MimeMessageHelper helper, Object objEvent) {
 		UserFinishLessonEvent event = (UserFinishLessonEvent) objEvent;
 		UserDataEntity user = userDataService.findUser(event.getUserUuid());
+		CourseEntity course = courseService.getCourseById(event.getCourseId());
 		String text = translationHolder.getFinishLessonMessage();
 
 		helper.setTo(user.getEmail());
 		helper.setSubject("Education Application: Finish Lesson");
-		helper.setText(format(text, event.getAlreadyDoneLesson(), event.getCourseId()));
+		helper.setText(format(text, event.getAlreadyDoneLesson(), course.getTitle()));
+
+		log.info("Sending email to {}", user.getEmail());
 	}
 
 }

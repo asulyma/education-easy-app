@@ -81,7 +81,7 @@ public class CourseService {
     public ResponseEntity<String> startCourse(Long courseId) {
         UserDataEntity user = userDataService.findCurrentUser();
         if (user.getProgressMap().containsKey(courseId)) {
-            return ResponseEntity.ok(format(COURSE_ALREADY_STARTED, courseId, user.getUuid()));
+            return ResponseEntity.ok(format(COURSE_ALREADY_STARTED, courseId, user.getUsername()));
         }
 
         kafkaService.sendStartCourseEvent(new UserStartCourseEvent(user.getUuid(), courseId));

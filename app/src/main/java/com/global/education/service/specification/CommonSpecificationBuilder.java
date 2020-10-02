@@ -26,7 +26,7 @@ public abstract class CommonSpecificationBuilder<R> {
 	protected Specification<R> buildTitle(SpecificationCriteria criteria) {
 		return (root, cq, cb) -> Objects.isNull(criteria.getTitle())
 				? null
-				: cb.like(cb.lower(root.get(TITLE)), criteria.getTitle() + "%");
+				: cb.like(cb.lower(root.get(TITLE)), "%" + criteria.getTitle() + "%");
 	}
 
 }
