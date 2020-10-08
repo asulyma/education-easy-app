@@ -56,7 +56,7 @@ public class LessonService {
 
 	@Transactional
 	public void updateLesson(Long id, SharedLesson lesson) {
-		LessonEntity entity = lessonRepository.getOne(id);
+		LessonEntity entity = lessonRepository.findById(id).orElseThrow(NotFoundRuntimeException::new);
 		entity.setTitle(lesson.getTitle());
 		entity.setDescription(lesson.getDescription());
 		entity.setExecutionTime(lesson.getExecutionTime());

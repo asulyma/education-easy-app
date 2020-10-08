@@ -28,14 +28,18 @@ public class ListCache<E extends BaseEntity, SR extends SpecificationRequest> {
     public List<E> getCache(SR request) {
         List<Long> ids = cache.get(request);
         if (Objects.isNull(ids)) {
-            log.info("First request without cache");
+            log.info("Put request to cache and execute without optimization");
             List<E> entities = findBySpecification.apply(request);
             putToCache(entities, request);
             return entities;
         }
-        log.info("Second request, using cache");
+        log.info("Request has been found in the cache, execute with optimization");
         return findByIds.apply(ids);
+    }
 
+    public void invalidateCache() {
+        cache.clear();
+        log.info("Cache has been invalidate");
     }
 
     private void putToCache(List<E> entities, SR request) {

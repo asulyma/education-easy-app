@@ -38,6 +38,7 @@
         <com.google.guava.version>29.0-jre</com.google.guava.version>
         <org.mapstruct.version>1.4.0.Final</org.mapstruct.version>
         <org.testcontainers.postgresql.version>1.14.3</org.testcontainers.postgresql.version>
+        <org.testcontainers.kafka.version>1.14.3</org.testcontainers.kafka.version>
     </properties>
 
     <!-- Dependency definitions for modules, need to define inside of the module for using -->
@@ -81,6 +82,12 @@
                 <groupId>org.testcontainers</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${org.testcontainers.postgresql.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>kafka</artifactId>
+                <version>${org.testcontainers.kafka.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

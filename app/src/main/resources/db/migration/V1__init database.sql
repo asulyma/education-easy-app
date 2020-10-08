@@ -10,9 +10,9 @@ CREATE TABLE user_data
 
 CREATE TABLE course
 (
-    id              BIGSERIAL NOT NULL PRIMARY KEY,
+    id              BIGSERIAL    NOT NULL PRIMARY KEY,
     created_date    BIGINT,
-    title           VARCHAR(256),
+    title           VARCHAR(256) NOT NULL UNIQUE,
     description     VARCHAR(2048),
     begin_date      BIGINT,
     finish_date     BIGINT,
