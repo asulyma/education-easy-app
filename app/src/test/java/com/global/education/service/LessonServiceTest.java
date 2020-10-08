@@ -4,6 +4,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,13 +32,13 @@ public class LessonServiceTest {
 
 	@Before
 	public void init() {
-		when(lessonRepository.getOne(TEST_LESSON_ID)).thenReturn(lessonEntity);
+		when(lessonRepository.findById(TEST_LESSON_ID)).thenReturn(Optional.of(lessonEntity));
 	}
 
 	@Test
 	public void shouldUpdateLessonCorrectly() {
 		testInstance.updateLesson(TEST_LESSON_ID, new SharedLesson());
-		verify(lessonRepository).getOne(TEST_LESSON_ID);
+		verify(lessonRepository).findById(TEST_LESSON_ID);
 		verify(lessonRepository).save(any());
 	}
 }

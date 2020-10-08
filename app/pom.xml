@@ -146,8 +146,8 @@
             <id>docker</id>
             <build>
                 <plugins>
-                    <!-- Be careful, the next plugin don't remove unused images.
-                                For delete unused images use docker image prune OR docker rmi $(docker images -f "dangling=true" -q) -->
+                    <!-- Be careful, the following plugin does not remove unused images. -->
+                    <!-- For delete unused images manually, use `docker image prune` -->
                     <plugin>
                         <groupId>com.spotify</groupId>
                         <artifactId>dockerfile-maven-plugin</artifactId>
@@ -167,7 +167,8 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- Docker compose plugin will not shut down automatically, you need to execute `docker-compose down` -->
+
+                    <!-- The following plugin will not shut down automatically, you need to execute `docker-compose down` -->
                     <!-- https://github.com/dkanejs/docker-compose-maven-plugin-->
                     <plugin>
                         <groupId>com.dkanejs.maven.plugins</groupId>
@@ -193,6 +194,5 @@
             </build>
         </profile>
     </profiles>
-
 
 </project>

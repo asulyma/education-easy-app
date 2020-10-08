@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.ClassRule;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -20,15 +18,12 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import lombok.*;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 @ContextConfiguration(initializers = { EducationApplicationIT.Initializer.class })
 public class EducationApplicationIT {
 
@@ -53,12 +48,13 @@ public class EducationApplicationIT {
 	static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 		@Override
 		public void initialize(@NotNull ConfigurableApplicationContext context) {
-			String[] properties = new String[5];
+			String[] properties = new String[6];
 			properties[0] = "spring.datasource.url=" + postgreSQL.getJdbcUrl();
 			properties[1] = "spring.datasource.username=" + postgreSQL.getUsername();
 			properties[2] = "spring.datasource.password=" + postgreSQL.getPassword();
 			properties[3] = "spring.jpa.hibernate.ddl-auto=none";
 			properties[4] = "spring.kafka.bootstrap-servers=" + kafka.getBootstrapServers();
+			properties[5] = "spring.mail.enabled=false";
 
 			TestPropertyValues.of(properties).applyTo(context);
 		}
@@ -89,10 +85,10 @@ public class EducationApplicationIT {
 		}
 	}
 
-	@NoArgsConstructor
-	@AllArgsConstructor
 	@Getter
 	@Setter
+	@NoArgsConstructor
+	@AllArgsConstructor
 	private static class CustomUserDetails {
 		private String name;
 		private String username;

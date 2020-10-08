@@ -9,10 +9,13 @@ import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.education.common.model.Progress;
 import com.global.education.controller.dto.SharedCourse;
@@ -25,6 +28,8 @@ import com.global.education.service.CourseService;
 import com.global.education.service.UserDataService;
 
 
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class CourseServiceIT extends EducationApplicationIT {
 
 	private static final String TEST_VALUE = "value";

@@ -2,17 +2,18 @@ package com.global.education.IT;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.global.education.controller.dto.SharedLesson;
 import com.global.education.controller.dto.SpecificationRequest;
@@ -24,6 +25,8 @@ import com.global.education.service.CourseService;
 import com.global.education.service.LessonService;
 
 
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class LessonServiceIT extends EducationApplicationIT {
 
 	private static final String TEST_VALUE = "value";
