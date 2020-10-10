@@ -4,17 +4,18 @@ Application based on micro-service architecture.
 Project Benefits:
 - Java Web Application based on Spring Boot (using MVC, Data, AOP, Security);
 - Systematized storage and access to teaching materials of academic disciplines. Under the materials should be considered concepts
-  "course". Each course, in turn, is divided into "lectures";
-- Improved search engine for various criteria;
+  "course". Each course is divide into "lectures";
+- Improved search engine by difference criteria;
 - Caching engine for faster course search;
 - AOP functionality to send email notification;
-- Interactive creation of comments by users to each lecture;
+- Interactive comments creation by users to each lecture;
 - Uninterrupted communication between micro-services using Apache Kafka;
 - Improved project security using OAuth2 from a separate service;
-- Local Deploying via single Docker command;
 - Support Docker containers;
 - Swagger documentation;
 - Actuator support;
+- Local Deploying with the Docker technology via single MAVEN command;
+- Good coverage with integration tests and running them in single MAVEN command;
 - Ansible's playbooks to build and deploy application;
 - Jenkins' job for build and push docker image to DockerHub;
 - Jenkins' job for deploy application to AWS (Support RedHat and Debian OS).
@@ -27,6 +28,7 @@ Project Benefits:
 ##### Notes
   + Maven plugins will automatically created Docker images and executed `docker-compose up -d` command;
   + To **stop** all application, need to execute `docker-compose down` manually.
+  + To run all integration tests need to execute `mvn verify -PIT` manually.
   
 ***
 ### How to run application remotely via the Jenkins:
@@ -94,7 +96,7 @@ When OAuth2 server rises for the first time, a default client and users will be 
 1. Client:
    - clientId: _education-web-client_
    - clientSecret: _education-web-client-secret_
-   - role: [_ROLE_USER_, _ROLE_CLIENT_]
+   - role: _ROLE_CLIENT_
    - scope: standard-scope
 2. First User:
    - username: _john_
@@ -107,25 +109,26 @@ When OAuth2 server rises for the first time, a default client and users will be 
    - role: _ROLE_ADMIN_
    - scope: standard-scope user-scope
    
-* After the first start of the application, in order to be able to use the main functionality of the application, you need to complete the user registration. To do this, you need to execute a POST request for `http://localhost:8080/app/system/second-step-register`
-   
+* To start use the main functionality, need to complete the User registration: execute a POST request for `http://localhost:8080/app/system/second-step-register`
+* The Client has minimum available functionality.
 * Currently, there is no possibility to create new users or clients.
 
 ***
 ##### Helpful links
-  + [Swagger UI local](http://localhost:8080/app/swagger-ui.html)
-  + [Swagger Docs local](http://localhost:8080/app/v2/api-docs)
+  + [Swagger APP UI local](http://localhost:8080/app/swagger-ui.html)
+  + [Swagger APP Docs local](http://localhost:8080/app/v2/api-docs)
+  + [Swagger AUTH UI local](http://localhost:8081/auth/swagger-ui.html)
+  + [Swagger AUTH Docs local](http://localhost:8081/auth/v2/api-docs)
   + [Actuator local](http://localhost:8080/app/actuator)
+  + You can use `ModHeader` extension in Google Chrome to add an Authorization header to open requests above.
 
 ***
 ### TODO list:
-1. Add ElasticSearch support
-2. Implement a Jenkins integration with the following pipelines:
-   - 2.1. ~~Build and push image pipeline~~
-   - 2.2. ~~Deploy to AWS pipeline~~
-   - 2.3. Redeploy to AWS only AUTH container;
-   - 2.4. Redeploy to AWS only APP container;
-4. Add monitoring functionality for teacher
-5. Add feedback form for student after each lection
-8. Test client role and access
-9. Add integration testing
+1. Implement a Jenkins integration with the following pipelines:
+   - 1.1. Redeploy to AWS only AUTH container;
+   - 1.2. Redeploy to AWS only APP container;
+   - 1.3. Run all integration tests;
+2. Add monitoring functionality for teacher
+3. Add feedback form for student after each lection
+4. Test admin role and access
+5. Maybe remove actuator
