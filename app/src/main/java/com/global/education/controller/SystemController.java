@@ -13,12 +13,13 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import com.global.education.controller.dto.User;
+import com.global.education.controller.handler.BaseHandler;
 import com.global.education.service.UserDataService;
 
 
 @RestController
 @RequestMapping("/system")
-public class SystemController {
+public class SystemController extends BaseHandler {
 
 	@Autowired
 	private UserDataService userDataService;

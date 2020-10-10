@@ -1,6 +1,7 @@
 package com.global.education.IT;
 
 import static java.util.Collections.emptyList;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -72,7 +73,7 @@ public class EducationApplicationIT {
 
 			HttpServletRequest request = new MockHttpServletRequest();
 			request.setAttribute("OAuth2AuthenticationDetails.ACCESS_TOKEN_VALUE", MOCK_TOKEN);
-			request.setAttribute("OAuth2AuthenticationDetails.ACCESS_TOKEN_TYPE", "");
+			request.setAttribute("OAuth2AuthenticationDetails.ACCESS_TOKEN_TYPE", EMPTY);
 			OAuth2AuthenticationDetails details = new OAuth2AuthenticationDetails(request);
 
 			OAuth2Authentication oAuth2 = new OAuth2Authentication(null, baseAuth);

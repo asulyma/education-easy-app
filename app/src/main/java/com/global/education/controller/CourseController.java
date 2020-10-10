@@ -63,7 +63,13 @@ public class CourseController extends BaseHandler {
 	public ResponseEntity<HttpStatus> removeCourse(@PathVariable Long id) {
 		courseService.removeCourse(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 
+	@PostMapping("/invalidate-cache")
+	@Secured("ROLE_ADMIN")
+	public ResponseEntity<HttpStatus> invalidateCache() {
+		courseService.destroy();
+		return ResponseEntity.noContent().build();
 	}
 
 }

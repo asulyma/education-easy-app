@@ -33,6 +33,7 @@
         <hibernate.types.version>2.9.10</hibernate.types.version>
         <flyway.version>6.5.0</flyway.version>
         <lombok.version>1.18.12</lombok.version>
+        <springfox.version>3.0.0</springfox.version>
         <swagger.version>2.10.5</swagger.version>
         <org.apache.commons.version>3.11</org.apache.commons.version>
         <com.google.guava.version>29.0-jre</com.google.guava.version>
@@ -109,8 +110,8 @@
         <!-- Swagger -->
         <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger.version}</version>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${springfox.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

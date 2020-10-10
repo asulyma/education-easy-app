@@ -68,7 +68,7 @@ public class UserDataService {
 
 	public UserDataEntity findUser(UUID userUuid) {
 		if (userUuid == null) {
-			throw new NotAllowedRuntimeException("Current user can't make such operations");
+			throw new NotAllowedRuntimeException("Current user can't make such operations, potentially it's client");
 		}
 		UserDataEntity userData = userDataRepository.findByUuid(userUuid);
 		if (userData == null) {
