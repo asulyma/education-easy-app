@@ -13,7 +13,7 @@ Project Benefits:
 - Improved project security using OAuth2 from a separate service;
 - Support Docker containers;
 - Swagger documentation;
-- Actuator support;
+- Access for the client to actuator information;
 - Local Deploying with the Docker technology via single MAVEN command;
 - Good coverage with integration tests and running them in single MAVEN command;
 - Ansible's playbooks to build and deploy application;
@@ -29,6 +29,10 @@ Project Benefits:
   + Maven plugins will automatically created Docker images and executed `docker-compose up -d` command;
   + To **stop** all application, need to execute `docker-compose down` manually.
   + To run all integration tests need to execute `mvn verify -PIT` manually.
+  + To recreate only APP container, use following steps:
+    + Stop and remove existing container and image;
+    + Run `cd app && mvn clean install` and `docker build -f Dockerfile -t education_app:latest.20.9-SNAPSHOT .`
+    + Run `docker-compose up -d --build`
   
 ***
 ### How to run application remotely via the Jenkins:
@@ -82,7 +86,7 @@ Headers - Authorization: Basic ZWR1Y2F0aW9uLXdlYi1jbGllbnQ6ZWR1Y2F0aW9uLXdlYi1jb
 GET     - http://localhost:8081/auth/oauth/token?grant_type=password&username=john&password=john
 Headers - Authorization: Basic ZWR1Y2F0aW9uLXdlYi1jbGllbnQ6ZWR1Y2F0aW9uLXdlYi1jbGllbnQtc2VjcmV0
 ```
-5. Once the token is obtained you can access to the EducationApplication (resource server) using:
+4. Once the token is obtained you can access to the EducationApplication (resource server) using:
 ```
 CRUD    - http://localhost:8080/app/course
 Headers - Authorization: Bearer *your_token*
@@ -91,8 +95,9 @@ Headers - Authorization: Bearer *your_token*
 </details>
 
 ***
-#### Technical Note:
-When OAuth2 server rises for the first time, a default client and users will be created  
+<details><summary><b>Technical Note</b></summary>
+
+When OAuth2 server rises for the first time, a default client and users will be created:
 1. Client:
    - clientId: _education-web-client_
    - clientSecret: _education-web-client-secret_
@@ -113,6 +118,8 @@ When OAuth2 server rises for the first time, a default client and users will be 
 * The Client has minimum available functionality.
 * Currently, there is no possibility to create new users or clients.
 
+</details>
+
 ***
 ##### Helpful links
   + [Swagger APP UI local](http://localhost:8080/app/swagger-ui.html)
@@ -125,10 +132,7 @@ When OAuth2 server rises for the first time, a default client and users will be 
 ***
 ### TODO list:
 1. Implement a Jenkins integration with the following pipelines:
-   - 1.1. Redeploy to AWS only AUTH container;
-   - 1.2. Redeploy to AWS only APP container;
-   - 1.3. Run all integration tests;
+   - 1.1. Run all integration tests;
 2. Add monitoring functionality for teacher
 3. Add feedback form for student after each lection
-4. Test admin role and access
-5. Maybe remove actuator
+4. Migrate to Gradle

@@ -2,6 +2,12 @@ logging:
   file:
     path: /opt/log
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "actuator, beans, health, flyway, configprops"
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/education_app?autoReconnect=true&useSSL=false

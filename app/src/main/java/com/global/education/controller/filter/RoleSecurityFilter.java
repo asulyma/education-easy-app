@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class RoleSecurityFilter extends GenericFilterBean {
 
-	private static final Set<String> ALLOWED_ROLES = ImmutableSet.of("ROLE_CLIENT", "ROLE_USER");
+	private static final Set<String> ALLOWED_ROLES = ImmutableSet.of("ROLE_CLIENT", "ROLE_USER", "ROLE_ADMIN");
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)

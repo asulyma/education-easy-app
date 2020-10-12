@@ -26,7 +26,7 @@ import lombok.*;
 
 
 @ContextConfiguration(initializers = { EducationApplicationIT.Initializer.class })
-public class EducationApplicationIT {
+public abstract class EducationApplicationIT {
 
 	private static final String POSTGRES_IMAGE = "mdillon/postgis:10";
 	private static final String KAFKA_IMAGE_TAG = "5.5.2";
