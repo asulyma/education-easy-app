@@ -17,7 +17,7 @@ Project Benefits:
 - Local Deploying with the Docker technology via single MAVEN command;
 - Good coverage with integration tests and running them in single MAVEN command;
 - Ansible's playbooks to build and deploy application;
-- Jenkins' job for build and push docker image to DockerHub;
+- Jenkins' job for build, run all tests (include IT) and push docker image to DockerHub;
 - Jenkins' job for deploy application to AWS (Support RedHat and Debian OS).
 
 ***
@@ -27,12 +27,13 @@ Project Benefits:
 
 ##### Notes
   + Maven plugins will automatically created Docker images and executed `docker-compose up -d` command;
-  + To **stop** all application, need to execute `docker-compose down` manually.
-  + To run all integration tests need to execute `mvn verify -PIT` manually.
+  + To **stop** all application, need to execute `docker-compose down` manually;
+  + To run all integration tests need to execute `mvn verify -PIT` manually;
   + To recreate only APP container, use following steps:
     + Stop and remove existing container and image;
     + Run `cd app && mvn clean install` and `docker build -f Dockerfile -t education_app:latest.20.9-SNAPSHOT .`
     + Run `docker-compose up -d --build`
+  + To remove all images by pattern need to execute `docker rmi -f $(docker images | grep 'allsul')` manually.
   
 ***
 ### How to run application remotely via the Jenkins:
@@ -131,8 +132,7 @@ When OAuth2 server rises for the first time, a default client and users will be 
 
 ***
 ### TODO list:
-1. Implement a Jenkins integration with the following pipelines:
-   - 1.1. Run all integration tests;
-2. Add monitoring functionality for teacher
-3. Add feedback form for student after each lection
-4. Migrate to Gradle
+1. Add monitoring functionality for teacher
+2. Add feedback form for student after each lection
+3. Migrate to Gradle
+4. Fix displaying JUnit report
