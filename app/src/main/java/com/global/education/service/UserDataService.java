@@ -3,8 +3,7 @@ package com.global.education.service;
 import static com.global.education.utils.UserUtils.currentUserName;
 import static com.global.education.utils.UserUtils.currentUserUuid;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,11 +62,13 @@ public class UserDataService {
 		entity.setEmail(user.getEmail());
 		entity.setRank(Rank.valueOf(user.getRank()));
 		userDataRepository.save(entity);
+
+		log.info("User {} has been updated", userUuid);
 	}
 
 	public UserDataEntity findUser(UUID userUuid) {
 		if (userUuid == null) {
-			throw new NotAllowedRuntimeException("Current user can't make such operations");
+			throw new NotAllowedRuntimeException("Current user can't make such operations, potentially it's client");
 		}
 		UserDataEntity userData = userDataRepository.findByUuid(userUuid);
 		if (userData == null) {
@@ -79,6 +80,10 @@ public class UserDataService {
 	public UserDataEntity findCurrentUser() {
 		UUID currentUser = currentUserUuid();
 		return findUser(currentUser);
+	}
+
+	public List<UserDataEntity> findAllUsers() {
+		return userDataRepository.findAll();
 	}
 
 }

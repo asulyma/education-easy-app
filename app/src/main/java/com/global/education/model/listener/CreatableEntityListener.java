@@ -1,4 +1,4 @@
-package com.global.education.listener;
+package com.global.education.model.listener;
 
 import com.global.education.model.CreatableEntity;
 

@@ -25,6 +25,9 @@ public class CommentEntity extends CreatableEntity {
     @Column(name = "author_uuid")
     private UUID authorUuid;
 
+    @Column(name = "author_name")
+    private String authorName;
+
     @ManyToOne
     @JoinColumn(name = "lesson_id")
     private LessonEntity lesson;

@@ -10,23 +10,24 @@ CREATE TABLE user_data
 
 CREATE TABLE course
 (
-    id              BIGSERIAL NOT NULL PRIMARY KEY,
+    id              BIGSERIAL    NOT NULL PRIMARY KEY,
     created_date    BIGINT,
-    title           VARCHAR(256),
-    description     VARCHAR(1024),
+    title           VARCHAR(256) NOT NULL UNIQUE,
+    description     VARCHAR(2048),
     begin_date      BIGINT,
-    end_date        BIGINT,
+    finish_date     BIGINT,
     cost            BIGINT,
     additional_info VARCHAR(512)
 );
 
 CREATE TABLE lesson
 (
-    id           BIGSERIAL NOT NULL PRIMARY KEY,
-    created_date BIGINT,
-    title        VARCHAR(255),
-    description  VARCHAR(1024),
-    course_id    BIGINT
+    id             BIGSERIAL NOT NULL PRIMARY KEY,
+    created_date   BIGINT,
+    title          VARCHAR(255),
+    description    VARCHAR(2048),
+    course_id      BIGINT,
+    execution_time BIGINT
 );
 
 -- ManyToOne
@@ -38,6 +39,7 @@ CREATE TABLE comment
     id           BIGSERIAL not null primary key,
     created_date BIGINT,
     author_uuid  uuid,
+    author_name  VARCHAR(256),
     lesson_id    BIGINT,
     content      VARCHAR(1024)
 );

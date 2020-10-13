@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.global</groupId>
         <artifactId>education</artifactId>
-        <version>20.8-SNAPSHOT</version>
+        <version>20.9-SNAPSHOT</version>
     </parent>
 
     <artifactId>auth</artifactId>
@@ -61,10 +61,10 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Useful Libs -->
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -81,10 +81,23 @@
 
     <profiles>
         <profile>
+            <id>IT</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
             <id>docker</id>
             <build>
                 <plugins>
-                    <!-- Be careful, the next plugin don't remove unused images, if you want, you can use docker image prune -->
+                    <!-- Be careful, the following plugin does not remove unused images. -->
+                    <!-- For delete unused images manually, use `docker image prune` -->
                     <plugin>
                         <groupId>com.spotify</groupId>
                         <artifactId>dockerfile-maven-plugin</artifactId>
@@ -108,6 +121,5 @@
             </build>
         </profile>
     </profiles>
-
 
 </project>

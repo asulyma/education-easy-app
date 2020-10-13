@@ -45,19 +45,25 @@ public class LessonService {
 		return lesson;
 	}
 
+	public LessonEntity getLessonById(Long lessonId) {
+		return lessonRepository.findById(lessonId).orElseThrow(NotFoundRuntimeException::new);
+	}
+
 	@Transactional
 	public void createLesson(SharedLesson lesson) {
 		LessonEntity entity = new LessonEntity().setTitle(lesson.getTitle())
 				.setDescription(lesson.getDescription())
-				.setCourse(courseService.getCourseById(lesson.getCourseId()));
+				.setCourse(courseService.getCourseById(lesson.getCourseId()))
+				.setExecutionTime(lesson.getExecutionTime());
 		lessonRepository.save(entity);
 	}
 
 	@Transactional
 	public void updateLesson(Long id, SharedLesson lesson) {
-		LessonEntity entity = lessonRepository.getOne(id);
+		LessonEntity entity = getLessonById(id);
 		entity.setTitle(lesson.getTitle());
 		entity.setDescription(lesson.getDescription());
+		entity.setExecutionTime(lesson.getExecutionTime());
 		lessonRepository.save(entity);
 	}
 

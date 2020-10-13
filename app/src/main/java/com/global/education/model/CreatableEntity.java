@@ -1,6 +1,6 @@
 package com.global.education.model;
 
-import com.global.education.listener.CreatableEntityListener;
+import com.global.education.model.listener.CreatableEntityListener;
 import lombok.Getter;
 import lombok.Setter;
 

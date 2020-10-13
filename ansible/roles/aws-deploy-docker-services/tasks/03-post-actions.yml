@@ -1,0 +1,2 @@
+- name: Remove exited containers
+  shell: "docker rm $(docker ps --filter status=exited -q) || true"

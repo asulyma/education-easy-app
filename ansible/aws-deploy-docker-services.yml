@@ -1,0 +1,7 @@
+---
+- name: Generate docker-compose file and deploy docker services
+  hosts: "{{ ENV }}"
+  become: yes
+
+  roles:
+    - aws-deploy-docker-services

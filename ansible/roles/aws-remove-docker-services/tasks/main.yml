@@ -1,29 +1,4 @@
 ---
-- name: Install Docker Libs for Python via Pip
-  pip:
-    name: [ 'docker', 'docker-compose']
-  when: ansible_os_family == "Debian"
+- include: 01-python-pip-preparation.yml
 
-- name: Create a workdir for user {{ ansible_ssh_user }} if it does not exist
-  file:
-    path: /home/{{ ansible_ssh_user }}/education
-    state: directory
-    mode: 0755
-
-- name: Check that the docker-compose file exists
-  stat:
-    path: /home/{{ ansible_ssh_user }}/education/docker-compose.yml
-  register: docker_compose_result
-
-- name: Docker Compose Down
-  docker_compose:
-    project_src: /home/{{ ansible_ssh_user }}/education
-    state: absent
-    timeout: 10
-  when: docker_compose_result.stat.exists
-
-- name: Remove Compose File
-  file:
-    path: /home/{{ ansible_ssh_user }}/education/docker-compose.yml
-    state: absent
-  when: docker_compose_result.stat.exists
+- include: 02-remove-docker-services.yml

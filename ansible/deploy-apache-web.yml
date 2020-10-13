@@ -1,7 +1,0 @@
----
-- name: Install default Apache Web Server
-  hosts: "{{ ENV }}"
-  become: yes
-
-  roles:
-    - deploy_apache_web

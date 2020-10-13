@@ -9,35 +9,36 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.web.header.HeaderWriter;
 
+
 @Configuration
 @EnableResourceServer
 public class OAuthConfig extends ResourceServerConfigurerAdapter {
 
-    @Autowired
-    private ResourceServerTokenServices tokenServices;
+	@Autowired
+	private ResourceServerTokenServices tokenServices;
 
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.resourceId("foo").tokenServices(tokenServices);
-    }
+	@Override
+	public void configure(ResourceServerSecurityConfigurer resources) {
+		resources.resourceId("foo").tokenServices(tokenServices);
+	}
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/**").access("#oauth2.hasScope('standard-scope')")
-                .and()
-                .headers().addHeaderWriter(writeHeaders());
-    }
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+				.antMatchers("/**")
+				.access("#oauth2.hasScope('standard-scope')")
+				.and()
+				.headers()
+				.addHeaderWriter(writeHeaders());
+	}
 
-    private HeaderWriter writeHeaders() {
-        return (request, response) -> {
-            response.addHeader("Access-Control-Allow-Origin", "*");
-            if (request.getMethod().equals("OPTION")) {
-                response.setHeader("Access-Control-Allow-Methods",
-                        request.getHeader("Access-Control-Request-Method"));
-                response.setHeader("Access-Control-Allow-Headers",
-                        request.getHeader("Access-Control-Request-Headers"));
-            }
-        };
-    }
+	private HeaderWriter writeHeaders() {
+		return (request, response) -> {
+			response.addHeader("Access-Control-Allow-Origin", "*");
+			if (request.getMethod().equals("OPTION")) {
+				response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));
+				response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+			}
+		};
+	}
 }

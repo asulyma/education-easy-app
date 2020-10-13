@@ -1,0 +1,31 @@
+- name: Install Apache
+  apt:
+    name: apache2
+    state: latest
+  when: ansible_os_family == "Debian"
+
+- name: Install Httpd
+  yum:
+    name: httpd
+    state: latest
+  when: ansible_os_family == "RedHat"
+
+- name: Generate and copy html file to WEB Server
+  template:
+    src: index.j2
+    dest: "{{ destination_folder }}/index.html"
+    mode: 0555
+
+- name: Start Apache and Enable
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: ansible_os_family == "Debian"
+
+- name: Start Httpd and Enable
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: ansible_os_family == "RedHat"

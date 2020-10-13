@@ -33,9 +33,7 @@ public interface LessonMapper {
 
     @Mappings({
             @Mapping(expression = "java(lessonEntity.getCourse().getId())", target = "courseId"),
-            @Mapping(expression = "java(lessonEntity.getComments().stream()"
-                    + ".map(e -> new com.global.education.controller.dto.Comment(e.getAuthorUuid(), e.getLesson().getId(), null, e.getContent()))"
-                    + ".collect(java.util.stream.Collectors.toList()))", target = "comments")
+            @Mapping(expression = "java(lessonEntity.getComments().size())", target = "totalComments")
     })
     SharedLesson buildSharedLesson(LessonEntity lessonEntity);
 

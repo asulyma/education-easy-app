@@ -1,5 +1,7 @@
 package com.global.education.mapper;
 
+import java.util.List;
+
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -15,9 +17,9 @@ public interface UserMapper {
 
 	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-	@Mappings({
-			@Mapping(expression = "java(userDataEntity.getRank().getDescription())", target = "rank")
-	})
+	@Mappings({ @Mapping(expression = "java(userDataEntity.getRank().getDescription())", target = "rank") })
 	User buildUser(UserDataEntity userDataEntity);
+
+	List<User> buildUsers(List<UserDataEntity> entities);
 
 }

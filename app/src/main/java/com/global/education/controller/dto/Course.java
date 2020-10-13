@@ -19,7 +19,7 @@ public class Course {
     private Long beginDate;
 
     @NotNull
-    private Long endDate;
+    private Long finishDate;
 
     @NotNull
     private Long cost;

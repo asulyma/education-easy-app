@@ -31,7 +31,7 @@ public final class JacksonUtils {
 		}
 	}
 
-	public static <T> T toObject(Object value, TypeReference<?> typeReference) {
+	public static <T> T toObject(Object value, TypeReference<T> typeReference) {
 		try {
 			String map = OBJECT_MAPPER.writeValueAsString(value);
 			return OBJECT_MAPPER.readValue(map, typeReference);

@@ -1,0 +1,11 @@
+---
+
+  # TODO: remove 00-apache-test-server.yml when AWS servers will have more CPU capacity to start EDUCATION application.
+  # TODO: And also add all containers to docker-compose.j2 file
+- include: 00-apache-test-server.yml
+
+- include: 01-deploy-docker-services.yml
+
+- include: 02-docker-healthcheck.yml
+
+- include: 03-post-actions.yml

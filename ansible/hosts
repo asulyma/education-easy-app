@@ -1,8 +1,8 @@
 [prod]
-aws-redhat  ansible_ssh_host=3.122.101.115  ansible_ssh_user=ec2-user
+aws-redhat  ansible_ssh_host=54.93.165.66  ansible_ssh_user=ec2-user
 
 [stage]
-aws-debian  ansible_ssh_host=18.157.76.245  ansible_ssh_user=ubuntu
+aws-debian  ansible_ssh_host=3.120.26.9  ansible_ssh_user=ubuntu
 
 
 

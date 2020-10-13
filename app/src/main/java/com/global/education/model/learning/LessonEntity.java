@@ -31,6 +31,9 @@ public class LessonEntity extends CreatableEntity {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "execution_time")
+    private Long executionTime;
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     private CourseEntity course;

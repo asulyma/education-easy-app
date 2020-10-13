@@ -14,4 +14,5 @@ public class Lesson {
     private String title;
     @NotNull
     private Long courseId;
+    private Long executionTime;
 }
