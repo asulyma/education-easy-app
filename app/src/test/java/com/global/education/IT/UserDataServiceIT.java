@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class UserDataServiceIT extends EducationApplicationIT {
 	private static final String TEST_VALUE = "value";
 	private static final String TRAINEE = "TRAINEE";
 	private static final String JAVA_CORE = "Java Core";
+	private static final String MOCK_USER = "Mock_User";
+	private static final String MOCK_USER_TEST_1 = "ck_Use";
+	private static final String MOCK_USER_TEST_2 = "USER";
 
 	@Autowired
 	private UserDataService testInstance;
@@ -39,6 +43,13 @@ public class UserDataServiceIT extends EducationApplicationIT {
 	private CourseService courseService;
 	@Autowired
 	private LessonService lessonService;
+
+	private SpecificationRequest request;
+
+	@Before
+	public void init() {
+		request = new SpecificationRequest();
+	}
 
 	@Test(expected = NotAllowedRuntimeException.class)
 	public void shouldThrowExceptionWhenUuidIsNull() {
@@ -52,12 +63,50 @@ public class UserDataServiceIT extends EducationApplicationIT {
 
 	@Test
 	@WithMockOAuth2User
+	public void shouldSearchWithSpecificationByNameCorrectly() {
+		// REGISTRATION
+		testInstance.createOrUpdateUserData(buildUser());
+
+		// TESTING
+		request.setUserName(MOCK_USER);
+		shouldFindSingleUser(request);
+
+		request.setUserName(MOCK_USER_TEST_1);
+		shouldFindSingleUser(request);
+
+		request.setUserName(MOCK_USER_TEST_2);
+		shouldFindSingleUser(request);
+
+		request.setUserName(TEST_VALUE);
+		assertTrue(testInstance.findAllUsers(request).isEmpty());
+	}
+
+	@Test
+	@WithMockOAuth2User
+	public void shouldSearchWithSpecificationByRankCorrectly() {
+		// REGISTRATION
+		testInstance.createOrUpdateUserData(buildUser());
+
+		// TESTING
+		request.setUserRank(TRAINEE);
+		shouldFindSingleUser(request);
+
+		request.setUserRank(TEST_VALUE);
+		assertTrue(testInstance.findAllUsers(request).isEmpty());
+	}
+
+	private void shouldFindSingleUser(SpecificationRequest request) {
+		assertEquals(1, testInstance.findAllUsers(request).size());
+	}
+
+	@Test
+	@WithMockOAuth2User
 	public void shouldRegisterUserStartCourseAndFinishLessonCorrectly() {
 		// REGISTRATION
 		testInstance.createOrUpdateUserData(buildUser());
 
 		// PREPARE TESTING
-		List<UserDataEntity> allUsers = testInstance.findAllUsers();
+		List<UserDataEntity> allUsers = testInstance.findAllUsers(new SpecificationRequest());
 		assertEquals(1, allUsers.size());
 		assertTrue(allUsers.get(0).getProgressMap().isEmpty());
 
@@ -67,6 +116,7 @@ public class UserDataServiceIT extends EducationApplicationIT {
 
 		// START COURSE TESTING
 		await().atMost(5, TimeUnit.SECONDS).until(() -> checkThatProgressMapIsNotEmpty(courseId));
+		searchUsersByCourseShouldPass(courseId);
 
 		// PREPARE LESSON TESTING
 		List<LessonEntity> lessons = lessonService.getLessons(courseId);
@@ -91,8 +141,17 @@ public class UserDataServiceIT extends EducationApplicationIT {
 		return !progressMap.isEmpty() && progressMap.containsKey(courseId);
 	}
 
+	private void searchUsersByCourseShouldPass(Long courseId) {
+		SpecificationRequest request = new SpecificationRequest();
+		request.setUsersByCourseId(courseId);
+		List<UserDataEntity> allUsers = testInstance.findAllUsers(request);
+
+		assertEquals(1, allUsers.size());
+		assertEquals(MOCK_USER, allUsers.get(0).getUsername());
+	}
+
 	private Map<Long, Progress> getProgressMap() {
-		List<UserDataEntity> allUsers = testInstance.findAllUsers();
+		List<UserDataEntity> allUsers = testInstance.findAllUsers(new SpecificationRequest());
 		assertEquals(1, allUsers.size());
 
 		return allUsers.get(0).getProgressMap();

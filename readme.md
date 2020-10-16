@@ -5,7 +5,7 @@ Project Benefits:
 - Java Web Application based on Spring Boot (using MVC, Data, AOP, Security);
 - Systematized storage and access to teaching materials of academic disciplines. Under the materials should be considered concepts
   "course". Each course is divide into "lectures";
-- Improved search engine by difference criteria;
+- Improved search engine by difference criteria to find courses AND users;
 - Caching engine for faster course search;
 - AOP functionality to send email notification;
 - Interactive comments creation by users to each lecture;
@@ -133,6 +133,7 @@ When OAuth2 server rises for the first time, a default client and users will be 
 ***
 ### TODO list:
 1. Add monitoring functionality for teacher
+- collect information
 2. Add feedback form for student after each lection
 3. Migrate to Gradle
 4. Fix displaying JUnit report

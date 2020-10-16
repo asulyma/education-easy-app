@@ -25,6 +25,7 @@ import lombok.*;
 public final class UserUtils {
 
 	public static final Long TOTAL_PROGRESS = 1000L;
+	public static final String ID_REGEXP = "^[0-9]{1,9}";
 
 	private static final String CLIENT_RESPONSE = "Operation blocked! UserUuid doesn't exist, potentially it's client";
 

@@ -1,7 +1,7 @@
 package com.global.education.controller;
 
 import static com.global.education.mapper.CourseMapper.INSTANCE;
-import static com.global.education.service.ValidationService.ID_REGEXP;
+import static com.global.education.utils.UserUtils.ID_REGEXP;
 
 import java.util.List;
 
@@ -63,13 +63,6 @@ public class CourseController extends BaseHandler {
 	public ResponseEntity<HttpStatus> removeCourse(@PathVariable Long id) {
 		courseService.removeCourse(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-
-	@PostMapping("/invalidate-cache")
-	@Secured("ROLE_ADMIN")
-	public ResponseEntity<HttpStatus> invalidateCache() {
-		courseService.destroy();
-		return ResponseEntity.noContent().build();
 	}
 
 }

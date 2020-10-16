@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ValidationService {
 
-	public static final String ID_REGEXP = "^[0-9]{1,9}";
 	private static final String USER_START_COURSE = "User %s did not start the course %s";
 	private static final String USER_FINISHED_LESSON = "User %s already finished the lesson %s";
 

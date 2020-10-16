@@ -1,25 +1,21 @@
 package com.global.education.model;
 
+import java.util.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.*;
+
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
+
 import com.education.common.model.Progress;
 import com.education.common.model.Rank;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
 
 @Getter
 @Setter
@@ -30,22 +26,22 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class UserDataEntity extends BaseEntity {
 
-    @Column(name = "uuid")
-    private UUID uuid;
+	@Column(name = "uuid")
+	private UUID uuid;
 
-    @Column(name = "username")
-    private String username;
+	@Column(name = "username")
+	private String username;
 
-    @Column(name = "email")
-    private String email;
+	@Column(name = "email")
+	private String email;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "rank")
-    private Rank rank;
+	@Enumerated(value = EnumType.STRING)
+	@Column(name = "rank")
+	private Rank rank;
 
-    // CourseId to Progress
-    @Column(name = "progress", columnDefinition = "jsonb")
-    @Type(type = "jsonb", parameters = {@Parameter(name = "classType", value = "java.util.HashMap")})
-    private Map<Long, Progress> progressMap = new HashMap<>();
+	// CourseId to Progress
+	@Column(name = "progress", columnDefinition = "jsonb")
+	@Type(type = "jsonb", parameters = { @Parameter(name = "classType", value = "java.util.HashMap") })
+	private Map<Long, Progress> progressMap = new HashMap<>();
 
 }

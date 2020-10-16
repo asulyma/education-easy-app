@@ -43,4 +43,8 @@ public class SpecificationRequest implements Serializable {
 	@Max(value = Long.MAX_VALUE)
 	private Long finishEndDate;
 
+	private Long usersByCourseId;
+	private String userRank;
+	private String userName;
+
 }

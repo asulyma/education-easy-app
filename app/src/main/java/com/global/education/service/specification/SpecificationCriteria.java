@@ -25,4 +25,8 @@ public class SpecificationCriteria implements Serializable {
     public Long finishStartDate;
     public Long finishEndDate;
 
+    public Long usersByCourseId;
+    private String userRank;
+    private String userName;
+
 }
