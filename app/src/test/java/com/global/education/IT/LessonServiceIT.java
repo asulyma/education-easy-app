@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.global.education.controller.dto.SharedLesson;
 import com.global.education.controller.dto.SpecificationRequest;
 import com.global.education.controller.handler.exception.NotFoundRuntimeException;
-import com.global.education.kafka.service.UserUpdateEventKafkaService;
+import com.global.education.service.EventService;
 import com.global.education.model.learning.CourseEntity;
 import com.global.education.model.learning.LessonEntity;
 import com.global.education.service.CourseService;
@@ -38,11 +38,11 @@ public class LessonServiceIT extends EducationApplicationIT {
 	private CourseService courseService;
 
 	@MockBean
-	private UserUpdateEventKafkaService kafkaService;
+	private EventService eventService;
 
 	@Before
 	public void init() {
-		doNothing().when(kafkaService).sendFinishLessonEvent(any());
+		doNothing().when(eventService).sendFinishLessonEvent(any());
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class LessonServiceIT extends EducationApplicationIT {
 		Long lessonId = getLessonId(courseId);
 
 		testInstance.finishLesson(lessonId, courseId);
-		verify(kafkaService).sendFinishLessonEvent(any());
+		verify(eventService).sendFinishLessonEvent(any());
 	}
 
 	private Long getCourseId() {

@@ -51,36 +51,13 @@ spring:
       starttls.enable: true
 
 kafka-topics:
-  user-finish-lesson-event:
+  user-creation-producer:
     enabled: true
-    topic: education-finish-lesson-event
+    topic: education-user-creation
     producer-properties:
       "[bootstrap.servers]": ${spring.kafka.bootstrap-servers}
       "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer
       "[value.serializer]": org.apache.kafka.common.serialization.StringSerializer
-  user-start-course-event:
-    enabled: true
-    topic: education-start-course-event
-    producer-properties:
-      "[bootstrap.servers]": ${spring.kafka.bootstrap-servers}
-      "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer
-      "[value.serializer]": org.apache.kafka.common.serialization.StringSerializer
-  user-start-course-event-consumer:
-    enabled: true
-    topic: education-start-course-event
-    consumer-properties:
-      "[bootstrap.servers]": ${spring.kafka.bootstrap-servers}
-      "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
-      "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
-      "[group.id]": "user-start-course-event-group"
-  user-finish-lesson-event-consumer:
-    enabled: true
-    topic: education-finish-lesson-event
-    consumer-properties:
-      "[bootstrap.servers]": ${spring.kafka.bootstrap-servers}
-      "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
-      "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
-      "[group.id]": "user-finish-lesson-event-group"
 
 server:
   servlet:

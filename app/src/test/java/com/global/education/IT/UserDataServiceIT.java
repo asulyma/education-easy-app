@@ -110,7 +110,7 @@ public class UserDataServiceIT extends EducationApplicationIT {
 		assertEquals(1, allUsers.size());
 		assertTrue(allUsers.get(0).getProgressMap().isEmpty());
 
-		// SEND KAFKA EVENT
+		// RUN EVENT DRIVEN PROCESS TO START COURSE
 		Long courseId = getCourseId();
 		courseService.startCourse(courseId);
 
@@ -123,7 +123,7 @@ public class UserDataServiceIT extends EducationApplicationIT {
 		assertFalse(lessons.isEmpty());
 		Long lessonId = lessons.get(0).getId();
 
-		// SEND KAFKA EVENT TO FINISH LESSON
+		// RUN EVENT DRIVEN PROCESS TO FINISH LESSON
 		ResponseEntity<String> response = lessonService.finishLesson(lessonId, courseId);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 

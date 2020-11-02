@@ -45,6 +45,7 @@ services:
       - 8081:8081
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-postgres-db:5432/education_auth?autoReconnect=true&useSSL=false
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:19092
     depends_on:
       - auth-postgres-db
 

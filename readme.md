@@ -9,7 +9,8 @@ Project Benefits:
 - Caching engine for faster course search;
 - AOP functionality to send email notification;
 - Interactive comments creation by users to each lecture;
-- Uninterrupted communication between micro-services using Apache Kafka;
+- Uninterrupted communication between micro-services using Apache Kafka for User Creation Processes;
+- Continuous Event Driven for processing events about StartCourse and FinishLesson.
 - Improved project security using OAuth2 from a separate service;
 - Support Docker containers;
 - Swagger documentation;
@@ -48,9 +49,8 @@ Project Benefits:
 
 1. Download, install and start Zookeeper
 2. Download, install and start Kafka
-3. Create the next topics:
-   - education-finish-lesson-event
-   - education-start-course-event
+3. Create the following topic:
+   - education-user-creation
 
 </details>
 
@@ -137,3 +137,5 @@ When OAuth2 server rises for the first time, a default client and users will be 
 2. Add feedback form for student after each lection
 3. Migrate to Gradle
 4. Fix displaying JUnit report
+5. Add possibility to create new users inside of auth microservice via Kafka
+8. Move expression to app module

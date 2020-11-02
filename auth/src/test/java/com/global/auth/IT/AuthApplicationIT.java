@@ -52,7 +52,7 @@ public class AuthApplicationIT {
 		HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
 		// FUNCTIONALITY & TESTS
-		String url = getBaseUrl() + "token?grant_type=client_credentials";
+		String url = getBaseUrl() + "oauth/token?grant_type=client_credentials";
 		new RestTemplate().exchange(url, HttpMethod.POST, entity, String.class);
 	}
 
@@ -65,7 +65,7 @@ public class AuthApplicationIT {
 		HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
 		// FUNCTIONALITY
-		String url = getBaseUrl() + "token?grant_type=client_credentials";
+		String url = getBaseUrl() + "oauth/token?grant_type=client_credentials";
 		ResponseEntity<String> response = new RestTemplate().exchange(url, HttpMethod.POST, entity, String.class);
 
 		// TESTS
@@ -86,7 +86,7 @@ public class AuthApplicationIT {
 		HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
 		// FUNCTIONALITY
-		String url = getBaseUrl() + "token?grant_type=password&username=john&password=john";
+		String url = getBaseUrl() + "oauth/token?grant_type=password&username=john&password=john";
 		ResponseEntity<String> response = new RestTemplate().exchange(url, HttpMethod.POST, entity, String.class);
 
 		// TESTS
@@ -99,7 +99,7 @@ public class AuthApplicationIT {
 	}
 
 	private String getBaseUrl() {
-		return "http://localhost:" + port + "/auth/oauth/";
+		return "http://localhost:" + port + "/auth/";
 	}
 
 	static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {

@@ -13,11 +13,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.education.common.kafka.dto.UserStartCourseEvent;
+import com.education.common.dto.event.UserStartCourseEvent;
 import com.global.education.controller.dto.SharedCourse;
 import com.global.education.controller.dto.SpecificationRequest;
 import com.global.education.controller.handler.exception.NotFoundRuntimeException;
-import com.global.education.kafka.service.UserUpdateEventKafkaService;
 import com.global.education.model.UserDataEntity;
 import com.global.education.model.learning.CourseEntity;
 import com.global.education.repository.CourseRepository;
@@ -37,14 +36,14 @@ public class CourseService {
 
 	private static final ListCache<CourseEntity, SpecificationRequest> CACHE = new ListCache<>();
 	private static final String COURSE_ALREADY_STARTED = "Course %s is already started for user %s";
-	private static final String KAFKA_START_COURSE = "Kafka event about start course %s has been sent";
+	private static final String START_COURSE = "Event Driven: event about start course %s has been sent";
 
 	@Autowired
 	private CourseRepository courseRepository;
 	@Autowired
 	private CourseSpecificationFactory specificationFactory;
 	@Autowired
-	private UserUpdateEventKafkaService kafkaService;
+	private EventService eventService;
 	@Autowired
 	private UserDataService userDataService;
 
@@ -86,8 +85,8 @@ public class CourseService {
 			return ResponseEntity.ok(format(COURSE_ALREADY_STARTED, courseId, user.getUsername()));
 		}
 
-		kafkaService.sendStartCourseEvent(new UserStartCourseEvent(user.getUuid(), courseId));
-		return ResponseEntity.ok(format(KAFKA_START_COURSE, courseId));
+		eventService.sendStartCourseEvent(new UserStartCourseEvent(user.getUuid(), courseId));
+		return ResponseEntity.ok(format(START_COURSE, courseId));
 	}
 
 	private List<CourseEntity> findAllBySpec(SpecificationRequest request) {

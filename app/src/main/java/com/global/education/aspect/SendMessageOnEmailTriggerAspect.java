@@ -19,9 +19,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import com.education.common.kafka.dto.UserFinishLessonEvent;
-import com.education.common.kafka.dto.UserStartCourseEvent;
-import com.education.common.model.EmailType;
+import com.education.common.dto.event.UserFinishLessonEvent;
+import com.education.common.dto.event.UserStartCourseEvent;
+import com.education.common.dto.event.EventType;
 import com.global.education.config.TranslationHolder;
 import com.global.education.model.UserDataEntity;
 import com.global.education.model.learning.CourseEntity;
@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class SendMessageOnEmailTriggerAspect {
 
-	private static final Map<EmailType, BiConsumer<MimeMessageHelper, Object>> TYPE = new EnumMap<>(EmailType.class);
+	private static final Map<EventType, BiConsumer<MimeMessageHelper, Object>> TYPE = new EnumMap<>(EventType.class);
 
 	@Autowired
 	private JavaMailSender javaMailSender;
@@ -53,8 +53,8 @@ public class SendMessageOnEmailTriggerAspect {
 
 	@PostConstruct
 	public void init() {
-		TYPE.put(EmailType.START_COURSE, this::buildStartCourseEmail);
-		TYPE.put(EmailType.FINISH_LESSON, this::buildFinishLessonEmail);
+		TYPE.put(EventType.START_COURSE, this::buildStartCourseEmail);
+		TYPE.put(EventType.FINISH_LESSON, this::buildFinishLessonEmail);
 	}
 
 	@Around("@annotation(annotation) && args(event)")

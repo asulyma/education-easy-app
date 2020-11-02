@@ -21,7 +21,7 @@ import com.education.common.model.Progress;
 import com.global.education.controller.dto.SharedCourse;
 import com.global.education.controller.dto.SpecificationRequest;
 import com.global.education.controller.handler.exception.NotFoundRuntimeException;
-import com.global.education.kafka.service.UserUpdateEventKafkaService;
+import com.global.education.service.EventService;
 import com.global.education.model.UserDataEntity;
 import com.global.education.model.learning.CourseEntity;
 import com.global.education.service.CourseService;
@@ -44,7 +44,7 @@ public class CourseServiceIT extends EducationApplicationIT {
 	@MockBean
 	private UserDataService userDataService;
 	@MockBean
-	private UserUpdateEventKafkaService kafkaService;
+	private EventService eventService;
 
 	private final UserDataEntity user = new UserDataEntity();
 
@@ -100,7 +100,7 @@ public class CourseServiceIT extends EducationApplicationIT {
 		ResponseEntity<String> actual = testInstance.startCourse(1L);
 
 		assertEquals(HttpStatus.OK, actual.getStatusCode());
-		verify(kafkaService, never()).sendStartCourseEvent(any());
+		verify(eventService, never()).sendStartCourseEvent(any());
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class CourseServiceIT extends EducationApplicationIT {
 		ResponseEntity<String> actual = testInstance.startCourse(1L);
 
 		assertEquals(HttpStatus.OK, actual.getStatusCode());
-		verify(kafkaService).sendStartCourseEvent(any());
+		verify(eventService).sendStartCourseEvent(any());
 	}
 
 	@Test

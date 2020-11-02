@@ -11,8 +11,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.education.common.kafka.dto.UserFinishLessonEvent;
-import com.education.common.kafka.dto.UserStartCourseEvent;
+import com.education.common.dto.event.UserFinishLessonEvent;
+import com.education.common.dto.event.UserStartCourseEvent;
 import com.education.common.model.Progress;
 import com.education.common.model.Rank;
 import com.global.education.controller.dto.SpecificationRequest;

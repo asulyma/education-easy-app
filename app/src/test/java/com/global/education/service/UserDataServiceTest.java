@@ -12,8 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.education.common.kafka.dto.UserFinishLessonEvent;
-import com.education.common.kafka.dto.UserStartCourseEvent;
+import com.education.common.dto.event.UserFinishLessonEvent;
+import com.education.common.dto.event.UserStartCourseEvent;
 import com.education.common.model.Progress;
 import com.global.education.model.UserDataEntity;
 import com.global.education.repository.UserDataRepository;

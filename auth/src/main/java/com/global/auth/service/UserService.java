@@ -1,5 +1,6 @@
 package com.global.auth.service;
 
+import com.education.common.dto.event.UserDataEvent;
 import com.global.auth.model.UserEntity;
 import com.global.auth.repository.UserRepository;
 import com.global.auth.repository.projection.UserUuid;
@@ -45,13 +46,19 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserEntity createUser() {
+    public void createUser(UserDataEvent dataEvent) {
+
+        System.out.println("CREATE USER SUCCESSFUL");
+
+        if (true) {
+            return;
+        }
+
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername("john");
         userEntity.setPassword(new BCryptPasswordEncoder().encode("john"));
         userEntity.setRoles(Collections.singleton("ROLE_USER"));
         userRepository.save(userEntity);
-        return userEntity;
     }
 
 }

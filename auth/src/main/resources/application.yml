@@ -22,6 +22,20 @@ spring:
     url: ${spring.datasource.url}
     user: education-auth
     password: education-auth
+  kafka:
+    admin:
+      fail-fast: true
+    bootstrap-servers: localhost:9092
+
+kafka-topics:
+  user-creation-consumer:
+    enabled: true
+    topic: education-user-creation
+    consumer-properties:
+      "[bootstrap.servers]": ${spring.kafka.bootstrap-servers}
+      "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+      "[group.id]": "education-user-creation-group"
 
 server:
   port: 8081

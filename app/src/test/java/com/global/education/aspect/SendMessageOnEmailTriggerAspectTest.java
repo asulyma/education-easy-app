@@ -18,9 +18,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.education.common.kafka.dto.UserFinishLessonEvent;
-import com.education.common.kafka.dto.UserStartCourseEvent;
-import com.education.common.model.EmailType;
+import com.education.common.dto.event.UserFinishLessonEvent;
+import com.education.common.dto.event.UserStartCourseEvent;
+import com.education.common.dto.event.EventType;
 import com.global.education.config.TranslationHolder;
 import com.global.education.model.UserDataEntity;
 import com.global.education.model.learning.CourseEntity;
@@ -72,7 +72,7 @@ public class SendMessageOnEmailTriggerAspectTest {
 
 	@Test
 	public void shouldCreateEmailOfStartCourseCorrectly() throws Throwable {
-		TriggerSendEmail annotation = buildAnnotation(EmailType.START_COURSE);
+		TriggerSendEmail annotation = buildAnnotation(EventType.START_COURSE);
 		UserStartCourseEvent startEvent = new UserStartCourseEvent();
 		startEvent.setUserUuid(USER_UUID);
 		startEvent.setCourseId(COURSE_ID);
@@ -86,7 +86,7 @@ public class SendMessageOnEmailTriggerAspectTest {
 
 	@Test
 	public void shouldCreateEmailOfFinishCourseCorrectly() throws Throwable {
-		TriggerSendEmail annotation = buildAnnotation(EmailType.FINISH_LESSON);
+		TriggerSendEmail annotation = buildAnnotation(EventType.FINISH_LESSON);
 		UserFinishLessonEvent finishEvent = new UserFinishLessonEvent();
 		finishEvent.setUserUuid(USER_UUID);
 		finishEvent.setCourseId(COURSE_ID);
@@ -110,10 +110,10 @@ public class SendMessageOnEmailTriggerAspectTest {
 		verify(userDataService, never()).findUser(USER_UUID);
 	}
 
-	private TriggerSendEmail buildAnnotation(EmailType type) {
+	private TriggerSendEmail buildAnnotation(EventType type) {
 		return new TriggerSendEmail() {
 			@Override
-			public EmailType target() {
+			public EventType target() {
 				return type;
 			}
 
