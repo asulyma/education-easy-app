@@ -117,7 +117,7 @@ When OAuth2 server rises for the first time, a default client and users will be 
    
 * To start use the main functionality, need to complete the User registration: execute a POST request for `http://localhost:8080/app/system/second-step-register`
 * The Client has minimum available functionality.
-* Currently, there is no possibility to create new users or clients.
+* Currently, there is no possibility to create new clients.
 
 </details>
 

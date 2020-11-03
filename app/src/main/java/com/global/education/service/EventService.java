@@ -1,6 +1,5 @@
 package com.global.education.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.education.common.dto.event.*;
@@ -9,18 +8,17 @@ import com.global.education.eventdriven.handler.FinishLessonEventHandler;
 import com.global.education.eventdriven.handler.StartCourseEventHandler;
 import com.global.education.kafka.producer.UserCreationEventProducer;
 
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 
 @Service
+@RequiredArgsConstructor
 public class EventService {
 
-	@Autowired
-	private UserCreationEventProducer userCreationEventProducer;
-	@Autowired
-	private StartCourseEventHandler startCourseEventHandler;
-	@Autowired
-	private FinishLessonEventHandler finishLessonEventHandler;
+	private final UserCreationEventProducer userCreationEventProducer;
+	private final StartCourseEventHandler startCourseEventHandler;
+	private final FinishLessonEventHandler finishLessonEventHandler;
 
 	@SneakyThrows
 	@TriggerSendEmail(target = EventType.START_COURSE)
@@ -35,7 +33,7 @@ public class EventService {
 	}
 
 	@SneakyThrows
-	public void sendUserCreationEvent(UserDataEvent dto) {
+	public void sendUserCreationEvent(UserCreationEvent dto) {
 		userCreationEventProducer.sendMessage(dto);
 	}
 

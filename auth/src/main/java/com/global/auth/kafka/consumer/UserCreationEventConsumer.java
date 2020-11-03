@@ -8,7 +8,7 @@ import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 
-import com.education.common.dto.event.UserDataEvent;
+import com.education.common.dto.event.UserCreationEvent;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +28,7 @@ public class UserCreationEventConsumer extends EventConsumer {
 			return;
 		}
 		ConsumerRecord<String, String> record = (ConsumerRecord<String, String>) message;
-		userService.createUser(toObject(record.value(), UserDataEvent.class));
+		userService.createUser(toObject(record.value(), UserCreationEvent.class));
 	}
 
 }
