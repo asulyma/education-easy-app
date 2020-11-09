@@ -8,7 +8,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,7 @@ import com.global.education.service.cache.ListCache;
 import com.global.education.service.specification.CourseSpecificationFactory;
 import com.global.education.service.specification.SpecificationCriteria;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -32,20 +32,17 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CourseService {
 
 	private static final ListCache<CourseEntity, SpecificationRequest> CACHE = new ListCache<>();
 	private static final String COURSE_ALREADY_STARTED = "Course %s is already started for user %s";
 	private static final String START_COURSE = "Event Driven: event about start course %s has been sent";
 
-	@Autowired
-	private CourseRepository courseRepository;
-	@Autowired
-	private CourseSpecificationFactory specificationFactory;
-	@Autowired
-	private EventService eventService;
-	@Autowired
-	private UserDataService userDataService;
+	private final CourseRepository courseRepository;
+	private final CourseSpecificationFactory specificationFactory;
+	private final EventService eventService;
+	private final UserDataService userDataService;
 
 	@PostConstruct
 	public void init() {

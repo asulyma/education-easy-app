@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.education.common.dto.event.UserCreationEvent;
@@ -38,13 +39,14 @@ public class SystemController extends BaseHandler {
 	}
 
 	@PostMapping("/invalidate-cache")
-	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasSeniorRank()")
 	public ResponseEntity<HttpStatus> invalidateCache() {
 		courseService.destroy();
 		return ResponseEntity.noContent().build();
 	}
 
 	@PostMapping("/create-user")
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<String> createUser(@RequestBody @Valid UserCreationEvent user) {
 		eventService.sendUserCreationEvent(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(format(SEND_USER_CREATION, user.getUsername()));

@@ -12,6 +12,7 @@ Project Benefits:
 - Uninterrupted communication between micro-services using Apache Kafka for User Creation Processes;
 - Continuous Event Driven for processing events about StartCourse and FinishLesson.
 - Improved project security using OAuth2 from a separate service;
+- Custom security expressions for unique checking of user permissions;
 - Support Docker containers;
 - Swagger documentation;
 - Access for the client to actuator information;
@@ -137,5 +138,5 @@ When OAuth2 server rises for the first time, a default client and users will be 
 2. Add feedback form for student after each lection
 3. Migrate to Gradle
 4. Fix displaying JUnit report
-5. Add possibility to create new users inside of auth microservice via Kafka
-8. Move expression to app module
+6. Generate PDF file for teacher
+7. Finish for course and generation a certificate for user
