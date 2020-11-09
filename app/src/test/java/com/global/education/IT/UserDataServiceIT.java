@@ -101,7 +101,7 @@ public class UserDataServiceIT extends EducationApplicationIT {
 
 	@Test
 	@WithMockOAuth2User
-	public void shouldRegisterUserStartCourseAndFinishLessonCorrectly() {
+	public void shouldRegisterUserStartCourseFinishAllLessonsAndFinishCourseCorrectly() {
 		// REGISTRATION
 		testInstance.createOrUpdateUserData(buildUser());
 
@@ -109,9 +109,9 @@ public class UserDataServiceIT extends EducationApplicationIT {
 		List<UserDataEntity> allUsers = testInstance.findAllUsers(new SpecificationRequest());
 		assertEquals(1, allUsers.size());
 		assertTrue(allUsers.get(0).getProgressMap().isEmpty());
+		Long courseId = getCourseId();
 
 		// RUN EVENT DRIVEN PROCESS TO START COURSE
-		Long courseId = getCourseId();
 		courseService.startCourse(courseId);
 
 		// START COURSE TESTING
@@ -120,8 +120,27 @@ public class UserDataServiceIT extends EducationApplicationIT {
 
 		// PREPARE LESSON TESTING
 		List<LessonEntity> lessons = lessonService.getLessons(courseId);
+
 		assertFalse(lessons.isEmpty());
-		Long lessonId = lessons.get(0).getId();
+		lessons.forEach(l -> assertFinishLesson(l, courseId));
+
+		// RUN EVENT DRIVEN PROCESS TO FINISH COURSE
+		courseService.finishCourse(courseId);
+
+		// PREPARE COURSE TESTING
+		await().atMost(5, TimeUnit.SECONDS).until(() -> checkThatCourseIsFinished(courseId));
+		assertFinishCourse(courseId);
+	}
+
+	private void assertFinishCourse(Long courseId) {
+		Progress progress = getProgressMap().get(courseId);
+		assertTrue(progress.isFinish());
+		assertNotNull(progress.getCertificate());
+		assertEquals(progress.getTotalValue(), progress.getProgressValue());
+	}
+
+	private void assertFinishLesson(LessonEntity lesson, Long courseId) {
+		Long lessonId = lesson.getId();
 
 		// RUN EVENT DRIVEN PROCESS TO FINISH LESSON
 		ResponseEntity<String> response = lessonService.finishLesson(lessonId, courseId);
@@ -133,12 +152,16 @@ public class UserDataServiceIT extends EducationApplicationIT {
 		Progress progress = getProgressMap().get(courseId);
 		assertNotEquals(0, progress.getProgressValue());
 		assertTrue(progress.getAlreadyDoneLessons().contains(lessonId));
-		assertEquals(1, progress.getAlreadyDoneLessons().size());
 	}
 
 	private boolean checkThatProgressMapIsNotEmpty(Long courseId) {
 		Map<Long, Progress> progressMap = getProgressMap();
 		return !progressMap.isEmpty() && progressMap.containsKey(courseId);
+	}
+
+	private boolean checkThatCourseIsFinished(Long courseId) {
+		Map<Long, Progress> progressMap = getProgressMap();
+		return !progressMap.isEmpty() && progressMap.containsKey(courseId) && progressMap.get(courseId).isFinish();
 	}
 
 	private void searchUsersByCourseShouldPass(Long courseId) {

@@ -84,10 +84,12 @@ public class LessonService {
 
 	private UserFinishLessonEvent buildDto(LessonEntity lesson, UUID userUuid) {
 		int lessons = lessonRepository.countAllByCourseId(lesson.getCourse().getId());
-		return new UserFinishLessonEvent().setCourseId(lesson.getCourse().getId())
-				.setUserUuid(userUuid)
-				.setAlreadyDoneLesson(lesson.getId())
-				.setCoefficientToProgress(TOTAL_PROGRESS / lessons);
+		UserFinishLessonEvent event = new UserFinishLessonEvent();
+		event.setAlreadyDoneLesson(lesson.getId());
+		event.setCoefficientToProgress(TOTAL_PROGRESS / lessons);
+		event.setCourseId(lesson.getCourse().getId());
+		event.setUserUuid(userUuid);
+		return event;
 	}
 
 }

@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.education.common.dto.event.UserFinishLessonEvent;
-import com.education.common.dto.event.UserStartCourseEvent;
+import com.education.common.dto.event.UserToCourseEvent;
 import com.education.common.model.Progress;
 import com.global.education.model.UserDataEntity;
 import com.global.education.repository.UserDataRepository;
@@ -51,7 +51,7 @@ public class UserDataServiceTest {
 	public void shouldStartCourseCorrectly() {
 		assertEquals(1, userDataEntity.getProgressMap().size());
 
-		UserStartCourseEvent event = new UserStartCourseEvent();
+		UserToCourseEvent event = new UserToCourseEvent();
 		event.setCourseId(TEST_ANOTHER_COURSE_ID);
 		event.setUserUuid(TEST_UUID);
 

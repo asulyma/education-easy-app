@@ -1,8 +1,7 @@
 package com.global.education.service;
 
 import static com.global.education.mapper.SpecificationMapper.INSTANCE;
-import static com.global.education.utils.UserUtils.currentUserName;
-import static com.global.education.utils.UserUtils.currentUserUuid;
+import static com.global.education.utils.UserUtils.*;
 import static java.lang.String.format;
 
 import java.util.*;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.education.common.dto.event.UserFinishLessonEvent;
-import com.education.common.dto.event.UserStartCourseEvent;
+import com.education.common.dto.event.UserToCourseEvent;
 import com.education.common.model.Progress;
 import com.education.common.model.Rank;
 import com.global.education.controller.dto.SpecificationRequest;
@@ -42,10 +41,10 @@ public class UserDataService {
 	private final UserSpecificationFactory userSpecificationFactory;
 
 	@Transactional
-	public void startCourse(UserStartCourseEvent event) {
+	public void startCourse(UserToCourseEvent event) {
 		UserDataEntity user = findUser(event.getUserUuid());
 		Map<Long, Progress> progressMap = user.getProgressMap();
-		progressMap.put(event.getCourseId(), new Progress());
+		progressMap.put(event.getCourseId(), new Progress(TOTAL_PROGRESS));
 		log.info(format(USER_START_COURSE, event.getCourseId(), event.getUserUuid()));
 	}
 
@@ -60,6 +59,16 @@ public class UserDataService {
 
 		progressMap.put(event.getCourseId(), progress);
 		log.info(format(USER_ADD_COEFFICIENT, event.getCoefficientToProgress(), event.getCourseId()));
+	}
+
+	@Transactional
+	public void finishCourse(UserToCourseEvent event) {
+		UserDataEntity user = findUser(event.getUserUuid());
+		Progress progress = user.getProgressMap().get(event.getCourseId());
+		progress.setFinish(true);
+
+		String certificate = ""; // todo generate certificate and link to user json
+		progress.setCertificate(certificate);
 	}
 
 	@Transactional

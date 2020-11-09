@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -18,15 +17,16 @@ import com.global.education.controller.handler.BaseHandler;
 import com.global.education.service.CourseService;
 import com.global.education.service.ValidationService;
 
+import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequestMapping("/course")
+@RequiredArgsConstructor
 public class CourseController extends BaseHandler {
 
-	@Autowired
-	private CourseService courseService;
-	@Autowired
-	private ValidationService validationService;
+	private final CourseService courseService;
+	private final ValidationService validationService;
 
 	@GetMapping
 	public List<Course> getCourses(@Valid @ModelAttribute SpecificationRequest request) {
@@ -42,6 +42,12 @@ public class CourseController extends BaseHandler {
 	@PostMapping("/start/{courseId:" + ID_REGEXP + "}")
 	public ResponseEntity<String> startCourse(@PathVariable Long courseId) {
 		return courseService.startCourse(courseId);
+	}
+
+	@PostMapping("/finish/{courseId:" + ID_REGEXP + "}")
+	public ResponseEntity<String> finishCourse(@PathVariable Long courseId) {
+		validationService.checkUserOnAllowGetCourse(courseId);
+		return courseService.finishCourse(courseId);
 	}
 
 	@PostMapping

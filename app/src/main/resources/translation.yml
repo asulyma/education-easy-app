@@ -1,8 +1,4 @@
 course:
   start-course-message: "Thank you about your choice. Now you have the opportunity to start training on the course: %s. Please return to the site to continue."
-  finish-lesson-message: "Congratulation! You have been finished %s lesson of %s course. Please return to the site to continue your education."
-  permission-to-admin: "The user asks for permission to access the course."
-  approve-permission-to-user: "Congratulations! You were given access to the course. You can go in and learn."
-  approve-permission-to-admin: "You were given access to the course."
-  decline-permission-to-user: "We apologize, but you were not given access to the course."
-  decline-permission-to-admin: "You were not given access to the course."
+  finish-lesson-message: "Congratulations! You have been finished %s lesson of %s course. Please return to the site to continue your education."
+  finish-course-message: "Congratulations! You have successfully completed the %s course. Thank you very much for your efforts.\n\nYour certificate will soon be available and you can download it in your profile. Please do not forget to leave feedback about the course at this link %s"

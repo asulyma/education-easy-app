@@ -19,7 +19,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.education.common.dto.event.UserFinishLessonEvent;
-import com.education.common.dto.event.UserStartCourseEvent;
+import com.education.common.dto.event.UserToCourseEvent;
 import com.education.common.dto.event.EventType;
 import com.global.education.config.TranslationHolder;
 import com.global.education.model.UserDataEntity;
@@ -73,7 +73,7 @@ public class SendMessageOnEmailTriggerAspectTest {
 	@Test
 	public void shouldCreateEmailOfStartCourseCorrectly() throws Throwable {
 		TriggerSendEmail annotation = buildAnnotation(EventType.START_COURSE);
-		UserStartCourseEvent startEvent = new UserStartCourseEvent();
+		UserToCourseEvent startEvent = new UserToCourseEvent();
 		startEvent.setUserUuid(USER_UUID);
 		startEvent.setCourseId(COURSE_ID);
 

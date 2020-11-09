@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.education.common.dto.event.EventType;
-import com.global.education.eventdriven.handler.FinishLessonEventHandler;
-import com.global.education.eventdriven.handler.StartCourseEventHandler;
+import com.global.education.eventdriven.handler.*;
 
 
 @Configuration
@@ -37,6 +36,11 @@ public class EventDrivenConfiguration {
 	}
 
 	@Bean
+	public EventProcessor finishCourseEventProcessor() {
+		return new EventDrivenEventProcessor(EventType.FINISH_COURSE, eventDrivenWorker());
+	}
+
+	@Bean
 	public StartCourseEventHandler kafkaStartCourseEventHandler() {
 		return new StartCourseEventHandler(startCourseEventProcessor());
 	}
@@ -44,6 +48,11 @@ public class EventDrivenConfiguration {
 	@Bean
 	public FinishLessonEventHandler kafkaFinishLessonEventHandler() {
 		return new FinishLessonEventHandler(finishLessonEventProcessor());
+	}
+
+	@Bean
+	public FinishCourseEventHandler kafkaFinishCourseEventHandler() {
+		return new FinishCourseEventHandler(finishCourseEventProcessor());
 	}
 
 }

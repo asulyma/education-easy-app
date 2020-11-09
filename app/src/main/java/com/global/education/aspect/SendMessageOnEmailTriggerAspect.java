@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,9 +20,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import com.education.common.dto.event.UserFinishLessonEvent;
-import com.education.common.dto.event.UserStartCourseEvent;
-import com.education.common.dto.event.EventType;
+import com.education.common.dto.event.*;
+import com.education.common.model.InfoType;
 import com.global.education.config.TranslationHolder;
 import com.global.education.model.UserDataEntity;
 import com.global.education.model.learning.CourseEntity;
@@ -55,6 +55,7 @@ public class SendMessageOnEmailTriggerAspect {
 	public void init() {
 		TYPE.put(EventType.START_COURSE, this::buildStartCourseEmail);
 		TYPE.put(EventType.FINISH_LESSON, this::buildFinishLessonEmail);
+		TYPE.put(EventType.FINISH_COURSE, this::buildFinishCourseEmail);
 	}
 
 	@Around("@annotation(annotation) && args(event)")
@@ -72,7 +73,7 @@ public class SendMessageOnEmailTriggerAspect {
 		try {
 			MimeMessage message = buildEmailMessage(annotation, event);
 			javaMailSender.send(message);
-		} catch (MessagingException e) {
+		} catch (Exception e) {
 			log.error("Failed while sending message! {}", e.getMessage());
 		}
 	}
@@ -83,6 +84,7 @@ public class SendMessageOnEmailTriggerAspect {
 
 		if (TYPE.containsKey(annotation.target())) {
 			TYPE.get(annotation.target()).accept(helper, event);
+			log.info("Email has been send successfully");
 		} else {
 			throw new MessagingException("Unknown type of email sender");
 		}
@@ -92,7 +94,7 @@ public class SendMessageOnEmailTriggerAspect {
 
 	@SneakyThrows
 	private void buildStartCourseEmail(MimeMessageHelper helper, Object objEvent) {
-		UserStartCourseEvent event = (UserStartCourseEvent) objEvent;
+		UserToCourseEvent event = (UserToCourseEvent) objEvent;
 		UserDataEntity user = userDataService.findUser(event.getUserUuid());
 		CourseEntity course = courseService.getCourseById(event.getCourseId());
 		String text = translationHolder.getStartCourseMessage();
@@ -100,8 +102,6 @@ public class SendMessageOnEmailTriggerAspect {
 		helper.setTo(user.getEmail());
 		helper.setSubject("Education Application: Start Course");
 		helper.setText(format(text, course.getTitle()));
-
-		log.info("Sending email to {}", user.getEmail());
 	}
 
 	@SneakyThrows
@@ -114,8 +114,19 @@ public class SendMessageOnEmailTriggerAspect {
 		helper.setTo(user.getEmail());
 		helper.setSubject("Education Application: Finish Lesson");
 		helper.setText(format(text, event.getAlreadyDoneLesson(), course.getTitle()));
+	}
 
-		log.info("Sending email to {}", user.getEmail());
+	@SneakyThrows
+	private void buildFinishCourseEmail(MimeMessageHelper helper, Object objEvent) {
+		UserToCourseEvent event = (UserToCourseEvent) objEvent;
+		UserDataEntity user = userDataService.findUser(event.getUserUuid());
+		CourseEntity course = courseService.getCourseById(event.getCourseId());
+		String text = translationHolder.getFinishCourseMessage();
+		String qForm = course.getAdditionalInfo().getOrDefault(InfoType.FINISH_COURSE_QUESTIONNAIRE, StringUtils.EMPTY);
+
+		helper.setTo(user.getEmail());
+		helper.setSubject("Education Application: Finish Course");
+		helper.setText(format(text, course.getTitle(), qForm));
 	}
 
 }

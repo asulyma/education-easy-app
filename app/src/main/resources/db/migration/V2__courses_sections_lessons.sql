@@ -1,16 +1,16 @@
 -- Courses
-INSERT INTO course (created_date, begin_date, cost, description, finish_date, title)
+INSERT INTO course (created_date, begin_date, cost, description, finish_date, title, additional_info)
 VALUES (1601533333000, 1609000000000, 1299,
         'Java is a popular programming language used to code game and mobile applications, desktop programs and a huge number of soft products for enterprises. The Java curriculum consists of interconnected levels, after which you will develop the knowledge and skills of Java development at the Junior Specialist level.',
-        1619000000000, 'Java Core');
-INSERT INTO course (created_date, begin_date, cost, description, finish_date, title)
+        1619000000000, 'Java Core', '{}');
+INSERT INTO course (created_date, begin_date, cost, description, finish_date, title, additional_info)
 VALUES (1601333333000, 1607000000000, 899,
         'C++ programming courses are a comprehensive training program for one of the most popular and powerful programming languages, C++. The training consists of interconnected stages, after which you will master the basics of programming at basic and advanced levels. The C++ program provides for the acquisition of hard and soft skills necessary for a Junior specialist.',
-        1617000000000, 'C++ Core');
-INSERT INTO course (created_date, begin_date, cost, description, finish_date, title)
+        1617000000000, 'C++ Core', '{}');
+INSERT INTO course (created_date, begin_date, cost, description, finish_date, title, additional_info)
 VALUES (1601133333000, 1605000000000, 999,
         'JS development courses are a comprehensive JavaScript programming program from scratch. JavaScript is popular and easy to use. It is widely used in browsers to create interactive web pages, to develop user interface assignments using frameworks.',
-        1615000000000, 'JavaScript Core');
+        1615000000000, 'JavaScript Core', '{}');
 
 -- Lessons
 INSERT INTO lesson (created_date, description, title, course_id, execution_time)
