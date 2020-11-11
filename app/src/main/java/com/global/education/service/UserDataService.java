@@ -103,6 +103,10 @@ public class UserDataService {
 		return findUser(currentUser);
 	}
 
+	public List<UserDataEntity> findAllUsers(List<UUID> uuids) {
+		return userDataRepository.findAllByUuidIn(uuids);
+	}
+
 	public List<UserDataEntity> findAllUsers(SpecificationRequest request) {
 		SpecificationCriteria criteria = INSTANCE.buildSpecificationCriteria(request);
 		Specification<UserDataEntity> specification = userSpecificationFactory.build(criteria);

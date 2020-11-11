@@ -3,14 +3,16 @@
 Application based on micro-service architecture.
 Project Benefits:
 - Java Web Application based on Spring Boot (using MVC, Data, AOP, Security);
-- Systematized storage and access to teaching materials of academic disciplines. Under the materials should be considered concepts
-  "course". Each course is divide into "lectures";
+- Systematized storage and access to teaching materials of academic disciplines. Courses and lectures are available.
 - Possibility to start/finish course/lesson with email notification;
-- Improved search engine by difference criteria to find courses AND users;
+- Improved search engine by different criteria to find courses;
+- Improved search engine by different criteria for teachers to monitor and find students;
+- Custom SQL functions for searching by JSONB fields via Criteria API;
 - Caching engine for faster course search;
 - AOP functionality to send email notification;
 - Interactive comments creation by users to each lecture;
 - The ability to add a questionnaire to the course to collect feedback from students;
+- The ability for the teacher to generate and download a list of students in CSV format;
 - Uninterrupted communication between micro-services using Apache Kafka for User Creation Processes;
 - Continuous Event Driven for processing events about StartCourse and FinishLesson.
 - Improved project security using OAuth2 from a separate service;
@@ -135,9 +137,7 @@ When OAuth2 server rises for the first time, a default client and users will be 
 
 ***
 ### TODO list:
-1. Add monitoring functionality for teacher
-- collect information
-3. Migrate to Gradle
-4. Fix displaying JUnit report
-6. Generate PDF file for teacher and generate a certificate for user
-8. Move aspect to async processes
+1. Migrate to Gradle
+2. Fix displaying JUnit report
+3. Generate a PDF certificate for user
+4. Move aspect to async processes

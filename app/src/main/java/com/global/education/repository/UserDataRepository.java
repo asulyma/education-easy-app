@@ -1,5 +1,6 @@
 package com.global.education.repository;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +15,7 @@ public interface UserDataRepository
 		extends JpaRepository<UserDataEntity, Long>, JpaSpecificationExecutor<UserDataEntity> {
 
 	UserDataEntity findByUuid(UUID uuid);
+
+	List<UserDataEntity> findAllByUuidIn(List<UUID> uuids);
 
 }
