@@ -1,6 +1,6 @@
 package com.global.education.IT;
 
-import static com.education.common.model.InfoType.COURSE_QUESTIONNAIRE;
+import static com.education.common.model.InfoType.MIDDLE_COURSE_QUESTIONNAIRE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -157,7 +157,7 @@ public class CourseServiceIT extends EducationApplicationIT {
 		SharedCourse dto = new SharedCourse();
 		dto.setDescription(IT_TEST_COURSE);
 		dto.setTitle(JAVA_CORE);
-		dto.setAdditionalInfo(of(COURSE_QUESTIONNAIRE, EMPTY));
+		dto.setAdditionalInfo(of(MIDDLE_COURSE_QUESTIONNAIRE, EMPTY));
 
 		testInstance.updateCourse(courseId, dto);
 
@@ -166,7 +166,7 @@ public class CourseServiceIT extends EducationApplicationIT {
 		assertNull(actual.get(0).getCost());
 		assertEquals(IT_TEST_COURSE, actual.get(0).getDescription());
 		assertEquals(courseId, actual.get(0).getId());
-		assertTrue(actual.get(0).getAdditionalInfo().containsKey(COURSE_QUESTIONNAIRE));
+		assertTrue(actual.get(0).getAdditionalInfo().containsKey(MIDDLE_COURSE_QUESTIONNAIRE));
 	}
 
 }

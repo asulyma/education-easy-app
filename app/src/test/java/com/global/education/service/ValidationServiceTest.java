@@ -70,4 +70,21 @@ public class ValidationServiceTest {
 		testInstance.checkUserOnFinishLesson(TEST_COURSE_ID, TEST_LESSON_ID);
 	}
 
+	@Test(expected = NotAllowedRuntimeException.class)
+	public void shouldThrowExceptionWhenUserDidNotFinishCourse() {
+		Progress progress = new Progress();
+		userDataEntity.getProgressMap().put(TEST_COURSE_ID, progress);
+
+		testInstance.checkUserOnFinishCourse(TEST_COURSE_ID);
+	}
+
+	@Test
+	public void shouldNotThrowExceptionWhenUserFinishedCourse() {
+		Progress progress = new Progress();
+		progress.setFinish(true);
+		userDataEntity.getProgressMap().put(TEST_COURSE_ID, progress);
+
+		testInstance.checkUserOnFinishCourse(TEST_COURSE_ID);
+	}
+
 }

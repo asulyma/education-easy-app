@@ -13,6 +13,7 @@ Project Benefits:
 - Interactive comments creation by users to each lecture;
 - The ability to add a questionnaire to the course to collect feedback from students;
 - The ability for the teacher to generate and download a list of students in CSV format;
+- The ability to generate and download a certificate of course completion;
 - Uninterrupted communication between micro-services using Apache Kafka for User Creation Processes;
 - Continuous Event Driven for processing events about StartCourse and FinishLesson.
 - Improved project security using OAuth2 from a separate service;
@@ -37,8 +38,8 @@ Project Benefits:
   + To run all integration tests need to execute `mvn verify -PIT` manually;
   + To recreate only APP container, use following steps:
     + Stop and remove existing container and image;
-    + Run `cd app && mvn clean install` and `docker build -f Dockerfile -t education_app:latest.20.9-SNAPSHOT .`
-    + Run `docker-compose up -d --build`
+    + Run `cd app && mvn clean install` and `docker build -f Dockerfile -t education_app:latest.20.10-SNAPSHOT .`
+    + Run `cd .. && docker-compose up -d --build`
   + To remove all images by pattern need to execute `docker rmi -f $(docker images | grep 'allsul')` manually.
   
 ***
@@ -139,5 +140,4 @@ When OAuth2 server rises for the first time, a default client and users will be 
 ### TODO list:
 1. Migrate to Gradle
 2. Fix displaying JUnit report
-3. Generate a PDF certificate for user
-4. Move aspect to async processes
+3. Move aspect to async processes

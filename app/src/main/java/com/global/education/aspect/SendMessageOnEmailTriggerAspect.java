@@ -84,7 +84,6 @@ public class SendMessageOnEmailTriggerAspect {
 
 		if (TYPE.containsKey(annotation.target())) {
 			TYPE.get(annotation.target()).accept(helper, event);
-			log.info("Email has been send successfully");
 		} else {
 			throw new MessagingException("Unknown type of email sender");
 		}

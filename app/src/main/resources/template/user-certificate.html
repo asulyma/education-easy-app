@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <style type="text/css">
+        @page {
+            size: 11.69in 8.27in;
+        }
+    </style>
+</head>
+<body>
+
+<div style="width:800px; height:600px; padding:20px; text-align:center; border: 10px solid #787878">
+    <div style="width:750px; height:550px; padding:20px; text-align:center; border: 5px solid #787878">
+        <span style="font-size:50px; font-weight:bold">Certificate of Completion</span>
+        <br/><br/>
+        <span style="font-size:25px"><i>This is to certify that</i></span>
+        <br/><br/>
+
+        <span style="font-size:30px" th:text="${username}"></span><br/><br/>
+        <span style="font-size:25px"><i>has completed the course</i></span> <br/><br/>
+
+        <span style="font-size:30px" th:text="${courseName}"></span><br/><br/>
+        <span style="font-size:20px">with score of <b th:text="${scope}"></b></span> <br/><br/><br/><br/>
+
+        <span style="font-size:25px"><i>dated</i></span><br/>
+        <span style="font-size:30px" th:text="${passDate}"></span>
+
+    </div>
+</div>
+
+</body>
+</html>

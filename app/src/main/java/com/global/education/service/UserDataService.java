@@ -6,6 +6,7 @@ import static java.lang.String.format;
 
 import java.util.*;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserDataService {
 
 	private static final String USER_START_COURSE = "Successfully start course %s for user: %s";
+	private static final String USER_FINISH_COURSE = "Successfully finish course %s for user: %s";
 	private static final String USER_ADD_COEFFICIENT = "Successfully add %s coefficient to %s course id";
 	private static final String CLIENT_FOUND = "Current user can't make such operations, potentially it's client";
 	private static final String USER_NOT_REGISTERED = "User with UUID: %s is not registered!";
@@ -66,9 +68,8 @@ public class UserDataService {
 		UserDataEntity user = findUser(event.getUserUuid());
 		Progress progress = user.getProgressMap().get(event.getCourseId());
 		progress.setFinish(true);
-
-		String certificate = ""; // todo generate certificate and link to user json
-		progress.setCertificate(certificate);
+		progress.setPassedDate(DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
+		log.info(format(USER_FINISH_COURSE, event.getCourseId(), event.getUserUuid()));
 	}
 
 	@Transactional

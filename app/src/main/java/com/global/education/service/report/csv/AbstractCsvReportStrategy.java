@@ -1,6 +1,4 @@
-package com.global.education.service.report;
-
-import static org.apache.commons.lang3.StringUtils.EMPTY;
+package com.global.education.service.report.csv;
 
 import java.util.List;
 import java.util.UUID;
@@ -8,12 +6,16 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 
+@Slf4j
 public abstract class AbstractCsvReportStrategy implements CsvReportStrategy {
 
 	@Override
 	public String generate(List<UUID> userUuids) {
+		log.info("Start generating CSV Report for {} users", userUuids.size());
+
 		OrderCSVReportBodyData seed = buildReportSeed(userUuids);
 		return StringUtils.join(seed.getColumnNames(), LINE_SEPARATOR, buildReportBody(seed.getRows()));
 	}
@@ -21,7 +23,7 @@ public abstract class AbstractCsvReportStrategy implements CsvReportStrategy {
 	protected abstract OrderCSVReportBodyData buildReportSeed(List<UUID> userUuids);
 
 	private String buildReportBody(List<String> rows) {
-		return String.join(EMPTY, rows);
+		return String.join(LINE_SEPARATOR, rows);
 	}
 
 	@Getter

@@ -1,4 +1,4 @@
-package com.global.education.service.report;
+package com.global.education.service.report.csv;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,10 +11,8 @@ import com.global.education.model.UserDataEntity;
 import com.global.education.service.UserDataService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserCsvReportStrategy extends AbstractCsvReportStrategy {
@@ -24,8 +22,6 @@ public class UserCsvReportStrategy extends AbstractCsvReportStrategy {
 	@Override
 	protected OrderCSVReportBodyData buildReportSeed(List<UUID> userUuids) {
 		List<UserDataEntity> users = userDataService.findAllUsers(userUuids);
-		log.info("Total users for buildReportSeed: {}", users.size());
-
 		return OrderCSVReportBodyData.builder().columnNames(generateColumnNames()).rows(generateRows(users)).build();
 	}
 

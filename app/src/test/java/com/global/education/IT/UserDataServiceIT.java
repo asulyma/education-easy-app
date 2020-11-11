@@ -135,7 +135,7 @@ public class UserDataServiceIT extends EducationApplicationIT {
 	private void assertFinishCourse(Long courseId) {
 		Progress progress = getProgressMap().get(courseId);
 		assertTrue(progress.isFinish());
-		assertNotNull(progress.getCertificate());
+		assertNotNull(progress.getPassedDate());
 		assertEquals(progress.getTotalValue(), progress.getProgressValue());
 	}
 
