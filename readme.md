@@ -38,7 +38,7 @@ Project Benefits:
   + To run all integration tests need to execute `mvn verify -PIT` manually;
   + To recreate only APP container, use following steps:
     + Stop and remove existing container and image;
-    + Run `cd app && mvn clean install` and `docker build -f Dockerfile -t education_app:latest.20.10-SNAPSHOT .`
+    + Run `cd app && mvn clean install` and `docker build -f Dockerfile -t education_app:latest.20.12-SNAPSHOT .`
     + Run `cd .. && docker-compose up -d --build`
   + To remove all images by pattern need to execute `docker rmi -f $(docker images | grep 'allsul')` manually.
   

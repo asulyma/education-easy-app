@@ -12,7 +12,7 @@
 
     <groupId>com.global</groupId>
     <artifactId>education</artifactId>
-    <version>20.10-SNAPSHOT</version>
+    <version>20.12-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
