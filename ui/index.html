@@ -29,22 +29,15 @@
     <h1 id="logo">Hello, Aleksandr<span th:text="${username}"></span></h1>
     <nav id="nav">
         <ul>
-            <li class="current"><a href="/">Home</a></li>
             <li class="submenu">
                 <a href="">Menu</a>
                 <ul>
-                    <li><a href="left-sidebar.html">Left Sidebar</a></li>
-                    <li><a href="right-sidebar.html">Right Sidebar</a></li>
-                    <li><a href="no-sidebar.html">No Sidebar</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#courses" class="fit scrolly">Courses</a></li>
                     <li class="submenu">
                         <a href="">Submenu</a>
                         <ul>
-                            <li><a href="#">Dolore Sed</a></li>
-                            <li><a href="#">Consequat</a></li>
-                            <li><a href="#">Lorem Magna</a></li>
-                            <li><a href="#">Sed Magna</a></li>
-                            <li><a href="#">Ipsum Nisl</a></li>
+                            <li><a href="about-us.html">About Us</a></li>
+                            <li><a href="contact.html">Contact</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -58,26 +51,18 @@
 <!-- Banner -->
 <section id="banner">
 
-    <!--
-        ".inner" is set up as an inline-block so it automatically expands
-        in both directions to fit whatever's inside it. This means it won't
-        automatically wrap lines, so be sure to use line breaks where
-        appropriate (<br />).
-    -->
     <div class="inner">
 
         <header>
             <h2>EDUCATION</h2>
         </header>
         <p>This is <strong>plathorm</strong> of courses,<br/>
-           choose your course<br/>
-           and just <br/>
-            <a href="#">LEARN</a></p>
-        <footer>
-            <ul class="buttons vertical">
-                <li><a href="#main" class="button fit scrolly">Tell Me More</a></li>
-            </ul>
-        </footer>
+            choose your course<br/>
+            and just <br/><br/>
+
+        <ul class="buttons vertical">
+            <li><a href="#main" class="button fit scrolly">Learn</a></li>
+        </ul>
 
     </div>
 
@@ -88,16 +73,14 @@
 
     <header class="special container">
         <span class="icon fa-bar-chart-o"></span>
-        <h2>As this is my <strong>twentieth</strong> freebie for HTML5 UP<br/>
-            I decided to give it a really creative name.</h2>
-        <p>Turns out <strong>Twenty</strong> was the best I could come up with. Anyway, lame name aside,<br/>
-           it's minimally designed, fully responsive, built on HTML5/CSS3/<strong>skel</strong>,
-           and, like all my stuff,<br/>
-           released for free under the <a href="#">Creative Commons Attribution 3.0</a> license. Have fun!</p>
+        <h2>on this portal you can study <strong>different courses</strong> for free</h2>
+        <p>Forget everything you have been taught and choose your course. </br>
+            After completing the course, you will receive a certificate and excellent knowledge of the subject. </br>
+            Take a look at our <a href="#advantages" class="fit scrolly">advantages</a> below. Have fun!</p>
     </header>
 
     <!-- One -->
-    <section class="wrapper style2 container special-alt">
+    <section class="wrapper style2 container special-alt" id="advantages">
         <div class="row half">
             <div class="8u">
 
@@ -106,11 +89,11 @@
                         your call bro.</h2>
                 </header>
                 <p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu comteger ut fermentum lorem.
-                   Lorem ipsum dolor sit amet. Sed tristique purus vitae volutpat ultrices. eu elit eget commodo. Sed
-                   tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo.</p>
+                    Lorem ipsum dolor sit amet. Sed tristique purus vitae volutpat ultrices. eu elit eget commodo. Sed
+                    tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo.</p>
                 <footer>
                     <ul class="buttons">
-                        <li><a href="#" class="button">Find Out More</a></li>
+                        <li><a href="about-us.html" class="button">Find Out More</a></li>
                     </ul>
                 </footer>
 
@@ -141,7 +124,7 @@
                         <h3>This is Something</h3>
                     </header>
                     <p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec
-                       nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+                        nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
                 </section>
 
             </div>
@@ -153,7 +136,7 @@
                         <h3>Also Something</h3>
                     </header>
                     <p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec
-                       nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+                        nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
                 </section>
 
             </div>
@@ -165,7 +148,7 @@
                         <h3>Probably Something</h3>
                     </header>
                     <p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec
-                       nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+                        nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
                 </section>
 
             </div>
@@ -173,32 +156,39 @@
     </section>
 
     <!-- Three -->
-    <section class="wrapper style3 container special">
+    <section class="wrapper style3 container special" id="courses">
 
         <header class="major">
-            <h2>Next look at this <strong>courses</strong></h2>
+            <h2>Next look at these <strong>courses</strong></h2>
         </header>
 
         <div class="row">
             <div class="6u">
 
                 <section>
-                    <a href="#" class="image feature"><img src="images/pic01.jpg" alt=""/></a>
+                    <a href="java-course.html" class="image feature"><img src="images/pic01.jpg"
+                                                                          alt="Java Core Course"/></a>
                     <header>
                         <h3>Java</h3>
                     </header>
-                    <p>Java is a popular programming language used to code game and mobile applications, desktop programs and a huge number of soft products for enterprises. The Java curriculum consists of interconnected levels, after which you will develop the knowledge and skills of Java development at the Junior Specialist level.</p>
+                    <p>Java is a popular programming language used to code game and mobile applications, desktop
+                        programs and a huge number of soft products for enterprises. The Java curriculum consists of
+                        interconnected levels, after which you will develop the knowledge and skills of Java development
+                        at the Junior Specialist level.</p>
                 </section>
 
             </div>
             <div class="6u">
 
                 <section>
-                    <a href="#" class="image feature"><img src="images/pic02.jpg" alt=""/></a>
+                    <a href="#" class="image feature"><img src="images/pic02.jpg" alt="C++ Course"/></a>
                     <header>
                         <h3>C++</h3>
                     </header>
-                    <p>C++ programming courses are a comprehensive training program for one of the most popular and powerful programming languages, C++. The training consists of interconnected stages, after which you will master the basics of programming at basic and advanced levels. The C++ program provides for the acquisition of hard and soft skills necessary for a Junior specialist.</p>
+                    <p>C++ programming courses are a comprehensive training program for one of the most popular and
+                        powerful programming languages, C++. The training consists of interconnected stages, after which
+                        you will master the basics of programming at basic and advanced levels. The C++ program provides
+                        for the acquisition of hard and soft skills necessary for a Junior specialist.</p>
                 </section>
 
             </div>
@@ -207,24 +197,26 @@
             <div class="6u">
 
                 <section>
-                    <a href="#" class="image feature"><img src="images/pic03.jpg" alt=""/></a>
+                    <a href="#" class="image feature"><img src="images/pic03.jpg" alt="JS Course"/></a>
                     <header>
                         <h3>JS</h3>
                     </header>
-                    <p>JS development courses are a comprehensive JavaScript programming program from scratch. JavaScript is popular and easy to use. It is widely used in browsers to create interactive web pages, to develop user interface assignments using frameworks.</p>
+                    <p>JS development courses are a comprehensive JavaScript programming program from scratch.
+                        JavaScript is popular and easy to use. It is widely used in browsers to create interactive web
+                        pages, to develop user interface assignments using frameworks.</p>
                 </section>
 
             </div>
             <div class="6u">
 
                 <section>
-                    <a href="#" class="image feature"><img src="images/pic04.jpg" alt=""/></a>
+                    <a href="#" class="image feature"><img src="images/pic04.jpg" alt="Project Management Course"/></a>
                     <header>
                         <h3>Project Management</h3>
                     </header>
                     <p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a
-                       ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit
-                       ullamcorper sed blandit lorem ipsum dolore.</p>
+                        ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit
+                        ullamcorper sed blandit lorem ipsum dolore.</p>
                 </section>
 
             </div>
@@ -268,7 +260,7 @@
         <li><a href="#" class="icon circle fa-dribbble"><span class="label">Dribbble</span></a></li>
     </ul>
 
-    <span class="copyright">&copy; 2018 Course Store. All rights reserved. Store <span>by Aleksandr Sulyma</span></span>
+    <span class="copyright">&copy; Education Application. All rights reserved. 2020. Store <span>by Aleksandr Sulyma</span></span>
 
 </footer>
 
