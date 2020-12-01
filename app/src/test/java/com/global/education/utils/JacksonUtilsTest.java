@@ -68,7 +68,7 @@ public class JacksonUtilsTest {
 
         // TESTS
         assertNotNull(result);
-        assertEquals("{\"progressValue\":1,\"alreadyDoneLessons\":[1,2,3]}", result);
+        assertEquals("{\"progressValue\":1,\"totalValue\":0,\"alreadyDoneLessons\":[1,2,3],\"finish\":false,\"passedDate\":null}", result);
     }
 
     @Test

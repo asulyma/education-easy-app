@@ -1,14 +1,14 @@
 package com.global.education.eventdriven;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.education.common.dto.event.EventType;
+
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 public class QueueEvent {
 
-    private Object o;
+    private Object eventDto;
     private EventType type;
 }

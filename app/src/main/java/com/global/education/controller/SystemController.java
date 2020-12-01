@@ -1,28 +1,33 @@
 package com.global.education.controller;
 
-import static com.global.education.mapper.UserMapper.INSTANCE;
-
-import java.util.List;
+import static java.lang.String.format;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.education.common.dto.event.UserCreationEvent;
 import com.global.education.controller.dto.User;
 import com.global.education.controller.handler.BaseHandler;
-import com.global.education.service.UserDataService;
+import com.global.education.service.*;
+
+import lombok.RequiredArgsConstructor;
 
 
 @RestController
 @RequestMapping("/system")
+@RequiredArgsConstructor
 public class SystemController extends BaseHandler {
 
-	@Autowired
-	private UserDataService userDataService;
+	private static final String SEND_USER_CREATION = "UserCreationEvent for %s has been sent to OAuth microservice";
+
+	private final UserDataService userDataService;
+	private final CourseService courseService;
+	private final EventService eventService;
 
 	/**
 	 * This method implies that the user has already been registered in the OAuth2 server
@@ -33,15 +38,18 @@ public class SystemController extends BaseHandler {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@GetMapping("/user")
-	public User getCurrentUser() {
-		return INSTANCE.buildUser(userDataService.findCurrentUser());
+	@PostMapping("/invalidate-cache")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasSeniorRank()")
+	public ResponseEntity<HttpStatus> invalidateCache() {
+		courseService.destroy();
+		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping("/users")
+	@PostMapping("/create-user")
 	@Secured("ROLE_ADMIN")
-	public List<User> getAllUsers() {
-		return INSTANCE.buildUsers(userDataService.findAllUsers());
+	public ResponseEntity<String> createUser(@RequestBody @Valid UserCreationEvent user) {
+		eventService.sendUserCreationEvent(user);
+		return ResponseEntity.status(HttpStatus.CREATED).body(format(SEND_USER_CREATION, user.getUsername()));
 	}
 
 }

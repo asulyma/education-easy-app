@@ -17,9 +17,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ValidationService {
 
-	public static final String ID_REGEXP = "^[0-9]{1,9}";
 	private static final String USER_START_COURSE = "User %s did not start the course %s";
 	private static final String USER_FINISHED_LESSON = "User %s already finished the lesson %s";
+	private static final String USER_FINISHED_COURSE = "User %s did not finish the course %s";
 
 	private final UserDataService userDataService;
 	private final LessonService lessonService;
@@ -43,6 +43,15 @@ public class ValidationService {
 
 		if (progress.getAlreadyDoneLessons().contains(lessonId)) {
 			throw new BadRequestParametersRuntimeException(format(USER_FINISHED_LESSON, user.getUuid(), lessonId));
+		}
+	}
+
+	public void checkUserOnFinishCourse(Long courseId) {
+		UserDataEntity user = userDataService.findCurrentUser();
+		Progress progress = user.getProgressMap().get(courseId);
+
+		if (progress == null || !progress.isFinish()) {
+			throw new NotAllowedRuntimeException(format(USER_FINISHED_COURSE, user.getUuid(), courseId));
 		}
 	}
 

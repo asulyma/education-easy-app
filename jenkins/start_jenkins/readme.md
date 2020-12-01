@@ -33,6 +33,7 @@
 Create a job with Pipeline type and made the following required staff:
 * Enable **This project is parameterized**
   * Select **Git Parameter** with `BRANCH` name and **Branch** parameter type;
+  * Select ** Boolean Parameter** with `VERIFY` name `Run Integration Tests` description;
 * Define pipeline script from SCM
   * Enter GitHub repository url and credentials
   * Enter `${BRANCH}` value to **Branch Specifier** 
@@ -45,8 +46,8 @@ Create a job with Pipeline type and made the following required staff:
 
 Create a job with Pipeline type and made the following required staff:
 * Enable **This project is parameterized**
-  * Select **Choice Parameter** with `ENVIRONMENT` name and [`all`, `prod`, `stage`] choices (each with new line);
   * Select **Git Parameter** with `BRANCH` name and **Branch** parameter type;
+  * Select **Choice Parameter** with `ENVIRONMENT` name and [`all` `prod` `stage`] choices (each with new line);
   * Select **Image Tag Parameter** with `APP_DOCKER_IMAGE` name and `allsul/education_app` image name (also add access to dockerhub via **Advanced**);
   * Select **Image Tag Parameter** with `AUTH_DOCKER_IMAGE` name and `allsul/education_auth` image name (also add access to dockerhub via **Advanced**);
 * Define pipeline script from SCM

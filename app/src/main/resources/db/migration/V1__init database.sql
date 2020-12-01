@@ -17,7 +17,7 @@ CREATE TABLE course
     begin_date      BIGINT,
     finish_date     BIGINT,
     cost            BIGINT,
-    additional_info VARCHAR(512)
+    additional_info JSONB
 );
 
 CREATE TABLE lesson

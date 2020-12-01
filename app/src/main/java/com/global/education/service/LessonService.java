@@ -2,20 +2,19 @@ package com.global.education.service;
 
 import static com.global.education.utils.UserUtils.TOTAL_PROGRESS;
 import static com.global.education.utils.UserUtils.currentUserUuid;
+import static java.lang.String.format;
 
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.education.common.kafka.dto.UserFinishLessonEvent;
+import com.education.common.dto.event.UserFinishLessonEvent;
 import com.global.education.controller.dto.SharedLesson;
 import com.global.education.controller.handler.exception.NotFoundRuntimeException;
-import com.global.education.kafka.service.UserUpdateEventKafkaService;
 import com.global.education.model.learning.LessonEntity;
 import com.global.education.repository.LessonRepository;
 
@@ -26,12 +25,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class LessonService {
 
+	private static final String FINISH_LESSON = "Event Driven: event about finish lesson %s has been sent";
+
 	@Autowired
 	private LessonRepository lessonRepository;
 	@Autowired
 	private CourseService courseService;
 	@Autowired
-	private UserUpdateEventKafkaService updateEventService;
+	private EventService updateEventService;
 
 	public List<LessonEntity> getLessons(Long courseId) {
 		return lessonRepository.findAllByCourseId(courseId);
@@ -76,16 +77,19 @@ public class LessonService {
 	public ResponseEntity<String> finishLesson(Long lessonId, Long courseId) {
 		LessonEntity lesson = getLessonById(lessonId, courseId);
 		UserFinishLessonEvent event = buildDto(lesson, currentUserUuid());
+
 		updateEventService.sendFinishLessonEvent(event);
-		return new ResponseEntity<>("Kafka event about finish lesson " + lessonId + " has been sent", HttpStatus.OK);
+		return ResponseEntity.ok(format(FINISH_LESSON, lessonId));
 	}
 
 	private UserFinishLessonEvent buildDto(LessonEntity lesson, UUID userUuid) {
 		int lessons = lessonRepository.countAllByCourseId(lesson.getCourse().getId());
-		return new UserFinishLessonEvent().setCourseId(lesson.getCourse().getId())
-				.setUserUuid(userUuid)
-				.setAlreadyDoneLesson(lesson.getId())
-				.setCoefficientToProgress(TOTAL_PROGRESS / lessons);
+		UserFinishLessonEvent event = new UserFinishLessonEvent();
+		event.setAlreadyDoneLesson(lesson.getId());
+		event.setCoefficientToProgress(TOTAL_PROGRESS / lessons);
+		event.setCourseId(lesson.getCourse().getId());
+		event.setUserUuid(userUuid);
+		return event;
 	}
 
 }

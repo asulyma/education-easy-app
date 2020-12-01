@@ -1,14 +1,12 @@
 package com.education.common.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.*;
+import lombok.experimental.Accessors;
+
 
 @Getter
 @Setter
@@ -17,7 +15,14 @@ import java.util.List;
 @NoArgsConstructor
 public class Progress implements Serializable {
 
-    private long progressValue;
-    private List<Long> alreadyDoneLessons = new ArrayList<>();
+	private long progressValue;
+	private long totalValue;
+	private List<Long> alreadyDoneLessons = new ArrayList<>();
+	private boolean finish;
+	private String passedDate;
+
+	public Progress(long totalValue) {
+		this.totalValue = totalValue;
+	}
 
 }

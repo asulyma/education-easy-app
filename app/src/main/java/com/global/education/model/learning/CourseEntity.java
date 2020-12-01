@@ -1,18 +1,17 @@
 package com.global.education.model.learning;
 
+import java.util.*;
+
+import javax.persistence.*;
+
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
+import com.education.common.model.InfoType;
 import com.global.education.model.CreatableEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Getter
 @Setter
@@ -21,25 +20,26 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class CourseEntity extends CreatableEntity {
 
-    @Column(name = "title")
-    private String title;
+	@Column(name = "title")
+	private String title;
 
-    @Column(name = "description")
-    private String description;
+	@Column(name = "description")
+	private String description;
 
-    @Column(name = "begin_date")
-    private Long beginDate;
+	@Column(name = "begin_date")
+	private Long beginDate;
 
-    @Column(name = "finish_date")
-    private Long finishDate;
+	@Column(name = "finish_date")
+	private Long finishDate;
 
-    @Column(name = "cost")
-    private Long cost;
+	@Column(name = "cost")
+	private Long cost;
 
-    @Column(name = "additional_info")
-    private String additionalInfo;
+	@Column(name = "additional_info", columnDefinition = "jsonb")
+	@Type(type = "jsonb", parameters = { @Parameter(name = "classType", value = "java.util.HashMap") })
+	private Map<InfoType, String> additionalInfo = new HashMap<>();
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<LessonEntity> lessons = new ArrayList<>();
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+	private List<LessonEntity> lessons = new ArrayList<>();
 
 }

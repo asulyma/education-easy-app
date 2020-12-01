@@ -39,14 +39,17 @@ services:
     #volumes:
     #  - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   auth-education:
-    image: education_auth:latest.20.9-SNAPSHOT
+    image: education_auth:latest.20.10-SNAPSHOT
     container_name: auth-education
     ports:
       - 8081:8081
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-postgres-db:5432/education_auth?autoReconnect=true&useSSL=false
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:19092
     depends_on:
       - auth-postgres-db
+      - zookeeper
+      - kafka
 
   app-postgres-db:
     image: mdillon/postgis:10
@@ -58,7 +61,7 @@ services:
       - POSTGRES_USER=education-app
       - POSTGRES_PASSWORD=education-app
   app-education:
-    image: education_app:latest.20.9-SNAPSHOT
+    image: education_app:latest.20.10-SNAPSHOT
     container_name: app-education
     ports:
       - 8080:8080

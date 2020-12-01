@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.education.common.model.Progress;
-import com.global.education.kafka.service.UserUpdateEventKafkaService;
 import com.global.education.model.UserDataEntity;
 
 
@@ -23,7 +22,7 @@ public class CourseServiceTest {
 	@Mock
 	private UserDataService userDataService;
 	@Mock
-	private UserUpdateEventKafkaService kafkaService;
+	private EventService kafkaService;
 	@InjectMocks
 	private CourseService testInstance;
 

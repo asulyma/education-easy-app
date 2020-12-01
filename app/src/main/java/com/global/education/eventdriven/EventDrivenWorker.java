@@ -9,7 +9,7 @@ import java.util.concurrent.BlockingQueue;
 public class EventDrivenWorker implements Runnable {
 
     private final BlockingQueue<QueueEvent> queue;
-    private final InMemoryQueueEventProcessor processor;
+    private final InMemoryQueueEventApplier applier;
 
     public void sendToQueue(QueueEvent event) {
         queue.add(event);
@@ -20,7 +20,7 @@ public class EventDrivenWorker implements Runnable {
     public void run() {
         QueueEvent event;
         while ((event = queue.take()) != null) {
-            processor.applyEvent(event);
+            applier.applyEvent(event);
         }
     }
 }

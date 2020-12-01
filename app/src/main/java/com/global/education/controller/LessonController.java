@@ -1,7 +1,7 @@
 package com.global.education.controller;
 
 import static com.global.education.mapper.LessonMapper.INSTANCE;
-import static com.global.education.service.ValidationService.ID_REGEXP;
+import static com.global.education.utils.UserUtils.ID_REGEXP;
 
 import java.util.List;
 

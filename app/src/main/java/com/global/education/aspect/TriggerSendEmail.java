@@ -1,6 +1,6 @@
 package com.global.education.aspect;
 
-import com.education.common.model.EmailType;
+import com.education.common.dto.event.EventType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface TriggerSendEmail {
 
-    EmailType target();
+    EventType target();
 
 }

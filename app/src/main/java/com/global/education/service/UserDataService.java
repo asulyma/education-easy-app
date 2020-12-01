@@ -1,40 +1,53 @@
 package com.global.education.service;
 
-import static com.global.education.utils.UserUtils.currentUserName;
-import static com.global.education.utils.UserUtils.currentUserUuid;
+import static com.global.education.mapper.SpecificationMapper.INSTANCE;
+import static com.global.education.utils.UserUtils.*;
+import static java.lang.String.format;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.education.common.kafka.dto.UserFinishLessonEvent;
-import com.education.common.kafka.dto.UserStartCourseEvent;
+import com.education.common.dto.event.UserFinishLessonEvent;
+import com.education.common.dto.event.UserToCourseEvent;
 import com.education.common.model.Progress;
 import com.education.common.model.Rank;
+import com.global.education.controller.dto.SpecificationRequest;
 import com.global.education.controller.dto.User;
 import com.global.education.controller.handler.exception.NotAllowedRuntimeException;
 import com.global.education.controller.handler.exception.NotRegisteredRuntimeException;
 import com.global.education.model.UserDataEntity;
 import com.global.education.repository.UserDataRepository;
+import com.global.education.service.specification.SpecificationCriteria;
+import com.global.education.service.specification.UserSpecificationFactory;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserDataService {
 
-	@Autowired
-	private UserDataRepository userDataRepository;
+	private static final String USER_START_COURSE = "Successfully start course %s for user: %s";
+	private static final String USER_FINISH_COURSE = "Successfully finish course %s for user: %s";
+	private static final String USER_ADD_COEFFICIENT = "Successfully add %s coefficient to %s course id";
+	private static final String CLIENT_FOUND = "Current user can't make such operations, potentially it's client";
+	private static final String USER_NOT_REGISTERED = "User with UUID: %s is not registered!";
+
+	private final UserDataRepository userDataRepository;
+	private final UserSpecificationFactory userSpecificationFactory;
 
 	@Transactional
-	public void startCourse(UserStartCourseEvent event) {
+	public void startCourse(UserToCourseEvent event) {
 		UserDataEntity user = findUser(event.getUserUuid());
 		Map<Long, Progress> progressMap = user.getProgressMap();
-		progressMap.put(event.getCourseId(), new Progress());
-		log.info("Successfully start course {} for user: {}", event.getCourseId(), event.getUserUuid());
+		progressMap.put(event.getCourseId(), new Progress(TOTAL_PROGRESS));
+		log.info(format(USER_START_COURSE, event.getCourseId(), event.getUserUuid()));
 	}
 
 	@Transactional
@@ -47,7 +60,16 @@ public class UserDataService {
 		progress.setProgressValue(progress.getProgressValue() + event.getCoefficientToProgress());
 
 		progressMap.put(event.getCourseId(), progress);
-		log.info("Successfully add {} coefficient to {} course id", event.getCoefficientToProgress(), event.getCourseId());
+		log.info(format(USER_ADD_COEFFICIENT, event.getCoefficientToProgress(), event.getCourseId()));
+	}
+
+	@Transactional
+	public void finishCourse(UserToCourseEvent event) {
+		UserDataEntity user = findUser(event.getUserUuid());
+		Progress progress = user.getProgressMap().get(event.getCourseId());
+		progress.setFinish(true);
+		progress.setPassedDate(DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
+		log.info(format(USER_FINISH_COURSE, event.getCourseId(), event.getUserUuid()));
 	}
 
 	@Transactional
@@ -68,11 +90,11 @@ public class UserDataService {
 
 	public UserDataEntity findUser(UUID userUuid) {
 		if (userUuid == null) {
-			throw new NotAllowedRuntimeException("Current user can't make such operations, potentially it's client");
+			throw new NotAllowedRuntimeException(CLIENT_FOUND);
 		}
 		UserDataEntity userData = userDataRepository.findByUuid(userUuid);
 		if (userData == null) {
-			throw new NotRegisteredRuntimeException("User with UUID: " + userUuid + " is not registered!");
+			throw new NotRegisteredRuntimeException(format(USER_NOT_REGISTERED, userUuid));
 		}
 		return userData;
 	}
@@ -82,8 +104,14 @@ public class UserDataService {
 		return findUser(currentUser);
 	}
 
-	public List<UserDataEntity> findAllUsers() {
-		return userDataRepository.findAll();
+	public List<UserDataEntity> findAllUsers(List<UUID> uuids) {
+		return userDataRepository.findAllByUuidIn(uuids);
+	}
+
+	public List<UserDataEntity> findAllUsers(SpecificationRequest request) {
+		SpecificationCriteria criteria = INSTANCE.buildSpecificationCriteria(request);
+		Specification<UserDataEntity> specification = userSpecificationFactory.build(criteria);
+		return userDataRepository.findAll(specification);
 	}
 
 }

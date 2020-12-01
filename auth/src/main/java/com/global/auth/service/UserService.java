@@ -1,57 +1,59 @@
 package com.global.auth.service;
 
-import com.global.auth.model.UserEntity;
-import com.global.auth.repository.UserRepository;
-import com.global.auth.repository.projection.UserUuid;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static org.springframework.security.core.authority.AuthorityUtils.createAuthorityList;
 
 import java.util.Collections;
 import java.util.UUID;
 
-import static org.springframework.security.core.authority.AuthorityUtils.createAuthorityList;
+import org.springframework.security.core.userdetails.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.education.common.dto.event.UserCreationEvent;
+import com.global.auth.model.UserEntity;
+import com.global.auth.repository.UserRepository;
+import com.global.auth.repository.projection.UserUuid;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+	private final UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserEntity user = userRepository.findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException(username);
+		}
 
-        String[] roles = new String[user.getRoles().size()];
-        return new User(user.getUsername(), user.getPassword(), createAuthorityList(user.getRoles().toArray(roles)));
-    }
+		String[] roles = new String[user.getRoles().size()];
+		return new User(user.getUsername(), user.getPassword(), createAuthorityList(user.getRoles().toArray(roles)));
+	}
 
-    public UUID loadUserUuid(String username) {
-        UserUuid uuid = userRepository.findUuidByUsername(username);
-        if (uuid == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return uuid.getUuid();
-    }
+	public UUID loadUserUuid(String username) {
+		UserUuid uuid = userRepository.findUuidByUsername(username);
+		if (uuid == null) {
+			throw new UsernameNotFoundException(username);
+		}
+		return uuid.getUuid();
+	}
 
-    @Transactional
-    public UserEntity createUser() {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername("john");
-        userEntity.setPassword(new BCryptPasswordEncoder().encode("john"));
-        userEntity.setRoles(Collections.singleton("ROLE_USER"));
-        userRepository.save(userEntity);
-        return userEntity;
-    }
+	@Transactional
+	public void createUser(UserCreationEvent userDto) {
+		UserEntity userEntity = new UserEntity();
+		userEntity.setUsername(userDto.getUsername());
+		userEntity.setPassword("{bcrypt}" + new BCryptPasswordEncoder().encode(userDto.getPassword()));
+		userEntity.setRoles(Collections.singleton(userDto.getRole()));
+		userRepository.save(userEntity);
+
+		log.info("User has been created! Name: {}, UUID: {}", userEntity.getUsername(), userEntity.getUuid());
+	}
 
 }

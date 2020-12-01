@@ -1,7 +1,10 @@
 package com.global.education.IT;
 
+import static com.education.common.model.InfoType.MIDDLE_COURSE_QUESTIONNAIRE;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.testcontainers.shaded.com.google.common.collect.ImmutableMap.of;
 
 import java.util.List;
 import java.util.Set;
@@ -21,11 +24,9 @@ import com.education.common.model.Progress;
 import com.global.education.controller.dto.SharedCourse;
 import com.global.education.controller.dto.SpecificationRequest;
 import com.global.education.controller.handler.exception.NotFoundRuntimeException;
-import com.global.education.kafka.service.UserUpdateEventKafkaService;
 import com.global.education.model.UserDataEntity;
 import com.global.education.model.learning.CourseEntity;
-import com.global.education.service.CourseService;
-import com.global.education.service.UserDataService;
+import com.global.education.service.*;
 
 
 @SpringBootTest
@@ -44,7 +45,7 @@ public class CourseServiceIT extends EducationApplicationIT {
 	@MockBean
 	private UserDataService userDataService;
 	@MockBean
-	private UserUpdateEventKafkaService kafkaService;
+	private EventService eventService;
 
 	private final UserDataEntity user = new UserDataEntity();
 
@@ -100,7 +101,7 @@ public class CourseServiceIT extends EducationApplicationIT {
 		ResponseEntity<String> actual = testInstance.startCourse(1L);
 
 		assertEquals(HttpStatus.OK, actual.getStatusCode());
-		verify(kafkaService, never()).sendStartCourseEvent(any());
+		verify(eventService, never()).sendStartCourseEvent(any());
 	}
 
 	@Test
@@ -108,7 +109,7 @@ public class CourseServiceIT extends EducationApplicationIT {
 		ResponseEntity<String> actual = testInstance.startCourse(1L);
 
 		assertEquals(HttpStatus.OK, actual.getStatusCode());
-		verify(kafkaService).sendStartCourseEvent(any());
+		verify(eventService).sendStartCourseEvent(any());
 	}
 
 	@Test
@@ -156,6 +157,8 @@ public class CourseServiceIT extends EducationApplicationIT {
 		SharedCourse dto = new SharedCourse();
 		dto.setDescription(IT_TEST_COURSE);
 		dto.setTitle(JAVA_CORE);
+		dto.setAdditionalInfo(of(MIDDLE_COURSE_QUESTIONNAIRE, EMPTY));
+
 		testInstance.updateCourse(courseId, dto);
 
 		List<CourseEntity> actual = testInstance.findCourses(request);
@@ -163,6 +166,7 @@ public class CourseServiceIT extends EducationApplicationIT {
 		assertNull(actual.get(0).getCost());
 		assertEquals(IT_TEST_COURSE, actual.get(0).getDescription());
 		assertEquals(courseId, actual.get(0).getId());
+		assertTrue(actual.get(0).getAdditionalInfo().containsKey(MIDDLE_COURSE_QUESTIONNAIRE));
 	}
 
 }

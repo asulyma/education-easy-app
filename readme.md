@@ -3,21 +3,28 @@
 Application based on micro-service architecture.
 Project Benefits:
 - Java Web Application based on Spring Boot (using MVC, Data, AOP, Security);
-- Systematized storage and access to teaching materials of academic disciplines. Under the materials should be considered concepts
-  "course". Each course is divide into "lectures";
-- Improved search engine by difference criteria;
+- Systematized storage and access to teaching materials of academic disciplines. Courses and lectures are available.
+- Possibility to start/finish course/lesson with email notification;
+- Improved search engine by different criteria to find courses;
+- Improved search engine by different criteria for teachers to monitor and find students;
+- Custom SQL functions for searching by JSONB fields via Criteria API;
 - Caching engine for faster course search;
 - AOP functionality to send email notification;
 - Interactive comments creation by users to each lecture;
-- Uninterrupted communication between micro-services using Apache Kafka;
+- The ability to add a questionnaire to the course to collect feedback from students;
+- The ability for the teacher to generate and download a list of students in CSV format;
+- The ability to generate and download a certificate of course completion;
+- Uninterrupted communication between micro-services using Apache Kafka for User Creation Processes;
+- Continuous Event Driven for processing events about StartCourse and FinishLesson.
 - Improved project security using OAuth2 from a separate service;
+- Custom security expressions for unique checking of user permissions;
 - Support Docker containers;
 - Swagger documentation;
 - Access for the client to actuator information;
 - Local Deploying with the Docker technology via single MAVEN command;
 - Good coverage with integration tests and running them in single MAVEN command;
 - Ansible's playbooks to build and deploy application;
-- Jenkins' job for build and push docker image to DockerHub;
+- Jenkins' job for build, run all tests (include IT) and push docker image to DockerHub;
 - Jenkins' job for deploy application to AWS (Support RedHat and Debian OS).
 
 ***
@@ -27,12 +34,13 @@ Project Benefits:
 
 ##### Notes
   + Maven plugins will automatically created Docker images and executed `docker-compose up -d` command;
-  + To **stop** all application, need to execute `docker-compose down` manually.
-  + To run all integration tests need to execute `mvn verify -PIT` manually.
+  + To **stop** all application, need to execute `docker-compose down` manually;
+  + To run all integration tests need to execute `mvn verify -PIT` manually;
   + To recreate only APP container, use following steps:
     + Stop and remove existing container and image;
-    + Run `cd app && mvn clean install` and `docker build -f Dockerfile -t education_app:latest.20.9-SNAPSHOT .`
-    + Run `docker-compose up -d --build`
+    + Run `cd app && mvn clean install` and `docker build -f Dockerfile -t education_app:latest.20.10-SNAPSHOT .`
+    + Run `cd .. && docker-compose up -d --build`
+  + To remove all images by pattern need to execute `docker rmi -f $(docker images | grep 'allsul')` manually.
   
 ***
 ### How to run application remotely via the Jenkins:
@@ -47,9 +55,8 @@ Project Benefits:
 
 1. Download, install and start Zookeeper
 2. Download, install and start Kafka
-3. Create the next topics:
-   - education-finish-lesson-event
-   - education-start-course-event
+3. Create the following topic:
+   - education-user-creation
 
 </details>
 
@@ -116,7 +123,7 @@ When OAuth2 server rises for the first time, a default client and users will be 
    
 * To start use the main functionality, need to complete the User registration: execute a POST request for `http://localhost:8080/app/system/second-step-register`
 * The Client has minimum available functionality.
-* Currently, there is no possibility to create new users or clients.
+* Currently, there is no possibility to create new clients.
 
 </details>
 
@@ -131,8 +138,6 @@ When OAuth2 server rises for the first time, a default client and users will be 
 
 ***
 ### TODO list:
-1. Implement a Jenkins integration with the following pipelines:
-   - 1.1. Run all integration tests;
-2. Add monitoring functionality for teacher
-3. Add feedback form for student after each lection
-4. Migrate to Gradle
+1. Migrate to Gradle
+2. Fix displaying JUnit report
+3. Move aspect to async processes
